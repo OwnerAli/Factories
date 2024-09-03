@@ -4,11 +4,12 @@ import com.github.retrooper.packetevents.PacketEvents;
 import com.github.retrooper.packetevents.event.PacketListenerPriority;
 import dev.viaduct.factories.listeners.PlayerGetResourceListener;
 import dev.viaduct.factories.listeners.PlayerJoinListener;
-import dev.viaduct.factories.listeners.PlayerMoveListener;
+import dev.viaduct.factories.listeners.AccessibleLandListeners;
 import dev.viaduct.factories.packets.listeners.ScoreboardPacketListener;
 import dev.viaduct.factories.registries.FactoryPlayerRegistry;
 import dev.viaduct.factories.registries.RegistryManager;
 import dev.viaduct.factories.resources.ResourceManager;
+import dev.viaduct.factories.upgrades.UpgradeManager;
 import io.github.retrooper.packetevents.factory.spigot.SpigotPacketEventsBuilder;
 import lombok.Getter;
 import world.bentobox.bentobox.api.addons.Addon;
@@ -26,6 +27,7 @@ public class FactoriesPlugin extends Pladdon {
     public static RegistryManager registryManager;
 
     public ResourceManager resourceManager;
+    public UpgradeManager upgradeManager;
 
     @Override
     public Addon getAddon() {
@@ -46,13 +48,13 @@ public class FactoriesPlugin extends Pladdon {
     @Override
     public void onEnable() {
         instance = this;
-        initRegistries();
+        initManagers();
         getServer().getPluginManager()
                 .registerEvents(new PlayerJoinListener(), this);
         getServer().getPluginManager().registerEvents(
                 new PlayerGetResourceListener(registryManager.getRegistry(FactoryPlayerRegistry.class)), this);
         getServer().getPluginManager()
-                .registerEvents(new PlayerMoveListener(registryManager.getRegistry(FactoryPlayerRegistry.class)), this);
+                .registerEvents(new AccessibleLandListeners(registryManager.getRegistry(FactoryPlayerRegistry.class)), this);
 
         PacketEvents.getAPI().getEventManager().registerListener(new ScoreboardPacketListener(),
                 PacketListenerPriority.LOW);
@@ -66,13 +68,16 @@ public class FactoriesPlugin extends Pladdon {
         PacketEvents.getAPI().terminate();
     }
 
-    private void initRegistries() {
+    private void initManagers() {
         registryManager = new RegistryManager();
 
         registryManager.registerRegistry(FactoryPlayerRegistry.class, new FactoryPlayerRegistry());
 
         resourceManager = new ResourceManager();
         resourceManager.registerResources();
+
+        upgradeManager = new UpgradeManager();
+        upgradeManager.init();
     }
 
 }

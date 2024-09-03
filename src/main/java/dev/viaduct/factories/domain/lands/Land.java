@@ -2,7 +2,10 @@ package dev.viaduct.factories.domain.lands;
 
 import dev.viaduct.factories.FactoriesPlugin;
 import dev.viaduct.factories.domain.players.FactoryPlayer;
-import dev.viaduct.factories.settings.SettingType;
+import dev.viaduct.factories.exceptions.MaxLevelReachedException;
+import dev.viaduct.factories.upgrades.Upgrade;
+import dev.viaduct.factories.upgrades.UpgradeManager;
+import dev.viaduct.factories.upgrades.impl.LevelledUpgrade;
 import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -30,6 +33,7 @@ public class Land {
                         factoryPlayer.getPlayer().getUniqueId());
         this.locOfCenterOfIsland = island.getCenter();
         this.factoryPlayer = factoryPlayer;
+        setAccessibleLand();
     }
 
     public void setAccessibleLand() {
@@ -37,19 +41,36 @@ public class Land {
         int blockY = locOfCenterOfIsland.getBlockY();
         int blockZ = locOfCenterOfIsland.getBlockZ();
 
-        double accessibleLand = factoryPlayer.getSettingHolder()
-                .getSetting(SettingType.ACCESSIBLE_LAND_BLOCKS);
+        int accessibleLand = 0;
+        try {
+            accessibleLand = getSizeInBlocks();
+        } catch (MaxLevelReachedException e) {
+            e.printStackTrace();
+        }
 
-        int lowestLeftX = (int) (blockX - accessibleLand);
-        int lowestLeftY = (int) (blockY - accessibleLand);
-        int lowestLeftZ = (int) (blockZ - accessibleLand);
+        int lowestLeftX = blockX - accessibleLand;
+        int lowestLeftY = blockY - accessibleLand;
+        int lowestLeftZ = blockZ - accessibleLand;
 
-        int highestRightX = (int) (blockX + accessibleLand);
-        int highestRightY = (int) (blockY + accessibleLand);
-        int highestRightZ = (int) (blockZ + accessibleLand);
+        int highestRightX = blockX + accessibleLand;
+        int highestRightY = blockY + accessibleLand;
+        int highestRightZ = blockZ + accessibleLand;
 
         this.playerAccessLocationLowestCorner = new Location(island.getWorld(), lowestLeftX, lowestLeftY, lowestLeftZ);
         this.playerAccessLocationHighestCorner = new Location(island.getWorld(), highestRightX, highestRightY, highestRightZ);
+    }
+
+    private int getSizeInBlocks() throws MaxLevelReachedException {
+        Upgrade upgrade = FactoriesPlugin.getInstance()
+                .getUpgradeManager()
+                .getUpgrade(UpgradeManager.UpgradeName.LAND_SIZE_UPGRADE);
+        int landSizeUpgradeLevel = factoryPlayer.getLevelledUpgradeHolder()
+                .getUpgradeLevel(UpgradeManager.UpgradeName.LAND_SIZE_UPGRADE);
+
+        if (landSizeUpgradeLevel == 0) {
+            return upgrade.getBaseValue();
+        }
+        return ((LevelledUpgrade<Integer>) upgrade).getDataForLevel(landSizeUpgradeLevel).getValue();
     }
 
     public boolean isPlayerInAccessibleLand(Player player, Location location) {
@@ -60,8 +81,8 @@ public class Land {
         double z = location.getZ();
 
         return x >= playerAccessLocationLowestCorner.getX() && x <= playerAccessLocationHighestCorner.getX() &&
-                        y >= playerAccessLocationLowestCorner.getY() && y <= playerAccessLocationHighestCorner.getY() &&
-                        z >= playerAccessLocationLowestCorner.getZ() && z <= playerAccessLocationHighestCorner.getZ();
+                y >= playerAccessLocationLowestCorner.getY() && y <= playerAccessLocationHighestCorner.getY() &&
+                z >= playerAccessLocationLowestCorner.getZ() && z <= playerAccessLocationHighestCorner.getZ();
     }
 
 }
