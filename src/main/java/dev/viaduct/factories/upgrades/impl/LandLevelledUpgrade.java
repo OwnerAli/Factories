@@ -20,28 +20,32 @@ import java.util.List;
 import java.util.Map;
 
 public class LandLevelledUpgrade extends LevelledUpgrade<Integer> {
-
     // Actions won't be executed if unless all conditions are not met
     public LandLevelledUpgrade() {
         super(new FixedDataMapper<>(Map.of(
+                // Level 1
                 1, new LevelData<>(
-
-                        // Level 1
-                        14, new ResourceCondition("wood", 100,
-                        new RemoveResourceAction("wood", 100),
-                        new LandUpgradeAction(1),
-                        new PlaySoundAction(Sound.ENTITY_PLAYER_LEVELUP),
-                        new ChatMessageAction("&bSuccessfully upgraded your land size!"))),
+                        14, true, true,
+                        new ResourceCondition("wood", 100,
+                            new RemoveResourceAction("wood", 100),
+                            new LandUpgradeAction(1))),
+                // Level 2
                 2, new LevelData<>(
-
-                        // Level 2
-                        18, new ResourceCondition("wood", 200, // requires 200 wood
-                        new RemoveResourceAction("wood", 200)), // remove 200 wood
+                        18, true, true,
+                        new ResourceCondition("wood", 200, // requires 200 wood
+                            new RemoveResourceAction("wood", 200)), // remove 200 wood
                         new ResourceCondition("stone", 100, // requires 100 stone
                                 new RemoveResourceAction("stone", 100), // remove 100 stone
-                                new LandUpgradeAction(2),
-                                new PlaySoundAction(Sound.ENTITY_PLAYER_LEVELUP),
-                                new ChatMessageAction("&bSuccessfully upgraded your land size!"))))));
+                                new LandUpgradeAction(2))),
+                //  Level 3
+                3, new LevelData<>(
+                        22, true, true,
+                        new ResourceCondition("wood", 400,  // requires 400 wood
+                            new RemoveResourceAction("wood", 200)), // remove 400 wood
+                            new ResourceCondition("stone", 200, // requires 200 stone
+                                    new RemoveResourceAction("stone", 100), // remove 200 stone
+                                    new LandUpgradeAction(3))))));
+
     }
 
     @Override
@@ -103,9 +107,10 @@ public class LandLevelledUpgrade extends LevelledUpgrade<Integer> {
         return List.of("&7Upgrade your land level to", "&7increase the amount of", "&7land you can access.");
     }
 
+    // TODO: Refactor out the level data info into a separate method
     @Override
     public List<String> getLevelDataInfo(int nextLevel) {
-        LevelData<Integer> levelData;
+        final LevelData<Integer> levelData;
 
         try {
             levelData = levelDataMapper.getDataForLevel(nextLevel);
