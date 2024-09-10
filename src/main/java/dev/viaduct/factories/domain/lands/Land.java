@@ -48,9 +48,9 @@ public class Land {
             e.printStackTrace();
         }
 
-        int lowestLeftX = blockX - accessibleLand;
-        int lowestLeftY = blockY - accessibleLand;
-        int lowestLeftZ = blockZ - accessibleLand;
+        int lowestLeftX = blockX - accessibleLand + 1;
+        int lowestLeftY = blockY - accessibleLand + 1;
+        int lowestLeftZ = blockZ - accessibleLand + 1;
 
         int highestRightX = blockX + accessibleLand;
         int highestRightY = blockY + accessibleLand;
@@ -74,15 +74,23 @@ public class Land {
     }
 
     public boolean isPlayerInAccessibleLand(Player player, Location location) {
-        if (player.getUniqueId() != factoryPlayer.getPlayer().getUniqueId()) return true;
+        int x = location.getBlockX();
+        int y = location.getBlockY();
+        int z = location.getBlockZ();
 
-        double x = location.getX();
-        double y = location.getY();
-        double z = location.getZ();
+        // Assuming you store the boundaries as playerAccessLocationLowestCorner and playerAccessLocationHighestCorner
+        int lowestX = playerAccessLocationLowestCorner.getBlockX();
+        int lowestY = playerAccessLocationLowestCorner.getBlockY();
+        int lowestZ = playerAccessLocationLowestCorner.getBlockZ();
 
-        return x >= playerAccessLocationLowestCorner.getX() && x <= playerAccessLocationHighestCorner.getX() &&
-                y >= playerAccessLocationLowestCorner.getY() && y <= playerAccessLocationHighestCorner.getY() &&
-                z >= playerAccessLocationLowestCorner.getZ() && z <= playerAccessLocationHighestCorner.getZ();
+        int highestX = playerAccessLocationHighestCorner.getBlockX();
+        int highestY = playerAccessLocationHighestCorner.getBlockY();
+        int highestZ = playerAccessLocationHighestCorner.getBlockZ();
+
+        // Ensure south and east boundaries are exclusive by using "<=" for lowest bound and "<" for highest.
+        return (x >= lowestX && x < highestX) &&
+                (y >= lowestY && y < highestY) &&
+                (z >= lowestZ && z < highestZ);
     }
 
 }

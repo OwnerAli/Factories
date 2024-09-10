@@ -1,7 +1,6 @@
 package dev.viaduct.factories.listeners;
 
 import dev.viaduct.factories.FactoriesPlugin;
-import dev.viaduct.factories.displays.ProgressDisplay;
 import dev.viaduct.factories.domain.lands.Land;
 import dev.viaduct.factories.guis.menus.PlayerUpgradeMenu;
 import dev.viaduct.factories.registries.impl.FactoryPlayerRegistry;
@@ -61,7 +60,7 @@ public class AccessibleLandListeners implements Listener {
 
             if (settingHolder.getSetting(SettingType.PLAYER_LAND) == null) return;
             Land playerLand = settingHolder.getSetting(SettingType.PLAYER_LAND);
-            boolean playerInAccessibleLand = playerLand.isPlayerInAccessibleLand(event.getPlayer(), event.getBlock().getLocation());
+            boolean playerInAccessibleLand = playerLand.isPlayerInAccessibleLand(player, event.getBlock().getLocation());
 
             if (playerInAccessibleLand) return;
             event.setCancelled(true);
@@ -85,11 +84,10 @@ public class AccessibleLandListeners implements Listener {
 
             if (settingHolder.getSetting(SettingType.PLAYER_LAND) == null) return;
             Land playerLand = settingHolder.getSetting(SettingType.PLAYER_LAND);
-            boolean playerInAccessibleLand = playerLand.isPlayerInAccessibleLand(event.getPlayer(), event.getBlock().getLocation());
+            boolean playerInAccessibleLand = playerLand.isPlayerInAccessibleLand(player, event.getBlock().getLocation());
 
             if (playerInAccessibleLand) return;
             event.setCancelled(true);
-
         });
     }
 

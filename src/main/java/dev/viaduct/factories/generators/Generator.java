@@ -3,7 +3,6 @@ package dev.viaduct.factories.generators;
 import dev.viaduct.factories.displays.ProgressDisplay;
 import dev.viaduct.factories.domain.players.FactoryPlayer;
 import dev.viaduct.factories.events.ProgressDisplayCompletionEvent;
-import me.ogali.customdrops.drops.domain.Drop;
 import org.bukkit.Location;
 import org.bukkit.event.Event;
 import org.bukkit.event.block.BlockBreakEvent;

@@ -2,13 +2,13 @@ package dev.viaduct.factories;
 
 import com.github.retrooper.packetevents.PacketEvents;
 import com.github.retrooper.packetevents.event.PacketListenerPriority;
+import dev.viaduct.factories.listeners.AccessibleLandListeners;
 import dev.viaduct.factories.listeners.GeneratorListener;
 import dev.viaduct.factories.listeners.PlayerGetResourceListener;
 import dev.viaduct.factories.listeners.PlayerJoinListener;
-import dev.viaduct.factories.listeners.AccessibleLandListeners;
 import dev.viaduct.factories.packets.listeners.ScoreboardPacketListener;
-import dev.viaduct.factories.registries.impl.FactoryPlayerRegistry;
 import dev.viaduct.factories.registries.RegistryManager;
+import dev.viaduct.factories.registries.impl.FactoryPlayerRegistry;
 import dev.viaduct.factories.registries.impl.GeneratorRegistry;
 import dev.viaduct.factories.resources.ResourceManager;
 import dev.viaduct.factories.upgrades.UpgradeManager;

@@ -1,7 +1,6 @@
 package dev.viaduct.factories.domain.players;
 
 import dev.viaduct.factories.FactoriesPlugin;
-import dev.viaduct.factories.displays.ProgressDisplay;
 import dev.viaduct.factories.domain.banks.Bank;
 import dev.viaduct.factories.generators.Generator;
 import dev.viaduct.factories.generators.GeneratorHolder;
@@ -9,8 +8,11 @@ import dev.viaduct.factories.guis.scoreboards.FactoryScoreboard;
 import dev.viaduct.factories.registries.impl.FactoryPlayerRegistry;
 import dev.viaduct.factories.registries.impl.GeneratorRegistry;
 import dev.viaduct.factories.settings.SettingHolder;
+import dev.viaduct.factories.tasks.TaskHolder;
+import dev.viaduct.factories.tasks.impl.ClearPlotTask;
 import dev.viaduct.factories.upgrades.LevelledUpgradeHolder;
 import lombok.Getter;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
@@ -23,6 +25,7 @@ public class FactoryPlayer {
     private final SettingHolder settingHolder;
     private final LevelledUpgradeHolder levelledUpgradeHolder;
     private final GeneratorHolder generatorHolder;
+    private final TaskHolder taskHolder;
 
     public FactoryPlayer(Player player) {
         this.player = player;
@@ -31,6 +34,7 @@ public class FactoryPlayer {
         this.settingHolder = new SettingHolder();
         this.levelledUpgradeHolder = new LevelledUpgradeHolder();
         this.generatorHolder = new GeneratorHolder();
+        this.taskHolder = new TaskHolder();
         bank.addToResource("wood", scoreboard, 1000);
         bank.addToResource("stone", scoreboard, 1000);
     }
@@ -50,6 +54,8 @@ public class FactoryPlayer {
                 .getRegistry(GeneratorRegistry.class)
                 .getAllValues()
                 .forEach(generator -> player.getInventory().addItem(generator.getGeneratorPlaceItem()));
+
+        Bukkit.getScheduler().runTaskLater(FactoriesPlugin.getInstance(), () -> taskHolder.setup(new ClearPlotTask(), this), 60L);
     }
 
 }

@@ -1,9 +1,12 @@
 package dev.viaduct.factories.utils;
 
 import dev.viaduct.factories.FactoriesPlugin;
+import net.md_5.bungee.api.ChatMessageType;
+import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,6 +40,11 @@ public class Chat {
 
     public static void tellFormatted(CommandSender toWhom, String message, Object... args) {
         tell(toWhom, String.format(message, args));
+    }
+
+    public static void sendActionbar(Player toWhom, String message) {
+        toWhom.spigot().sendMessage(ChatMessageType.ACTION_BAR,
+                new TextComponent(Chat.colorize(message)));
     }
 
     public static String colorize(String message) {

@@ -2,7 +2,6 @@ package dev.viaduct.factories.displays;
 
 import dev.viaduct.factories.events.ProgressDisplayCompletionEvent;
 import dev.viaduct.factories.generators.manual_generators.block_generators.impl.BlockManualGenerator;
-import dev.viaduct.factories.utils.Chat;
 import org.bukkit.Bukkit;
 import org.bukkit.Color;
 import org.bukkit.Location;
