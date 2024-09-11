@@ -2,10 +2,7 @@ package dev.viaduct.factories;
 
 import com.github.retrooper.packetevents.PacketEvents;
 import com.github.retrooper.packetevents.event.PacketListenerPriority;
-import dev.viaduct.factories.listeners.GeneratorListener;
-import dev.viaduct.factories.listeners.PlayerGetResourceListener;
-import dev.viaduct.factories.listeners.PlayerJoinListener;
-import dev.viaduct.factories.listeners.AccessibleLandListeners;
+import dev.viaduct.factories.listeners.*;
 import dev.viaduct.factories.packets.listeners.ScoreboardPacketListener;
 import dev.viaduct.factories.registries.impl.FactoryPlayerRegistry;
 import dev.viaduct.factories.registries.RegistryManager;
@@ -73,7 +70,7 @@ public class FactoriesPlugin extends Pladdon {
         pluginManager.registerEvents(new PlayerJoinListener(), this);
         pluginManager.registerEvents(new PlayerGetResourceListener(registryManager
                 .getRegistry(FactoryPlayerRegistry.class)), this);
-        pluginManager.registerEvents(new AccessibleLandListeners(registryManager
+        pluginManager.registerEvents(new GridLandListener(registryManager
                 .getRegistry(FactoryPlayerRegistry.class)), this);
         pluginManager.registerEvents(new GeneratorListener(registryManager
                 .getRegistry(FactoryPlayerRegistry.class), registryManager
