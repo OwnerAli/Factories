@@ -1,20 +1,15 @@
 package dev.viaduct.factories.listeners;
 
-import dev.viaduct.factories.FactoriesPlugin;
 import dev.viaduct.factories.domain.lands.Land;
 import dev.viaduct.factories.registries.impl.FactoryPlayerRegistry;
 import dev.viaduct.factories.settings.SettingType;
 import dev.viaduct.factories.utils.Chat;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.entity.Player;
-import org.bukkit.entity.TextDisplay;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
-import org.bukkit.util.Vector;
 
 public class GridLandListener implements Listener {
 

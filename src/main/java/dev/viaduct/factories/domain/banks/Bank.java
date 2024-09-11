@@ -1,6 +1,7 @@
 package dev.viaduct.factories.domain.banks;
 
 import dev.viaduct.factories.FactoriesPlugin;
+import dev.viaduct.factories.domain.players.FactoryPlayer;
 import dev.viaduct.factories.guis.scoreboards.FactoryScoreboard;
 import dev.viaduct.factories.resources.Resource;
 import lombok.Getter;
@@ -41,6 +42,16 @@ public class Bank {
     public void removeFromResource(Resource resource, FactoryScoreboard factoryScoreboard, double amount) {
         resourceMap.put(resource, resourceMap.getOrDefault(resource, 0.0) - amount);
         factoryScoreboard.updateResourceLine(resource);
+    }
+
+    public void removeFromResource(String resourceName, FactoryPlayer factoryPlayer, double amount) {
+        resourceMap.keySet().stream()
+                .filter(resource -> resource.getName().equalsIgnoreCase(resourceName))
+                .findAny()
+                .ifPresent(resource -> {
+                    removeFromResource(resource, factoryPlayer.getScoreboard(), amount);
+                    factoryPlayer.getScoreboard().updateResourceLine(resource);
+                });
     }
 
     public double getResourceAmt(Resource resource) {

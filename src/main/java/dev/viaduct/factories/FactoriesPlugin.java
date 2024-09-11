@@ -2,10 +2,11 @@ package dev.viaduct.factories;
 
 import com.github.retrooper.packetevents.PacketEvents;
 import com.github.retrooper.packetevents.event.PacketListenerPriority;
+import dev.viaduct.factories.domain.lands.LandManager;
 import dev.viaduct.factories.listeners.*;
 import dev.viaduct.factories.packets.listeners.ScoreboardPacketListener;
-import dev.viaduct.factories.registries.impl.FactoryPlayerRegistry;
 import dev.viaduct.factories.registries.RegistryManager;
+import dev.viaduct.factories.registries.impl.FactoryPlayerRegistry;
 import dev.viaduct.factories.registries.impl.GeneratorRegistry;
 import dev.viaduct.factories.resources.ResourceManager;
 import dev.viaduct.factories.upgrades.UpgradeManager;
@@ -29,6 +30,7 @@ public class FactoriesPlugin extends Pladdon {
 
     public ResourceManager resourceManager;
     public UpgradeManager upgradeManager;
+    public LandManager landManager;
 
     @Override
     public Addon getAddon() {
@@ -75,6 +77,8 @@ public class FactoriesPlugin extends Pladdon {
         pluginManager.registerEvents(new GeneratorListener(registryManager
                 .getRegistry(FactoryPlayerRegistry.class), registryManager
                 .getRegistry(GeneratorRegistry.class)), this);
+        pluginManager.registerEvents(new PlayerInteractEntityListener(registryManager
+                .getRegistry(FactoryPlayerRegistry.class)), this);
     }
 
     private void initRegistries() {
@@ -91,6 +95,9 @@ public class FactoriesPlugin extends Pladdon {
 
         upgradeManager = new UpgradeManager();
         upgradeManager.init();
+
+        landManager = new LandManager();
+        landManager.initializeResourceCostMap();
     }
 
 }

@@ -1,7 +1,6 @@
 package dev.viaduct.factories.actions.impl;
 
 import dev.viaduct.factories.domain.players.FactoryPlayer;
-import dev.viaduct.factories.settings.SettingType;
 import dev.viaduct.factories.upgrades.UpgradeManager;
 
 // TODO: REDO WITH NEW GRID SYSTEM

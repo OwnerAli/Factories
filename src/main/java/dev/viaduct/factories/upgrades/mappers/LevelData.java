@@ -2,7 +2,6 @@ package dev.viaduct.factories.upgrades.mappers;
 
 import dev.viaduct.factories.conditions.AbstractCondition;
 import dev.viaduct.factories.conditions.ConditionHolder;
-import dev.viaduct.factories.domain.players.FactoryPlayer;
 import lombok.Getter;
 
 import java.util.List;
