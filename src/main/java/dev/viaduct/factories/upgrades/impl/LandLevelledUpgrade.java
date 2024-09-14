@@ -1,8 +1,6 @@
 package dev.viaduct.factories.upgrades.impl;
 
-import dev.viaduct.factories.actions.impl.ChatMessageAction;
 import dev.viaduct.factories.actions.impl.LandUpgradeAction;
-import dev.viaduct.factories.actions.impl.PlaySoundAction;
 import dev.viaduct.factories.actions.impl.RemoveResourceAction;
 import dev.viaduct.factories.conditions.ConditionHolder;
 import dev.viaduct.factories.conditions.impl.ResourceCondition;
@@ -13,7 +11,6 @@ import dev.viaduct.factories.upgrades.mappers.FixedDataMapper;
 import dev.viaduct.factories.upgrades.mappers.LevelData;
 import dev.viaduct.factories.utils.Chat;
 import org.bukkit.Material;
-import org.bukkit.Sound;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,13 +24,13 @@ public class LandLevelledUpgrade extends LevelledUpgrade<Integer> {
                 1, new LevelData<>(
                         14, true, true,
                         new ResourceCondition("wood", 100,
-                            new RemoveResourceAction("wood", 100),
-                            new LandUpgradeAction(1))),
+                                new RemoveResourceAction("wood", 100),
+                                new LandUpgradeAction(1))),
                 // Level 2
                 2, new LevelData<>(
                         18, true, true,
                         new ResourceCondition("wood", 200, // requires 200 wood
-                            new RemoveResourceAction("wood", 200)), // remove 200 wood
+                                new RemoveResourceAction("wood", 200)), // remove 200 wood
                         new ResourceCondition("stone", 100, // requires 100 stone
                                 new RemoveResourceAction("stone", 100), // remove 100 stone
                                 new LandUpgradeAction(2))),
@@ -41,10 +38,10 @@ public class LandLevelledUpgrade extends LevelledUpgrade<Integer> {
                 3, new LevelData<>(
                         22, true, true,
                         new ResourceCondition("wood", 400,  // requires 400 wood
-                            new RemoveResourceAction("wood", 200)), // remove 400 wood
-                            new ResourceCondition("stone", 200, // requires 200 stone
-                                    new RemoveResourceAction("stone", 100), // remove 200 stone
-                                    new LandUpgradeAction(3))))));
+                                new RemoveResourceAction("wood", 200)), // remove 400 wood
+                        new ResourceCondition("stone", 200, // requires 200 stone
+                                new RemoveResourceAction("stone", 100), // remove 200 stone
+                                new LandUpgradeAction(3))))));
 
     }
 

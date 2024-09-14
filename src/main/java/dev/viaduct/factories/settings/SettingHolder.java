@@ -1,5 +1,6 @@
 package dev.viaduct.factories.settings;
 
+import dev.viaduct.factories.FactoriesPlugin;
 import dev.viaduct.factories.domain.lands.Land;
 import dev.viaduct.factories.domain.players.FactoryPlayer;
 
@@ -31,7 +32,7 @@ public class SettingHolder {
     }
 
     public void initializeDefaultPlayerSettings(FactoryPlayer factoryPlayer) {
-        registerSetting(SettingType.PLAYER_LAND, new Land(factoryPlayer));
+        registerSetting(SettingType.PLAYER_LAND, new Land(factoryPlayer, FactoriesPlugin.getInstance().getLandManager()));
     }
 
 }

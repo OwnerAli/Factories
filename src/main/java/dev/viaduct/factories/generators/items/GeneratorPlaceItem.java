@@ -28,7 +28,7 @@ public class GeneratorPlaceItem extends ItemBuilder {
         PersistentDataContainer persistentDataContainer = itemMeta.getPersistentDataContainer();
 
         persistentDataContainer.set(GeneratorRegistry.GENERATOR_ID_KEY, PersistentDataType.STRING,
-                        generatorId);
+                generatorId);
 
         item.setItemMeta(itemMeta);
 
