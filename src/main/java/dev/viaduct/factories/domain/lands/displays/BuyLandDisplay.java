@@ -30,7 +30,7 @@ public class BuyLandDisplay {
             textDisplayList.add(location.getWorld().spawn(location, TextDisplay.class,
                     textDisplay -> {
                         textDisplay.setPersistent(false);
-                        textDisplay.setText(Chat.colorize("&c&l* No More Upgrades! *"));
+                        textDisplay.setText(Chat.colorize("&c&l* No More Land! *"));
                         textDisplay.setBillboard(Display.Billboard.CENTER);
                     }));
             Bukkit.getScheduler().runTaskLater(FactoriesPlugin.getInstance(), () -> {
@@ -75,7 +75,7 @@ public class BuyLandDisplay {
             textDisplayList.forEach(TextDisplay::remove);
             interaction.remove();
             purchaseSquareTexts.remove(this);
-        }, 20 * 5);
+        }, (20 * 2) + 10);
     }
 
     private void spawnCostTexts(List<ResourceCost> resourceCostList) {

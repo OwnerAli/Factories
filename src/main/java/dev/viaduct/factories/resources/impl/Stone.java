@@ -1,5 +1,6 @@
 package dev.viaduct.factories.resources.impl;
 
+import dev.viaduct.factories.resources.MaterialAmountPair;
 import dev.viaduct.factories.resources.Resource;
 import dev.viaduct.factories.utils.Chat;
 import org.bukkit.Material;
@@ -7,11 +8,8 @@ import org.bukkit.Material;
 public class Stone extends Resource {
 
     public Stone() {
-        super("Stone", 1.0, Material.STONE);
-    }
-
-    public Stone(String name, double incrementAmount, Material... materials) {
-        super(name, incrementAmount, materials);
+        super("Stone", 1.0,
+                new MaterialAmountPair(Material.STONE, 4));
     }
 
     @Override

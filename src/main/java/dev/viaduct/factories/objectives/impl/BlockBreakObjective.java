@@ -16,7 +16,7 @@ public class BlockBreakObjective extends Objective {
     private final Material blockType;
 
     public BlockBreakObjective(Material blockType, int amount) {
-        super("Break " + amount + " " + blockType.name() + " Blocks", amount);
+        super(amount, "Break " + amount + " " + blockType.name() + " Blocks");
         this.blockType = blockType;
     }
 

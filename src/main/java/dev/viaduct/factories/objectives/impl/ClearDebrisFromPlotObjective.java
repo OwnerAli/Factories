@@ -1,5 +1,6 @@
 package dev.viaduct.factories.objectives.impl;
 
+import dev.viaduct.factories.areas.Area;
 import dev.viaduct.factories.domain.lands.Land;
 import dev.viaduct.factories.domain.players.FactoryPlayer;
 import dev.viaduct.factories.settings.SettingType;
@@ -24,15 +25,10 @@ public class ClearDebrisFromPlotObjective extends ClearDebrisObjective {
                 .getSetting(SettingType.PLAYER_LAND);
 
         if (playerLand == null) return;
-//        Location locationClone = playerLand.getPlayerAccessLocationLowestCorner().clone();
-//        locationClone.setY(0);
-//
-//        Area area = new Area(locationClone, playerLand.getPlayerAccessLocationHighestCorner());
-//        area.toggleOutline(factoryPlayer.getPlayer());
-//
-//        factoryPlayer.getTaskHolder().setCurrentTaskArea(area);
+        Area area = new Area(playerLand.getAccessibleSquares());
 
-        // TODO: REDO LOGIC WITH NEW GRID LAND SYSTEM
+        area.toggleOutline(factoryPlayer.getPlayer());
+        factoryPlayer.getTaskHolder().setCurrentTaskArea(area);
 
         super.setupObjectiveForPlayer(factoryPlayer);
     }

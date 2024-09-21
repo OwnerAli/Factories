@@ -9,7 +9,7 @@ import dev.viaduct.factories.registries.impl.FactoryPlayerRegistry;
 import dev.viaduct.factories.registries.impl.GeneratorRegistry;
 import dev.viaduct.factories.settings.SettingHolder;
 import dev.viaduct.factories.tasks.TaskHolder;
-import dev.viaduct.factories.tasks.impl.ClearPlotTask;
+import dev.viaduct.factories.tasks.impl.IntroTask;
 import dev.viaduct.factories.upgrades.LevelledUpgradeHolder;
 import lombok.Getter;
 import org.bukkit.Bukkit;
@@ -56,7 +56,7 @@ public class FactoryPlayer {
                 .getAllValues()
                 .forEach(generator -> player.getInventory().addItem(generator.getGeneratorPlaceItem()));
 
-        Bukkit.getScheduler().runTaskLater(FactoriesPlugin.getInstance(), () -> taskHolder.setup(new ClearPlotTask(), this), 60L);
+        Bukkit.getScheduler().runTaskLater(FactoriesPlugin.getInstance(), () -> taskHolder.setup(new IntroTask(), this), 60L);
     }
 
 }

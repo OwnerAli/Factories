@@ -11,16 +11,17 @@ import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 
-public class GridLandListener implements Listener {
+public class GridLandListeners implements Listener {
 
     private final FactoryPlayerRegistry factoryPlayerRegistry;
 
-    public GridLandListener(FactoryPlayerRegistry factoryPlayerRegistry) {
+    public GridLandListeners(FactoryPlayerRegistry factoryPlayerRegistry) {
         this.factoryPlayerRegistry = factoryPlayerRegistry;
     }
 
     @EventHandler
     public void onBlockPlace(BlockPlaceEvent event) {
+        if (!(event.getBlock().getWorld().getName().equals("factories_world"))) return;
         factoryPlayerRegistry.get(event.getPlayer().getUniqueId()).ifPresent(factoryPlayer -> {
             Land playerLand = factoryPlayer.getSettingHolder().getSetting(SettingType.PLAYER_LAND);
 
@@ -33,6 +34,7 @@ public class GridLandListener implements Listener {
 
     @EventHandler
     public void onBlockBreak(BlockBreakEvent event) {
+        if (!(event.getBlock().getWorld().getName().equals("factories_world"))) return;
         factoryPlayerRegistry.get(event.getPlayer().getUniqueId()).ifPresent(factoryPlayer -> {
             Land playerLand = factoryPlayer.getSettingHolder().getSetting(SettingType.PLAYER_LAND);
 
@@ -50,6 +52,10 @@ public class GridLandListener implements Listener {
 
     @EventHandler
     public void onPlayerMove(PlayerMoveEvent event) {
+        if (event.getTo() == null) return;
+        if (event.getTo().getWorld() == null) return;
+        if (!(event.getTo().getWorld().getName().equals("factories_world"))) return;
+
         factoryPlayerRegistry.get(event.getPlayer().getUniqueId()).ifPresent(factoryPlayer -> {
             Land playerLand = factoryPlayer.getSettingHolder().getSetting(SettingType.PLAYER_LAND);
 

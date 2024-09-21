@@ -5,11 +5,12 @@ import dev.viaduct.factories.areas.Area;
 import dev.viaduct.factories.domain.players.FactoryPlayer;
 import dev.viaduct.factories.objectives.Objective;
 import dev.viaduct.factories.registries.impl.FactoryPlayerRegistry;
-import dev.viaduct.factories.tasks.TaskHolder;
+import dev.viaduct.factories.settings.SettingType;
 import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.block.BlockBreakEvent;
 
+import java.util.List;
 import java.util.Set;
 
 public abstract class ClearDebrisObjective extends Objective {
@@ -17,7 +18,7 @@ public abstract class ClearDebrisObjective extends Objective {
     private final Set<Material> debrisSet;
 
     public ClearDebrisObjective(Material... debris) {
-        super("Clear the debris from the highlighted area!", 0);
+        super(0, "Clear the debris", "from your area!");
         this.debrisSet = Set.of(debris);
     }
 
@@ -27,13 +28,10 @@ public abstract class ClearDebrisObjective extends Objective {
                 .getCurrentTaskArea();
 
         if (currentTaskArea == null) return;
-        currentTaskArea.updateAmountOfMatchingBlocksInArea(debrisSet);
-    }
+        currentTaskArea.countBlocksInArea(factoryPlayer.getSettingHolder().getSetting(SettingType.PLAYER_LAND).getLocOfCenterOfIsland(),
+                debrisSet);
 
-    @Override
-    public void progressObjective(FactoryPlayer factoryPlayer) {
-        TaskHolder taskHolder = factoryPlayer.getTaskHolder();
-        taskHolder.incrementObjectiveProgress(factoryPlayer, this);
+        setDescription(List.of("Clear the debris", "from your area!"));
     }
 
     @EventHandler
