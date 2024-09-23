@@ -1,12 +1,15 @@
 package dev.viaduct.factories.utils;
 
+import dev.viaduct.factories.renderers.MapImageRenderer;
 import lombok.Getter;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
+import org.bukkit.World;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.inventory.meta.MapMeta;
 import org.bukkit.persistence.PersistentDataType;
 
 import java.util.*;
@@ -17,7 +20,7 @@ public class ItemBuilder {
     private final ItemStack item;
     private Material material;
     private int amount;
-    private final ItemMeta meta;
+    private ItemMeta meta;
     private List<String> lore = new ArrayList<>();
     private final Map<Enchantment, Integer> enchants = new HashMap<>();
 
@@ -112,6 +115,11 @@ public class ItemBuilder {
         return this;
     }
 
+    public ItemBuilder setPersistentData(NamespacedKey key, int value) {
+        meta.getPersistentDataContainer().set(key, PersistentDataType.INTEGER, value);
+        return this;
+    }
+
     public ItemBuilder unbreakable(boolean hideUnbreakable) {
         if (hideUnbreakable) {
             setItemFlags(ItemFlag.HIDE_UNBREAKABLE);
@@ -123,6 +131,17 @@ public class ItemBuilder {
     public ItemBuilder glowing() {
         meta.addEnchant(Enchantment.DURABILITY, 1, true);
         meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+        return this;
+    }
+
+    public ItemBuilder setMapImage(World world, String path) {
+        if (!(material == Material.FILLED_MAP)) return this;
+        MapMeta mapMeta = (MapMeta) meta;
+        mapMeta.setScaling(true);
+        MapImageRenderer mapImageRenderer = new MapImageRenderer();
+        mapImageRenderer.load(path);
+        mapMeta.setMapView(mapImageRenderer.getMapView(world));
+        meta = mapMeta;
         return this;
     }
 

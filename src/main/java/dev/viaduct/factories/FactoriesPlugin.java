@@ -2,10 +2,13 @@ package dev.viaduct.factories;
 
 import com.github.retrooper.packetevents.PacketEvents;
 import com.github.retrooper.packetevents.event.PacketListenerPriority;
+import dev.viaduct.factories.blueprints.BlueprintManager;
 import dev.viaduct.factories.domain.lands.LandManager;
 import dev.viaduct.factories.listeners.*;
 import dev.viaduct.factories.packets.listeners.ScoreboardPacketListener;
 import dev.viaduct.factories.registries.RegistryManager;
+import dev.viaduct.factories.registries.impl.BlueprintProgressRegistry;
+import dev.viaduct.factories.registries.impl.BlueprintRegistry;
 import dev.viaduct.factories.registries.impl.FactoryPlayerRegistry;
 import dev.viaduct.factories.registries.impl.GeneratorRegistry;
 import dev.viaduct.factories.resources.ResourceManager;
@@ -31,6 +34,7 @@ public class FactoriesPlugin extends Pladdon {
     public ResourceManager resourceManager;
     public UpgradeManager upgradeManager;
     public LandManager landManager;
+    public BlueprintManager blueprintManager;
 
     @Override
     public Addon getAddon() {
@@ -87,6 +91,7 @@ public class FactoriesPlugin extends Pladdon {
         registryManager.registerRegistry(FactoryPlayerRegistry.class, new FactoryPlayerRegistry());
         GeneratorRegistry registry = new GeneratorRegistry();
         registryManager.registerRegistry(GeneratorRegistry.class, registry);
+        registryManager.registerRegistry(BlueprintRegistry.class, new BlueprintRegistry());
 
         Bukkit.getScheduler().runTaskLater(this, registry::initialize, 20L);
 
@@ -98,6 +103,8 @@ public class FactoriesPlugin extends Pladdon {
 
         landManager = new LandManager();
         landManager.initializeResourceCostMap();
+
+        blueprintManager = new BlueprintManager();
     }
 
 }

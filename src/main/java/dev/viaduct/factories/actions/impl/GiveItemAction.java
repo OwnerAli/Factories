@@ -35,4 +35,8 @@ public class GiveItemAction implements Action, RewardAction {
         return Chat.colorizeHex(itemStack.getAmount() + "x " + (itemStack.hasItemMeta() ? itemStack.getItemMeta().getDisplayName() :
                 itemStack.getType().name()));
     }
+        factoryPlayer.getPlayer().getInventory()
+                .addItem(itemStack);
+    }
+
 }
