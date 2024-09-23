@@ -80,7 +80,7 @@
                 <!-- Override only if necessary -->
                 <revision>${build.version}</revision>
                 <!-- Empties build number variable. -->
-                <build.number></build.number>
+                <build.number/>
             </properties>
         </profile>
     </profiles>
