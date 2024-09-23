@@ -9,34 +9,7 @@
     <version>${revision}</version>
 
     <name>Factories</name>
-    <inceptionYear>2017</inceptionYear>
-
-    <developers>
-        <developer>
-            <id>tastybento</id>
-            <email>tastybento@bentobox.world</email>
-            <timezone>-8</timezone>
-            <roles>
-                <role>Lead Developer</role>
-            </roles>
-        </developer>
-    </developers>
-
-    <scm>
-        <connection>scm:git:https://github.com/BentoBoxWorld/BSkyBlock.git</connection>
-        <developerConnection>scm:git:git@github.com:BentoBoxWorld/BSkyBlock.git</developerConnection>
-        <url>https://github.com/BentoBoxWorld/BSkyBlock</url>
-    </scm>
-
-    <ciManagement>
-        <system>jenkins</system>
-        <url>http://ci.codemc.org/job/BentoBoxWorld/job/BSkyBlock</url>
-    </ciManagement>
-
-    <issueManagement>
-        <system>GitHub</system>
-        <url>https://github.com/BentoBoxWorld/BSkyBlock/issues</url>
-    </issueManagement>
+    <inceptionYear>2024</inceptionYear>
 
     <distributionManagement>
         <snapshotRepository>
@@ -107,7 +80,7 @@
                 <!-- Override only if necessary -->
                 <revision>${build.version}</revision>
                 <!-- Empties build number variable. -->
-                <build.number></build.number>
+                <build.number/>
             </properties>
         </profile>
     </profiles>
@@ -224,6 +197,14 @@
                 <includes>
                     <include>*.blu</include>
                     <include>*.json</include>
+                </includes>
+            </resource>
+            <resource>
+                <directory>src/main/resources/images</directory>
+                <targetPath>./images</targetPath>
+                <filtering>false</filtering>
+                <includes>
+                    <include>*.png</include> <!-- Add this to include PNG images -->
                 </includes>
             </resource>
         </resources>
