@@ -28,7 +28,14 @@ public class PlayerGetResourceListener implements Listener {
                 .ifPresent(factoryPlayer -> {
                     Bank factoryPlayerBank = factoryPlayer.getBank();
                     factoryPlayerBank.getResourceByMaterial(material)
-                            .ifPresent(resource -> factoryPlayerBank.addToResource(resource, factoryPlayer.getScoreboard(), 1));
+                            .ifPresent(resource -> {
+                                resource.getMaterialAmountPairsList()
+                                        .stream()
+                                        .filter(pair -> pair.material().equals(material))
+                                        .forEach(pair -> factoryPlayerBank.addToResource(resource,
+                                                factoryPlayer.getScoreboard(), pair.amount()));
+                            });
                 });
     }
+
 }

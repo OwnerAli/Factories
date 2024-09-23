@@ -1,5 +1,6 @@
 package dev.viaduct.factories.areas;
 
+import dev.viaduct.factories.domain.lands.grids.squares.GridSquare;
 import dev.viaduct.factories.utils.OutlineUtils;
 import lombok.Getter;
 import org.bukkit.Location;
@@ -11,15 +12,12 @@ import java.util.Set;
 @Getter
 public class Area {
 
-    private final Location firstCorner;
-    private final Location secondCorner;
+    private final Set<GridSquare> gridSquares;
     private final OutlineUtils outlineUtils;
     private int amountOfMatchingBlocksInArea;
 
-    public Area(Location firstCorner, Location secondCorner) {
-        this.firstCorner = firstCorner;
-        this.secondCorner = secondCorner;
-
+    public Area(Set<GridSquare> gridSquares) {
+        this.gridSquares = gridSquares;
         this.outlineUtils = new OutlineUtils(this);
     }
 
@@ -27,15 +25,9 @@ public class Area {
         outlineUtils.toggleOutline(player);
     }
 
-    public void updateAmountOfMatchingBlocksInArea(Set<Material> materials) {
-        for (int x = firstCorner.getBlockX(); x <= secondCorner.getBlockX(); x++) {
-            for (int y = firstCorner.getBlockY(); y <= secondCorner.getBlockY(); y++) {
-                for (int z = firstCorner.getBlockZ(); z <= secondCorner.getBlockZ(); z++) {
-                    Material materialAtLoc = firstCorner.getWorld().getBlockAt(x, y, z).getType();
-                    if (materials.contains(materialAtLoc)) amountOfMatchingBlocksInArea++;
-                }
-            }
-        }
+    public void countBlocksInArea(Location location, Set<Material> materials) {
+        gridSquares.forEach(gridSquare -> amountOfMatchingBlocksInArea += gridSquare.countBlocksInSquare(location.getWorld(),
+                materials, location));
     }
 
 }

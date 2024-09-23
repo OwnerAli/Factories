@@ -1,6 +1,7 @@
 package dev.viaduct.factories.utils;
 
 import dev.viaduct.factories.areas.Area;
+import dev.viaduct.factories.domain.lands.grids.squares.GridSquare;
 import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -14,83 +15,75 @@ import org.joml.Vector3f;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 public class OutlineUtils {
 
-    private final List<Entity> displayEntitiesList;
+    public enum Direction {
+        NORTH,
+        SOUTH,
+        EAST,
+        WEST
+    }
 
-    private final Location firstCorner;
-    private final Location secondCorner;
+    private final List<Entity> displayEntitiesList;
+    final Set<GridSquare> gridSquares;
+    private final Area area;
 
     public OutlineUtils(Area area) {
         this.displayEntitiesList = new ArrayList<>();
-        this.firstCorner = area.getFirstCorner();
-        this.secondCorner = area.getSecondCorner();
+        this.gridSquares = area.getGridSquares();
+        this.area = area;
     }
 
     public void toggleOutline(Player player) {
         if (isOutlined()) {
             clearOutline();
         } else {
-            outlineRegion(player);
+            outlineGridSquares(player);
         }
     }
 
-    public void outlineRegion(Player player) {
-        // get the 8 vertices of the region
-        Location bottomNorthWest = firstCorner; // This is the original cornerOne
-        Location topSouthEast = secondCorner;  // This is the original cornerTwo
+    public void outlineGridSquares(Player player) {
+        for (GridSquare square : gridSquares) {
+            outlineSquare(player, square);
+        }
+    }
 
-        // North-East corner (X is max, Z is max) at the bottom
-        Location bottomNorthEast = new Location(bottomNorthWest.getWorld(), bottomNorthWest.getX(), bottomNorthWest.getY(), topSouthEast.getZ());
-
-        // South-East corner (X is max, Z is min) at the bottom
-        Location bottomSouthEast = new Location(bottomNorthWest.getWorld(), topSouthEast.getX(), bottomNorthWest.getY(), topSouthEast.getZ());
-
-        // South-West corner (X is min, Z is min) at the bottom
-        Location bottomSouthWest = new Location(bottomNorthWest.getWorld(), topSouthEast.getX(), bottomNorthWest.getY(), bottomNorthWest.getZ());
-
-        // North-West corner (X is min, Z is max) at the top
-        Location topNorthWest = new Location(bottomNorthWest.getWorld(), bottomNorthWest.getX(), topSouthEast.getY(), bottomNorthWest.getZ());
-
-        // North-East corner (X is max, Z is max) at the top
-        Location topNorthEast = new Location(bottomNorthWest.getWorld(), bottomNorthWest.getX(), topSouthEast.getY(), topSouthEast.getZ());
-
-        // South-East corner (X is max, Z is min) at the top
-        Location topSouthWest = new Location(bottomNorthWest.getWorld(), topSouthEast.getX(), topSouthEast.getY(), bottomNorthWest.getZ());
-
-        // spawn the displays at the top corners
-        BlockDisplay topNorthWestNorthEast = spawnDisplayAtLocation(player, topNorthWest, topNorthEast);
-        BlockDisplay topNorthEastSouthEast = spawnDisplayAtLocation(player, topNorthEast, topSouthEast);
-        BlockDisplay topSouthEastSouthWest = spawnDisplayAtLocation(player, topSouthEast, topSouthWest);
-        BlockDisplay topSouthWestNorthWest = spawnDisplayAtLocation(player, topSouthWest, topNorthWest);
-
-        // spawn the displays at the bottom corners
-        BlockDisplay bottomNorthWestNorthEast = spawnDisplayAtLocation(player, bottomNorthWest, bottomNorthEast);
-        BlockDisplay bottomNorthEastSouthEast = spawnDisplayAtLocation(player, bottomNorthEast, bottomSouthEast);
-        BlockDisplay bottomSouthEastSouthWest = spawnDisplayAtLocation(player, bottomSouthEast, bottomSouthWest);
-        BlockDisplay bottomSouthWestNorthWest = spawnDisplayAtLocation(player, bottomSouthWest, bottomNorthWest);
-
-        // spawn the displays at the vertical edges
-        BlockDisplay northWestNorthEast = spawnDisplayAtLocation(player, bottomNorthWest, topNorthWest);
-        BlockDisplay northEastSouthEast = spawnDisplayAtLocation(player, bottomNorthEast, topNorthEast);
-        BlockDisplay southEastSouthWest = spawnDisplayAtLocation(player, bottomSouthEast, topSouthEast);
-        BlockDisplay southWestNorthWest = spawnDisplayAtLocation(player, bottomSouthWest, topSouthWest);
-
-        displayEntitiesList.add(topNorthWestNorthEast);
-        displayEntitiesList.add(topNorthEastSouthEast);
-        displayEntitiesList.add(topSouthEastSouthWest);
-        displayEntitiesList.add(topSouthWestNorthWest);
-
-        displayEntitiesList.add(bottomNorthWestNorthEast);
-        displayEntitiesList.add(bottomNorthEastSouthEast);
-        displayEntitiesList.add(bottomSouthEastSouthWest);
-        displayEntitiesList.add(bottomSouthWestNorthWest);
-
-        displayEntitiesList.add(northWestNorthEast);
-        displayEntitiesList.add(northEastSouthEast);
-        displayEntitiesList.add(southEastSouthWest);
-        displayEntitiesList.add(southWestNorthWest);
+    private void outlineSquare(Player player, GridSquare square) {
+//        // Get corner locations based on the square's start and end coordinates
+//        Location bottomNorthWest = new Location(player.getWorld(), square.startX(), player.getLocation().getY(), square.startZ());
+//        Location topSouthEast = new Location(player.getWorld(), square.getEndX(), player.getLocation().getY() + 5, square.getEndZ());
+//
+//        // Check neighbors and skip internal edges
+//        boolean hasNorthNeighbor = gridSquares.stream().anyMatch(s -> s.getEndZ() == square.startZ() && s.startX() == square.startX());
+//        boolean hasSouthNeighbor = gridSquares.stream().anyMatch(s -> s.startZ() == square.getEndZ() && s.startX() == square.startX());
+//        boolean hasEastNeighbor = gridSquares.stream().anyMatch(s -> s.startX() == square.getEndX() && s.startZ() == square.startZ());
+//        boolean hasWestNeighbor = gridSquares.stream().anyMatch(s -> s.getEndX() == square.startX() && s.startZ() == square.startZ());
+//
+//        // Outline the external edges only
+//        if (!hasNorthNeighbor) {
+//            // Outline north edge
+//            spawnDisplayAtLocation(player, bottomNorthWest, new Location(bottomNorthWest.getWorld(), bottomNorthWest.getX(), bottomNorthWest.getY(), topSouthEast.getZ()));
+//        }
+//
+//        if (!hasSouthNeighbor) {
+//            // Outline south edge
+//            Location bottomSouthEast = new Location(bottomNorthWest.getWorld(), topSouthEast.getX(), bottomNorthWest.getY(), topSouthEast.getZ());
+//            spawnDisplayAtLocation(player, bottomSouthEast, topSouthEast);
+//        }
+//
+//        if (!hasEastNeighbor) {
+//            // Outline east edge
+//            Location topNorthEast = new Location(bottomNorthWest.getWorld(), bottomNorthWest.getX(), topSouthEast.getY(), topSouthEast.getZ());
+//            spawnDisplayAtLocation(player, topNorthEast, topSouthEast);
+//        }
+//
+//        if (!hasWestNeighbor) {
+//            // Outline west edge
+//            Location topNorthWest = new Location(bottomNorthWest.getWorld(), bottomNorthWest.getX(), topSouthEast.getY(), bottomNorthWest.getZ());
+//            spawnDisplayAtLocation(player, topNorthWest, bottomNorthWest);
+//        }
     }
 
     public void clearOutline() {
@@ -100,6 +93,39 @@ public class OutlineUtils {
 
     public boolean isOutlined() {
         return !displayEntitiesList.isEmpty();
+    }
+
+    private boolean hasAdjacentSquare(GridSquare currentSquare, Direction direction) {
+//        for (GridSquare square : area.getGridSquares()) {
+//            switch (direction) {
+//                case NORTH:
+//                    if (currentSquare.startZ() == square.getEndZ() + 1 &&
+//                            currentSquare.startX() == square.startX()) {
+//                        return true;
+//                    }
+//                    break;
+//                case SOUTH:
+//                    if (currentSquare.getEndZ() == square.startZ() - 1 &&
+//                            currentSquare.startX() == square.startX()) {
+//                        return true;
+//                    }
+//                    break;
+//                case EAST:
+//                    if (currentSquare.getEndX() == square.startX() - 1 &&
+//                            currentSquare.startZ() == square.startZ()) {
+//                        return true;
+//                    }
+//                    break;
+//                case WEST:
+//                    if (currentSquare.startX() == square.getEndX() + 1 &&
+//                            currentSquare.startZ() == square.startZ()) {
+//                        return true;
+//                    }
+//                    break;
+//            }
+//        }
+//        return false;
+        return true;
     }
 
     private BlockDisplay spawnDisplayAtLocation(Player player, Location startLocation, Location targetLocation) {

@@ -76,7 +76,7 @@ public class FactoriesPlugin extends Pladdon {
         pluginManager.registerEvents(new PlayerJoinListener(), this);
         pluginManager.registerEvents(new PlayerGetResourceListener(registryManager
                 .getRegistry(FactoryPlayerRegistry.class)), this);
-        pluginManager.registerEvents(new GridLandListener(registryManager
+        pluginManager.registerEvents(new GridLandListeners(registryManager
                 .getRegistry(FactoryPlayerRegistry.class)), this);
         pluginManager.registerEvents(new GeneratorListener(registryManager
                 .getRegistry(FactoryPlayerRegistry.class), registryManager

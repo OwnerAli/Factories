@@ -70,6 +70,51 @@ public class Chat {
         return ChatColor.translateAlternateColorCodes('&', message);
     }
 
+    public static String applyGradient(String message, String startHex, String endHex, boolean bold) {
+        // Remove the '#' from the hex values if present
+        startHex = startHex.replace("#", "");
+        endHex = endHex.replace("#", "");
+
+        // Calculate the length of the message and prepare a StringBuilder for the result
+        int length = message.length();
+        StringBuilder coloredMessage = new StringBuilder();
+
+        // Parse the starting and ending hex colors into RGB components
+        int startR = Integer.parseInt(startHex.substring(0, 2), 16);
+        int startG = Integer.parseInt(startHex.substring(2, 4), 16);
+        int startB = Integer.parseInt(startHex.substring(4, 6), 16);
+
+        int endR = Integer.parseInt(endHex.substring(0, 2), 16);
+        int endG = Integer.parseInt(endHex.substring(2, 4), 16);
+        int endB = Integer.parseInt(endHex.substring(4, 6), 16);
+
+        // For each character in the message, calculate the interpolated color
+        for (int i = 0; i < length; i++) {
+            double ratio = (double) i / (length - 1); // Ratio between 0 and 1
+
+            // Calculate the interpolated RGB values
+            int r = (int) (startR + ratio * (endR - startR));
+            int g = (int) (startG + ratio * (endG - startG));
+            int b = (int) (startB + ratio * (endB - startB));
+
+            // Convert RGB back to hex format
+            String hexColor = String.format("#%02x%02x%02x", r, g, b);
+
+            // Build the color code for the current character
+            String colorCode = colorizeHex(hexColor + message.charAt(i));
+
+            // Apply the bold (&l) formatting if necessary
+            if (bold) {
+                colorCode = "&l" + colorCode;
+            }
+
+            coloredMessage.append(colorCode);
+        }
+
+        // Return the final result with color codes translated
+        return ChatColor.translateAlternateColorCodes('&', coloredMessage.toString());
+    }
+
     public static List<String> colorizeList(List<String> list) {
         List<String> temp = new ArrayList<>();
         for (String s : list)

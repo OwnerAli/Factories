@@ -1,5 +1,6 @@
 package dev.viaduct.factories.actions;
 
+import dev.viaduct.factories.actions.impl.RewardAction;
 import dev.viaduct.factories.FactoriesPlugin;
 import dev.viaduct.factories.domain.players.FactoryPlayer;
 import dev.viaduct.factories.registries.impl.FactoryPlayerRegistry;
@@ -35,6 +36,15 @@ public class ActionHolder {
 
     public void addAction(Action action) {
         actions.add(action);
+    }
+
+    public List<String> getRewardMessages() {
+        List<String> rewardMessages = new ArrayList<>();
+        actions.forEach(action -> {
+            if (!(action instanceof RewardAction rewardAction)) return;
+            rewardMessages.add(rewardAction.getRewardMessage());
+        });
+        return rewardMessages;
     }
 
 }

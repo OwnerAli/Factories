@@ -2,13 +2,18 @@ package dev.viaduct.factories.domain.lands;
 
 import dev.viaduct.factories.FactoriesPlugin;
 import dev.viaduct.factories.domain.lands.displays.BuyLandDisplay;
-import dev.viaduct.factories.domain.lands.grids.GridSquare;
+import dev.viaduct.factories.domain.lands.grids.impl.DynamicGrid;
+import dev.viaduct.factories.domain.lands.grids.impl.StarterDynamicGrid;
+import dev.viaduct.factories.domain.lands.grids.squares.GridSquare;
+import dev.viaduct.factories.domain.lands.grids.squares.impl.PurchasableSquare;
 import dev.viaduct.factories.domain.players.FactoryPlayer;
+import dev.viaduct.factories.events.LandUnlockEvent;
 import dev.viaduct.factories.resources.ResourceCost;
 import dev.viaduct.factories.utils.Chat;
 import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
@@ -17,7 +22,6 @@ import world.bentobox.bentobox.BentoBox;
 import world.bentobox.bentobox.database.objects.Island;
 
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 @Getter
@@ -26,6 +30,8 @@ public class Land {
     private final Island island;
     private final Location locOfCenterOfIsland;
     private final FactoryPlayer factoryPlayer;
+
+    private final DynamicGrid grid;
 
     private final Set<GridSquare> accessibleSquares = new HashSet<>();
     private final Set<BuyLandDisplay> purchaseSquareTexts = new HashSet<>();
@@ -44,43 +50,43 @@ public class Land {
         this.locOfCenterOfIsland = island.getCenter();
         this.factoryPlayer = factoryPlayer;
 
-        accessibleSquares.add(new GridSquare(0, 0));
+        this.grid = new StarterDynamicGrid(5, 5, 5, 5, 5, locOfCenterOfIsland);
+        PurchasableSquare gridSquare = grid.getGridSquare(locOfCenterOfIsland);
+        gridSquare.countBlocksInSquare(locOfCenterOfIsland.getWorld(), Set.of(Material.SHORT_GRASS), locOfCenterOfIsland);
+        accessibleSquares.add(gridSquare);
     }
 
     // Calculate the grid square a location is in
-    public GridSquare getGridSquare(Location location) {
-        int relativeX = location.getBlockX() - locOfCenterOfIsland.getBlockX();
-        int relativeZ = location.getBlockZ() - locOfCenterOfIsland.getBlockZ();
-
-        // Shift the relative coordinates to ensure the center of the island is within the center of a grid
-        int gridX = (int) Math.floor((double) (relativeX + squareSize / 2) / squareSize);
-        int gridZ = (int) Math.floor((double) (relativeZ + squareSize / 2) / squareSize);
-
-        return new GridSquare(gridX, gridZ);
-    }
-
     public boolean inAccessibleSquare(Location location) {
-        GridSquare square = getGridSquare(location);
-        return accessibleSquares.contains(square);
+        GridSquare gridSquare;
+
+        try {
+            gridSquare = grid.getGridSquare(location);
+
+            return accessibleSquares.stream().anyMatch(square -> square.equals(gridSquare));
+        } catch (IllegalArgumentException ignored) {
+            return false;
+        }
     }
 
     public boolean purchaseAccessibleSquare(Location location) {
-        GridSquare square = getGridSquare(location);
+        PurchasableSquare gridSquare = grid.getGridSquare(location);
 
-        if (accessibleSquares.contains(square)) return false;
-        if (calculateSquareCost(square) == null) return false;
+        if (accessibleSquares.contains(gridSquare)) return false;
+        if (gridSquare.getResourceCostList() == null) return false;
 
-        for (ResourceCost resourceCost : calculateSquareCost(square)) {
-            if (factoryPlayer.getBank().getResourceAmt(resourceCost.resourceName()) < resourceCost.cost()) {
-                return false;
-            }
+        for (ResourceCost resourceCost : gridSquare.getResourceCostList()) {
+            if (factoryPlayer.getBank().getResourceAmt(resourceCost.resourceName())
+                    < resourceCost.cost()) return false;
         }
 
-        for (ResourceCost resourceCost : calculateSquareCost(square)) {
+        for (ResourceCost resourceCost : gridSquare.getResourceCostList()) {
             factoryPlayer.getBank().removeFromResource(resourceCost.resourceName(),
                     factoryPlayer, resourceCost.cost());
         }
-        addAccessibleSquare(square);
+        addAccessibleSquare(gridSquare);
+        LandUnlockEvent landUnlockEvent = new LandUnlockEvent(factoryPlayer, gridSquare);
+        Bukkit.getPluginManager().callEvent(landUnlockEvent);
 
         Player player = factoryPlayer.getPlayer();
 
@@ -118,19 +124,26 @@ public class Land {
                 .anyMatch(loc -> loc.equals(location))) return;
 
         // Spawn the text display, and add it to the set of text displays
-        purchaseSquareTexts.add(new BuyLandDisplay(location, purchaseSquareTexts, calculateSquareCost(getGridSquare(location)), factoryPlayer));
+
+        PurchasableSquare gridSquare;
+        try {
+            gridSquare = grid.getGridSquare(location);
+            purchaseSquareTexts.add(new BuyLandDisplay(location, purchaseSquareTexts, gridSquare.getResourceCostList(), factoryPlayer));
+        } catch (IllegalArgumentException ignored) {
+            purchaseSquareTexts.add(new BuyLandDisplay(location, purchaseSquareTexts, null, factoryPlayer));
+        }
     }
 
-    public List<ResourceCost> calculateSquareCost(GridSquare square) {
-        GridSquare center = new GridSquare(0, 0);
-
-        int distanceX = square.gridX() - center.gridX();
-        int distanceZ = square.gridZ() - center.gridZ();
-
-        // Calculate Euclidean distance from the center
-        double distanceFromCenter = Math.sqrt(distanceX * distanceX + distanceZ * distanceZ);
-
-        return landManager.getResourceCost((int) distanceFromCenter);
-    }
+//    public List<ResourceCost> calculateSquareCost(GridSquare square) {
+//        GridSquare center = new GridSquare(0, 0, squareSize);
+//
+//        int distanceX = square.startX() - center.startX();
+//        int distanceZ = square.startZ() - center.startZ();
+//
+//        // Calculate Euclidean distance from the center
+//        double distanceFromCenter = Math.sqrt(distanceX * distanceX + distanceZ * distanceZ);
+//
+//        return landManager.getResourceCost((int) distanceFromCenter);
+//    }
 
 }
