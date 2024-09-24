@@ -1,6 +1,6 @@
 package dev.viaduct.factories.guis.scoreboards;
 
-import dev.viaduct.factories.domain.banks.Bank;
+import dev.viaduct.factories.domain.banks.impl.ResourceBank;
 import dev.viaduct.factories.domain.players.FactoryPlayer;
 import dev.viaduct.factories.resources.Resource;
 import dev.viaduct.factories.scoreboards.ScoreboardListable;
@@ -15,7 +15,7 @@ public class FactoryScoreboard {
 
     private final Scoreboard scoreboard;
     private final Objective objective;
-    private final Bank bank;
+    private final ResourceBank bank;
     private int lastScore;
 
     public FactoryScoreboard(FactoryPlayer factoryPlayer) {
@@ -25,7 +25,7 @@ public class FactoryScoreboard {
         objective.setDisplaySlot(DisplaySlot.SIDEBAR);
         objective.setDisplayName(Chat.colorizeHex("#FFD700&lFactories"));
 
-        this.bank = factoryPlayer.getBank();
+        this.bank = factoryPlayer.getResourceBank();
 
         addScoreboardLine();
         factoryPlayer.getPlayer().setScoreboard(scoreboard);

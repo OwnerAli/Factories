@@ -41,7 +41,7 @@ public class BuyLandDisplay {
         }
 
         for (ResourceCost resourceCost : resourceCostList) {
-            if (factoryPlayer.getBank().getResourceAmt(resourceCost.resourceName()) < resourceCost.cost()) {
+            if (factoryPlayer.getResourceBank().getResourceAmt(resourceCost.resourceName()) < resourceCost.cost()) {
                 textDisplayList.add(location.getWorld().spawn(location, TextDisplay.class,
                         textDisplay -> {
                             textDisplay.setPersistent(false);

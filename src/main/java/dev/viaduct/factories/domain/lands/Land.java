@@ -76,12 +76,12 @@ public class Land {
         if (gridSquare.getResourceCostList() == null) return false;
 
         for (ResourceCost resourceCost : gridSquare.getResourceCostList()) {
-            if (factoryPlayer.getBank().getResourceAmt(resourceCost.resourceName())
+            if (factoryPlayer.getResourceBank().getResourceAmt(resourceCost.resourceName())
                     < resourceCost.cost()) return false;
         }
 
         for (ResourceCost resourceCost : gridSquare.getResourceCostList()) {
-            factoryPlayer.getBank().removeFromResource(resourceCost.resourceName(),
+            factoryPlayer.getResourceBank().removeFromResource(resourceCost.resourceName(),
                     factoryPlayer, resourceCost.cost());
         }
         addAccessibleSquare(gridSquare);

@@ -32,7 +32,7 @@ public class ResourceProgressable extends Progressable {
 
         FactoryPlayer factoryPlayer = factoryPlayerOptional.get();
 
-        double playerResourceAmount = factoryPlayer.getBank().getResourceAmt(resourceName);
+        double playerResourceAmount = factoryPlayer.getResourceBank().getResourceAmt(resourceName);
 
         if (playerResourceAmount < 1) return;
         Integer currentProgress = progressMap.get(this);
@@ -40,7 +40,7 @@ public class ResourceProgressable extends Progressable {
 
         double amountNeeded = Math.min(playerResourceAmount, getRequiredProgress() - currentProgress);
         progressMap.put(this, (int) (currentProgress + amountNeeded));
-        factoryPlayer.getBank().removeFromResource(resourceName, factoryPlayer, amountNeeded);
+        factoryPlayer.getResourceBank().removeFromResource(resourceName, factoryPlayer, amountNeeded);
         super.progress(event, blueprintProgress, progressMap);
     }
 

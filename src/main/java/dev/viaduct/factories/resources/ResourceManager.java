@@ -1,7 +1,8 @@
 package dev.viaduct.factories.resources;
 
-import dev.viaduct.factories.resources.impl.Stone;
-import dev.viaduct.factories.resources.impl.Wood;
+import dev.viaduct.factories.resources.currencies.impl.Credit;
+import dev.viaduct.factories.resources.mineableresources.impl.Stone;
+import dev.viaduct.factories.resources.mineableresources.impl.Wood;
 import lombok.Getter;
 
 import java.util.HashSet;
@@ -30,6 +31,7 @@ public class ResourceManager {
     public void registerResources() {
         registerResource(new Wood());
         registerResource(new Stone());
+        registerResource(new Credit());
     }
 
 }

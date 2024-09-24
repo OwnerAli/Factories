@@ -1,11 +1,11 @@
-package dev.viaduct.factories.resources.impl;
+package dev.viaduct.factories.resources.mineableresources.impl;
 
 import dev.viaduct.factories.resources.MaterialAmountPair;
-import dev.viaduct.factories.resources.Resource;
+import dev.viaduct.factories.resources.mineableresources.MineableResource;
 import dev.viaduct.factories.utils.Chat;
 import org.bukkit.Material;
 
-public class Wood extends Resource {
+public class Wood extends MineableResource {
 
     public Wood() {
         super("Wood", 1.0,
