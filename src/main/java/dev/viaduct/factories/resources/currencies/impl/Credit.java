@@ -5,7 +5,7 @@ import dev.viaduct.factories.utils.Chat;
 
 public class Credit extends Currency {
     public Credit() {
-        super("Credits", 1.0);
+        super("Credit", 1.0);
     }
 
     @Override

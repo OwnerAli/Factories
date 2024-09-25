@@ -4,6 +4,7 @@ import dev.viaduct.factories.FactoriesPlugin;
 import dev.viaduct.factories.domain.players.FactoryPlayer;
 import dev.viaduct.factories.guis.scoreboards.FactoryScoreboard;
 import dev.viaduct.factories.resources.Resource;
+import dev.viaduct.factories.scoreboards.impl.ResourceListing;
 import lombok.Getter;
 
 import java.util.HashMap;
@@ -17,15 +18,11 @@ public abstract class Bank {
 
     public Bank() {
         resourceMap = new HashMap<>();
-        FactoriesPlugin.getInstance()
-                .getResourceManager()
-                .getResourceSet()
-                .forEach(resource -> resourceMap.put(resource, 0.0));
     }
 
     public void addToResource(Resource resource, FactoryScoreboard factoryScoreboard, double amount) {
         resourceMap.put(resource, resourceMap.getOrDefault(resource, 0.0) + amount);
-        factoryScoreboard.updateResourceLine(resource);
+        factoryScoreboard.updateResourceLine(resource, amount);
     }
 
     public void addToResource(String resourceName, FactoryScoreboard factoryScoreboard, double amount) {
@@ -34,13 +31,13 @@ public abstract class Bank {
                 .findAny()
                 .ifPresent(resource -> {
                     addToResource(resource, factoryScoreboard, amount);
-                    factoryScoreboard.updateResourceLine(resource);
+                    factoryScoreboard.updateResourceLine(resource, amount);
                 });
     }
 
     public void removeFromResource(Resource resource, FactoryScoreboard factoryScoreboard, double amount) {
         resourceMap.put(resource, resourceMap.getOrDefault(resource, 0.0) - amount);
-        factoryScoreboard.updateResourceLine(resource);
+        factoryScoreboard.updateResourceLine(resource, amount);
     }
 
     public void removeFromResource(String resourceName, FactoryPlayer factoryPlayer, double amount) {
@@ -49,11 +46,12 @@ public abstract class Bank {
                 .findAny()
                 .ifPresent(resource -> {
                     removeFromResource(resource, factoryPlayer.getScoreboard(), amount);
-                    factoryPlayer.getScoreboard().updateResourceLine(resource);
+                    factoryPlayer.getScoreboard().updateResourceLine(resource, amount);
                 });
     }
 
     public double getResourceAmt(Resource resource) {
+        System.out.println(resource.getName());
         return resourceMap.get(resource);
     }
 
@@ -64,5 +62,7 @@ public abstract class Bank {
         if (resourceOptional.isEmpty()) return 0;
         return resourceMap.get(resourceOptional.get());
     }
+
+    public abstract ResourceListing getScoreboardData();
 
 }
