@@ -4,6 +4,8 @@ import com.github.retrooper.packetevents.PacketEvents;
 import com.github.retrooper.packetevents.event.PacketListenerPriority;
 import dev.viaduct.factories.blueprints.BlueprintManager;
 import dev.viaduct.factories.domain.lands.LandManager;
+import dev.viaduct.factories.domain.players.FactoryPlayer;
+import dev.viaduct.factories.guis.markets.Market;
 import dev.viaduct.factories.listeners.*;
 import dev.viaduct.factories.packets.listeners.ScoreboardPacketListener;
 import dev.viaduct.factories.registries.RegistryManager;
@@ -36,6 +38,9 @@ public class FactoriesPlugin extends Pladdon {
     public LandManager landManager;
     public BlueprintManager blueprintManager;
 
+    //  TODO: Determine where to put this.
+    public Market market;
+
     @Override
     public Addon getAddon() {
         if (addon == null) {
@@ -56,6 +61,9 @@ public class FactoriesPlugin extends Pladdon {
     public void onEnable() {
         instance = this;
         initRegistries();
+
+        this.market = new Market();
+
         registerListeners();
 
         PacketEvents.getAPI().getEventManager().registerListener(new ScoreboardPacketListener(),
@@ -83,6 +91,8 @@ public class FactoriesPlugin extends Pladdon {
                 .getRegistry(GeneratorRegistry.class)), this);
         pluginManager.registerEvents(new PlayerInteractEntityListener(registryManager
                 .getRegistry(FactoryPlayerRegistry.class)), this);
+        pluginManager.registerEvents(new MarketListener(registryManager
+                .getRegistry(FactoryPlayerRegistry.class), market), this);
     }
 
     private void initRegistries() {
