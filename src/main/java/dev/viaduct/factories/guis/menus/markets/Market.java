@@ -1,4 +1,4 @@
-package dev.viaduct.factories.guis.markets;
+package dev.viaduct.factories.guis.menus.markets;
 
 import com.github.stefvanschie.inventoryframework.gui.GuiItem;
 import com.github.stefvanschie.inventoryframework.gui.type.ChestGui;
@@ -19,16 +19,14 @@ public class Market {
 
     public void showToPlayer(FactoryPlayer factoryPlayer) {
         ChestGui gui = new ChestGui(6, Chat.colorize("&b&lMarket"));
-        gui.setOnTopClick(event -> event.setCancelled(true));
 
         TopAndBottomSixPane topAndBottomSixPane = new TopAndBottomSixPane(Material.BLUE_STAINED_GLASS_PANE);
 
         PaginatedPane paginatedPane = new PaginatedPane(0, 1, 9, 4);
-        paginatedPane.setOnClick(event -> factoryPlayer.getPlayer().closeInventory());
 
-        List<GuiItem> upgradeGuiItems = getGuiItems(factoryPlayer);
+        List<GuiItem> marketGuiItems = getGuiItems(factoryPlayer);
 
-        paginatedPane.populateWithGuiItems(upgradeGuiItems);
+        paginatedPane.populateWithGuiItems(marketGuiItems);
 
         gui.addPane(topAndBottomSixPane);
         gui.addPane(paginatedPane);

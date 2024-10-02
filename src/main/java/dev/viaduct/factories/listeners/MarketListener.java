@@ -1,6 +1,6 @@
 package dev.viaduct.factories.listeners;
 
-import dev.viaduct.factories.guis.markets.Market;
+import dev.viaduct.factories.guis.menus.markets.Market;
 import dev.viaduct.factories.registries.impl.FactoryPlayerRegistry;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
