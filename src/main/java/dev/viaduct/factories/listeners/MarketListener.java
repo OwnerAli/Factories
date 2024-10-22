@@ -16,10 +16,9 @@ public class MarketListener implements Listener {
         this.market = market;
     }
 
-    //  Currently just for testing.
-    //  Actual mechanic for Market viewing TBD.
+    //  TODO: Determine how the market should be opened by the player.
     @EventHandler
     public void onBlockBreak(BlockBreakEvent event) {
-        factoryPlayerRegistry.get(event.getPlayer().getUniqueId()).ifPresent(market::showToPlayer);
+        factoryPlayerRegistry.get(event.getPlayer()).ifPresent(market::showToPlayer);
     }
 }

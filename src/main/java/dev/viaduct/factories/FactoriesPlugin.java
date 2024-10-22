@@ -60,8 +60,6 @@ public class FactoriesPlugin extends Pladdon {
         instance = this;
         initRegistries();
 
-        this.market = new Market();
-
         registerListeners();
 
         PacketEvents.getAPI().getEventManager().registerListener(new ScoreboardPacketListener(),
@@ -77,6 +75,9 @@ public class FactoriesPlugin extends Pladdon {
     }
 
     private void registerListeners() {
+
+        market = new Market();
+
         PluginManager pluginManager = getServer().getPluginManager();
 
         pluginManager.registerEvents(new PlayerJoinListener(), this);
