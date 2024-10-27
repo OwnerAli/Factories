@@ -22,6 +22,7 @@ public class GeneratorListener implements Listener {
 
     @EventHandler
     public void onBlockPlace(BlockPlaceEvent event) {
+        if (event.isCancelled()) return;
         generatorRegistry.getGeneratorFromPlacedItem(event.getItemInHand())
                 .ifPresent(generator -> factoryPlayerRegistry.get(event.getPlayer().getUniqueId())
                         .ifPresent(factoryPlayer -> generator.getPlaceConsumer(factoryPlayer).accept(event)));

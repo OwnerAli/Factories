@@ -6,6 +6,7 @@ import dev.viaduct.factories.settings.SettingType;
 import dev.viaduct.factories.utils.Chat;
 import org.bukkit.Location;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
@@ -19,7 +20,7 @@ public class GridLandListeners implements Listener {
         this.factoryPlayerRegistry = factoryPlayerRegistry;
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.LOWEST)
     public void onBlockPlace(BlockPlaceEvent event) {
         if (!(event.getBlock().getWorld().getName().equals("factories_world"))) return;
         factoryPlayerRegistry.get(event.getPlayer().getUniqueId()).ifPresent(factoryPlayer -> {
@@ -28,7 +29,7 @@ public class GridLandListeners implements Listener {
             if (playerLand == null) return;
             if (playerLand.inAccessibleSquare(event.getBlock().getLocation())) return;
             event.setCancelled(true);
-            event.getPlayer().sendMessage("You cannot place blocks outside your land!");
+            Chat.tell(event.getPlayer(), "&cYou cannot place blocks outside your land!");
         });
     }
 
@@ -36,17 +37,13 @@ public class GridLandListeners implements Listener {
     public void onBlockBreak(BlockBreakEvent event) {
         if (!(event.getBlock().getWorld().getName().equals("factories_world"))) return;
         factoryPlayerRegistry.get(event.getPlayer().getUniqueId()).ifPresent(factoryPlayer -> {
+            event.setDropItems(false);
             Land playerLand = factoryPlayer.getSettingHolder().getSetting(SettingType.PLAYER_LAND);
 
             if (playerLand == null) return;
             if (playerLand.inAccessibleSquare(event.getBlock().getLocation())) return;
             event.setCancelled(true);
-
-            if (playerLand.purchaseAccessibleSquare(event.getBlock().getLocation())) {
-                Chat.tell(event.getPlayer(), "You have purchased a new square of land!");
-                return;
-            }
-            event.getPlayer().sendMessage("You cannot break blocks outside your land!");
+            Chat.tell(event.getPlayer(), "&cYou cannot break blocks outside your land!");
         });
     }
 

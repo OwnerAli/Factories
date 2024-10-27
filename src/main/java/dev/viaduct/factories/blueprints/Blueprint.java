@@ -6,15 +6,17 @@ import dev.viaduct.factories.actions.ActionHolder;
 import dev.viaduct.factories.blueprints.progress.BlueprintProgress;
 import dev.viaduct.factories.blueprints.progress.Progressable;
 import dev.viaduct.factories.conditions.AbstractCondition;
-import dev.viaduct.factories.conditions.Condition;
 import dev.viaduct.factories.conditions.ConditionHolder;
+import dev.viaduct.factories.events.BlueprintRevealEvent;
 import dev.viaduct.factories.utils.Chat;
 import dev.viaduct.factories.utils.ItemBuilder;
 import lombok.Getter;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.Sound;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
@@ -43,6 +45,8 @@ public class Blueprint {
             // Set item in hand to blueprint progression item
             BlueprintManager blueprintManager = FactoriesPlugin.getInstance().getBlueprintManager();
             BlueprintProgress blueprintProgress = blueprintManager.addBlueprintProgress(this);
+
+            Bukkit.getServer().getPluginManager().callEvent(new BlueprintRevealEvent(interact.getPlayer(), blueprintProgress));
             interact.getPlayer().getInventory().setItemInMainHand(blueprintProgress.getProgressItem(interact.getPlayer().getWorld()));
 
             interact.getPlayer().playSound(interact.getPlayer().getLocation(), Sound.ENTITY_BREEZE_HURT,
@@ -54,9 +58,10 @@ public class Blueprint {
         };
     }
 
-    public ItemStack getItem() {
+    public ItemStack getRevealItem() {
         return new ItemBuilder(Material.FILLED_MAP)
                 .setName("&f&k;; &r&b&lHidden Blueprint &f(Right-Click To Reveal) &f&k;;")
+                .addItemFlags(ItemFlag.HIDE_POTION_EFFECTS)
                 .setPersistentData(new NamespacedKey(FactoriesPlugin.getInstance(), "blueprint"), id)
                 .build();
     }

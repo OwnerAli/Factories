@@ -31,7 +31,6 @@ public abstract class Resource {
                 .anyMatch(material1 -> material1.equals(material));
     }
 
-
     public abstract String getFormattedName();
 
 }

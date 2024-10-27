@@ -7,7 +7,6 @@ import dev.viaduct.factories.domain.lands.LandManager;
 import dev.viaduct.factories.listeners.*;
 import dev.viaduct.factories.packets.listeners.ScoreboardPacketListener;
 import dev.viaduct.factories.registries.RegistryManager;
-import dev.viaduct.factories.registries.impl.BlueprintProgressRegistry;
 import dev.viaduct.factories.registries.impl.BlueprintRegistry;
 import dev.viaduct.factories.registries.impl.FactoryPlayerRegistry;
 import dev.viaduct.factories.registries.impl.GeneratorRegistry;
@@ -83,6 +82,8 @@ public class FactoriesPlugin extends Pladdon {
                 .getRegistry(GeneratorRegistry.class)), this);
         pluginManager.registerEvents(new PlayerInteractEntityListener(registryManager
                 .getRegistry(FactoryPlayerRegistry.class)), this);
+        pluginManager.registerEvents(new BlueprintListeners(registryManager
+                .getRegistry(BlueprintRegistry.class), blueprintManager), this);
     }
 
     private void initRegistries() {

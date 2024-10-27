@@ -2,9 +2,12 @@ package dev.viaduct.factories.blueprints.progress;
 
 import dev.viaduct.factories.FactoriesPlugin;
 import dev.viaduct.factories.blueprints.Blueprint;
+import dev.viaduct.factories.events.BlueprintCompleteEvent;
 import dev.viaduct.factories.registries.impl.BlueprintRegistry;
+import dev.viaduct.factories.registries.impl.FactoryPlayerRegistry;
 import dev.viaduct.factories.utils.ItemBuilder;
 import lombok.Getter;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.World;
@@ -54,6 +57,7 @@ public class BlueprintProgress {
                     FactoriesPlugin.getInstance().getBlueprintManager().removeBlueprintProgress(this);
                     bp.getCompletionActions().executeAllActions(player);
                     event.setCurrentItem(new ItemStack(Material.AIR));
+                    Bukkit.getPluginManager().callEvent(new BlueprintCompleteEvent(player, this));
                 });
     }
 

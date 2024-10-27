@@ -7,6 +7,7 @@ import dev.viaduct.factories.blueprints.Blueprint;
 import dev.viaduct.factories.blueprints.progress.impl.ItemStackProgressable;
 import dev.viaduct.factories.blueprints.progress.impl.ResourceProgressable;
 import dev.viaduct.factories.registries.Registry;
+import dev.viaduct.factories.utils.ItemBuilder;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
@@ -21,17 +22,18 @@ public class BlueprintRegistry extends Registry<String, Blueprint> {
                 List.of(new ItemStack(Material.DIAMOND, 1),
                         new ItemStack(Material.IRON_INGOT, 2)),
                 List.of(),
-                List.of(new ItemStackProgressable(new ItemStack(Material.DIAMOND, 1)),
+                List.of(new ItemStackProgressable(new ItemBuilder(Material.OAK_BUTTON)
+                                .setName("#a8996fWood Scrap")
+                                .setAmount(7)
+                                .build()),
                         new ResourceProgressable(3.0, "wood")),
+                new PlaySoundAction(Sound.ENTITY_PLAYER_LEVELUP),
+                new PlaySoundAction(Sound.ENTITY_FIREWORK_ROCKET_TWINKLE),
                 new GiveItemAction(FactoriesPlugin.getRegistryManager()
                         .getRegistry(GeneratorRegistry.class)
                         .get("oak_wood_generator")
-                        .get()
-                        .getGeneratorPlaceItem()),
-                new PlaySoundAction(Sound.ENTITY_PLAYER_LEVELUP),
-                new PlaySoundAction(Sound.ENTITY_FIREWORK_ROCKET_TWINKLE));
+                        .get().getGeneratorPlaceItem()));
         register(bp.getId(), bp);
-        player.getInventory().addItem(bp.getItem());
     }
 
 }

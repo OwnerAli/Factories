@@ -32,6 +32,7 @@ public abstract class BlockGenerator extends AbstractGenerator {
     @Override
     public Consumer<BlockPlaceEvent> getPlaceConsumer(FactoryPlayer factoryPlayer) {
         return event -> {
+            if (event.isCancelled()) return;
             factoryPlayer.addGenerator(event.getBlock().getLocation(),
                     this);
 
