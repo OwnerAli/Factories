@@ -5,6 +5,7 @@ import dev.viaduct.factories.generators.manual_generators.block_generators.impl.
 import dev.viaduct.factories.registries.impl.FactoryPlayerRegistry;
 import dev.viaduct.factories.registries.impl.GeneratorRegistry;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
@@ -20,7 +21,7 @@ public class GeneratorListener implements Listener {
         this.generatorRegistry = generatorRegistry;
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.HIGHEST)
     public void onBlockPlace(BlockPlaceEvent event) {
         if (event.isCancelled()) return;
         generatorRegistry.getGeneratorFromPlacedItem(event.getItemInHand())
