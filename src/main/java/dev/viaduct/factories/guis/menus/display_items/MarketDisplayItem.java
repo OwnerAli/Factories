@@ -8,13 +8,12 @@ import java.util.List;
 
 @Getter
 public class MarketDisplayItem extends ItemBuilder {
-    private final String name;
     private final double price;
     private final Material icon;
 
     public MarketDisplayItem(String name, double price, Material icon, List<String> description) {
         super(icon);
-        this.name = name;
+        setName(name);
         this.price = price;
         this.icon = icon;
 

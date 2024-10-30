@@ -9,15 +9,14 @@ import dev.viaduct.factories.utils.Chat;
 import org.bukkit.Material;
 import org.bukkit.event.Listener;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class Market implements Listener {
 
-    private MarketItemRegistry marketItemRegistry;
+    private final MarketStockFactory marketStockFactory;
 
     public Market() {
-        marketItemRegistry = MarketItemRegistry.getInstance();
+        marketStockFactory = MarketStockFactory.getInstance();
     }
 
     public void showToPlayer(FactoryPlayer factoryPlayer) {
@@ -35,14 +34,8 @@ public class Market implements Listener {
         marketGui.show(factoryPlayer.getPlayer());
     }
 
-
     //  TODO: Create logic for adding items to the market.
     private List<GuiItem> getMarketItems() {
-        List<GuiItem> marketItems = new ArrayList<>();
-
-        //  TODO: Too hard-coded, find a way to make this concept more generalized.
-        marketItems.add(marketItemRegistry.getItemRegistry().get("Bundle O' Sticks"));
-
-        return marketItems;
+        return marketStockFactory.generateMarketStock();
     }
 }
