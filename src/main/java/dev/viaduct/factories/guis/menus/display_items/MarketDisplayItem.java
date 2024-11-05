@@ -1,25 +1,33 @@
 package dev.viaduct.factories.guis.menus.display_items;
 
+import dev.viaduct.factories.actions.Action;
+import dev.viaduct.factories.actions.ActionHolder;
+import dev.viaduct.factories.conditions.AbstractCondition;
+import dev.viaduct.factories.conditions.ConditionHolder;
 import dev.viaduct.factories.utils.ItemBuilder;
 import lombok.Getter;
-import org.bukkit.Material;
+import org.bukkit.inventory.ItemStack;
 
 import java.util.List;
 
 @Getter
 public class MarketDisplayItem extends ItemBuilder {
+
     private final String name;
-    private final double price;
-    private final Material icon;
+    private final ItemStack itemToSell;
+    private final ConditionHolder conditionHolder;
+    private final ActionHolder actionHolder;
 
-    public MarketDisplayItem(String name, double price, Material icon, List<String> description) {
-        super(icon);
+    public MarketDisplayItem(String name, ItemStack itemToSell, List<Action> actions, AbstractCondition... conditions) {
+        super(itemToSell);
         this.name = name;
-        this.price = price;
-        this.icon = icon;
+        this.itemToSell = itemToSell;
+        this.conditionHolder = new ConditionHolder(conditions);
+        this.actionHolder = new ActionHolder(actions);
 
-        this.setLore(description);
-
-        addLoreLines("", "Price: " + price);
+        addLoreLines(" ", "&f&lCOST");
+        conditionHolder.getConditionStrings()
+                        .forEach(message -> addLoreLine("&7 • "  + message));
     }
+
 }

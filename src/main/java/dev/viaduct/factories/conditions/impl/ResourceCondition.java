@@ -2,6 +2,7 @@ package dev.viaduct.factories.conditions.impl;
 
 import dev.viaduct.factories.FactoriesPlugin;
 import dev.viaduct.factories.actions.Action;
+import dev.viaduct.factories.actions.impl.RemoveResourceAction;
 import dev.viaduct.factories.conditions.AbstractCondition;
 import dev.viaduct.factories.domain.players.FactoryPlayer;
 import dev.viaduct.factories.resources.Resource;
@@ -16,8 +17,9 @@ public class ResourceCondition extends AbstractCondition {
         this.resource = FactoriesPlugin.getInstance()
                 .getResourceManager()
                 .getResource(resourceName)
-                .get();
+                .orElseThrow(() -> new IllegalArgumentException("Resource not found: " + resourceName));
         this.amount = amount;
+        addActions(new RemoveResourceAction(resource.getName(), amount));
     }
 
     @Override

@@ -17,6 +17,10 @@ public abstract class AbstractCondition implements Condition {
         this.actions = new ArrayList<>(Arrays.asList(actions));
     }
 
+    protected void addActions(Action... actions) {
+        this.actions.addAll(Arrays.asList(actions));
+    }
+
     @Override
     public void executeActions(FactoryPlayer factoryPlayer) {
         actions.forEach(action -> action.execute(factoryPlayer));
