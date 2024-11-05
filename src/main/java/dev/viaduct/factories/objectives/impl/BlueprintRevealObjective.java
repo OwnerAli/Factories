@@ -2,7 +2,6 @@ package dev.viaduct.factories.objectives.impl;
 
 import dev.viaduct.factories.domain.players.FactoryPlayer;
 import dev.viaduct.factories.events.BlueprintRevealEvent;
-import dev.viaduct.factories.events.LandUnlockEvent;
 import dev.viaduct.factories.objectives.Objective;
 import org.bukkit.event.EventHandler;
 

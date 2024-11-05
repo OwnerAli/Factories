@@ -15,6 +15,7 @@ public class DenyBlockPlaceRule implements Rule {
                 .getRegistry(FactoryPlayerRegistry.class)
                 .get(event.getPlayer())
                 .ifPresent(factoryPlayer -> {
+                    if (ignoreRule(factoryPlayer)) return;
                     if (!factoryPlayer.getTaskHolder().doingTask()) return;
                     if (!factoryPlayer.getTaskHolder().getTask()
                             .getRulesSet()

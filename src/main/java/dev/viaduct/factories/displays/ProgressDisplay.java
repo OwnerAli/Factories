@@ -44,6 +44,7 @@ public class ProgressDisplay {
 
         // Now spawn the display at the calculated location
         location.getWorld().spawn(location, BlockDisplay.class, blockDisplay -> {
+            blockDisplay.setBrightness(new Display.Brightness(0, 15));
             blockDisplay.setBlock(displayMaterial.createBlockData());
             blockDisplay.setGlowColorOverride(glowColor);
             blockDisplay.setGlowing(glowing);

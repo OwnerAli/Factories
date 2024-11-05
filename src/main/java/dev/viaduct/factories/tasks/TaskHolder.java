@@ -80,6 +80,13 @@ public class TaskHolder {
         }
     }
 
+    public void completeMultipleObjectivesByOrder(FactoryPlayer factoryPlayer, int amountToComplete) {
+        if (objectiveProgressMap.isEmpty()) return;
+        for (int i = 0; i < amountToComplete; i++) {
+            completeObjective(factoryPlayer, objectiveProgressMap.keySet().iterator().next());
+        }
+    }
+
     public void incrementObjectiveProgress(FactoryPlayer factoryPlayer, Objective objective) {
         if (task == null) return;
         if (task.isOrderMatters() && !objective.equals(currentObjective)) return;

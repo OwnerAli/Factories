@@ -1,8 +1,10 @@
 package dev.viaduct.factories;
 
+import co.aikar.commands.PaperCommandManager;
 import com.github.retrooper.packetevents.PacketEvents;
 import com.github.retrooper.packetevents.event.PacketListenerPriority;
 import dev.viaduct.factories.blueprints.BlueprintManager;
+import dev.viaduct.factories.commands.AdminCommand;
 import dev.viaduct.factories.domain.lands.LandManager;
 import dev.viaduct.factories.listeners.*;
 import dev.viaduct.factories.packets.listeners.ScoreboardPacketListener;
@@ -56,6 +58,7 @@ public class FactoriesPlugin extends Pladdon {
         instance = this;
         initRegistries();
         registerListeners();
+        registerCommands();
 
         PacketEvents.getAPI().getEventManager().registerListener(new ScoreboardPacketListener(),
                 PacketListenerPriority.LOW);
@@ -106,6 +109,11 @@ public class FactoriesPlugin extends Pladdon {
         landManager.initializeResourceCostMap();
 
         blueprintManager = new BlueprintManager();
+    }
+
+    private void registerCommands() {
+        PaperCommandManager paperCommandManager = new PaperCommandManager(this);
+        paperCommandManager.registerCommand(new AdminCommand(registryManager));
     }
 
 }
