@@ -17,7 +17,6 @@ import java.util.List;
 @Getter
 public class MarketStockFactory {
 
-    private static MarketStockFactory instance;
     private final ResourceManager resourceManager;
     private final List<MarketDisplayItem> possibleItems;
 
@@ -30,15 +29,6 @@ public class MarketStockFactory {
                 new ResourceCondition("wood", 10)));
     }
 
-    public static MarketStockFactory getInstance() {
-        if (instance == null) {
-            synchronized (MarketStockFactory.class) {
-                instance = new MarketStockFactory();
-            }
-        }
-        return instance;
-    }
-
     public List<GuiItem> generateMarketStock() {
         List<GuiItem> marketStock = new ArrayList<>();
         for (MarketDisplayItem possibleItem : possibleItems) {
@@ -46,6 +36,14 @@ public class MarketStockFactory {
             marketStock.add(item);
         }
         return marketStock;
+    }
+
+    public static MarketStockFactory getInstance() {
+        return InstanceHolder.instance;
+    }
+
+    private static final class InstanceHolder {
+        private static final MarketStockFactory instance = new MarketStockFactory();
     }
 
 }
