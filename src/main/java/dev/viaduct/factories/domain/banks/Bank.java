@@ -4,6 +4,7 @@ import dev.viaduct.factories.FactoriesPlugin;
 import dev.viaduct.factories.domain.players.FactoryPlayer;
 import dev.viaduct.factories.guis.scoreboards.FactoryScoreboard;
 import dev.viaduct.factories.resources.Resource;
+import dev.viaduct.factories.scoreboards.ScoreboardListable;
 import lombok.Getter;
 import org.bukkit.Material;
 
