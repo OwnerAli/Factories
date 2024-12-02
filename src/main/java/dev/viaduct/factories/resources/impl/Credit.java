@@ -6,7 +6,7 @@ import dev.viaduct.factories.utils.Chat;
 import org.bukkit.Material;
 
 public class Credit extends Resource {
-    protected Credit() {
+    public Credit() {
         //  TODO: Determine adequate material icon for credits.
         super("Credit", 1.00, new MaterialAmountPair(Material.EMERALD, 1));
     }
