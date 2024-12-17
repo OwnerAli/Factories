@@ -93,11 +93,16 @@ public class FactoriesPlugin extends Pladdon {
         registryManager = new RegistryManager();
 
         registryManager.registerRegistry(FactoryPlayerRegistry.class, new FactoryPlayerRegistry());
-        GeneratorRegistry registry = new GeneratorRegistry();
-        registryManager.registerRegistry(GeneratorRegistry.class, registry);
-        registryManager.registerRegistry(BlueprintRegistry.class, new BlueprintRegistry());
+        GeneratorRegistry generatorRegistry = new GeneratorRegistry();
+        registryManager.registerRegistry(GeneratorRegistry.class, generatorRegistry);
 
-        Bukkit.getScheduler().runTaskLater(this, registry::initialize, 20L);
+        BlueprintRegistry blueprintRegistry = new BlueprintRegistry();
+        registryManager.registerRegistry(BlueprintRegistry.class, blueprintRegistry);
+
+        Bukkit.getScheduler().runTaskLater(this, () -> {
+            generatorRegistry.initialize();
+            blueprintRegistry.initialize();
+        }, 20L);
 
         resourceManager = new ResourceManager();
         resourceManager.registerResources();

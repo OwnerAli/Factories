@@ -1,13 +1,13 @@
 package dev.viaduct.factories.objectives.impl;
 
 import dev.viaduct.factories.domain.players.FactoryPlayer;
-import dev.viaduct.factories.events.BlueprintRevealEvent;
+import dev.viaduct.factories.events.ProgressDisplayCompletionEvent;
 import dev.viaduct.factories.objectives.Objective;
 import org.bukkit.event.EventHandler;
 
-public class BlueprintRevealObjective extends Objective {
+public class CrankGeneratorTask extends Objective {
 
-    public BlueprintRevealObjective(int amount, String... description) {
+    public CrankGeneratorTask(int amount, String... description) {
         super(amount, description);
     }
 
@@ -17,7 +17,7 @@ public class BlueprintRevealObjective extends Objective {
     }
 
     @EventHandler
-    public void onBlueprintUnlock(BlueprintRevealEvent event) {
+    public void onGeneratorPlace(ProgressDisplayCompletionEvent event) {
         progressObjective(event.getFactoryPlayer());
     }
 

@@ -1,5 +1,6 @@
 package dev.viaduct.factories.listeners;
 
+import dev.viaduct.factories.events.GeneratorPlaceEvent;
 import dev.viaduct.factories.events.ProgressDisplayCompletionEvent;
 import dev.viaduct.factories.generators.manual_generators.block_generators.impl.BlockManualGenerator;
 import dev.viaduct.factories.registries.impl.FactoryPlayerRegistry;
@@ -26,10 +27,13 @@ public class GeneratorListener implements Listener {
         if (event.isCancelled()) return;
         generatorRegistry.getGeneratorFromPlacedItem(event.getItemInHand())
                 .ifPresent(generator -> factoryPlayerRegistry.get(event.getPlayer().getUniqueId())
-                        .ifPresent(factoryPlayer -> generator.getPlaceConsumer(factoryPlayer).accept(event)));
+                        .ifPresent(factoryPlayer -> {
+                            generator.getPlaceConsumer(factoryPlayer).accept(event);
+                            new GeneratorPlaceEvent(factoryPlayer, generator).call();
+                        }));
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.HIGHEST)
     public void onBlockBreak(BlockBreakEvent event) {
         factoryPlayerRegistry.get(event.getPlayer().getUniqueId())
                 .flatMap(factoryPlayer -> factoryPlayer.getGeneratorHolder().getGenerator(event.getBlock().getLocation()))

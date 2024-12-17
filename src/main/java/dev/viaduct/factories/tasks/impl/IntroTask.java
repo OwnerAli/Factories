@@ -24,11 +24,10 @@ public class IntroTask extends Task {
                 List.of(new PlaySoundAction(Sound.UI_TOAST_CHALLENGE_COMPLETE),
                         new GiveItemAction(FactoriesPlugin.getRegistryManager()
                                 .getRegistry(BlueprintRegistry.class)
-                                .get("Wood Generator")
+                                .get("oak_wood_generator")
                                 .get()
                                 .getRevealItem())),
-                new ClearDebrisFromPlotObjective(Material.SHORT_GRASS,
-                        Material.OAK_FENCE, Material.MOSS_CARPET, Material.AZALEA, Material.FLOWERING_AZALEA),
+                new ClearDebrisFromPlotObjective(Material.OAK_FENCE),
                 new UnlockLandObjective(1, "Unlock a square of", "land."));
     }
 

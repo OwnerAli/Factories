@@ -14,7 +14,6 @@ import java.util.Optional;
 
 public class GeneratorRegistry extends Registry<String, Generator> {
 
-
     public static final NamespacedKey GENERATOR_ID_KEY = new NamespacedKey(FactoriesPlugin.getInstance(), "generator_id");
 
     public void initialize() {

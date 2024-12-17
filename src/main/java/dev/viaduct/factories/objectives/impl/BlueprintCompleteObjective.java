@@ -7,16 +7,8 @@ import org.bukkit.event.EventHandler;
 
 public class BlueprintCompleteObjective extends Objective {
 
-    private final int amount;
-
     public BlueprintCompleteObjective(int amount, String... description) {
         super(amount, description);
-        this.amount = amount;
-    }
-
-    @Override
-    public int getAmount(FactoryPlayer factoryPlayer) {
-        return amount;
     }
 
     @Override

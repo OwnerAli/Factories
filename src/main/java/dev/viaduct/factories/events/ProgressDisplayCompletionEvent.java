@@ -1,31 +1,20 @@
 package dev.viaduct.factories.events;
 
+import dev.viaduct.factories.domain.players.FactoryPlayer;
 import dev.viaduct.factories.generators.Generator;
 import lombok.Getter;
 import org.bukkit.Location;
-import org.bukkit.event.Event;
-import org.bukkit.event.HandlerList;
 
 @Getter
-public class ProgressDisplayCompletionEvent extends Event {
-
-    private static final HandlerList HANDLERS = new HandlerList();
+public class ProgressDisplayCompletionEvent extends FactoryPlayerEvent {
 
     private final Generator generator;
     private final Location displayLocation;
 
-    public ProgressDisplayCompletionEvent(Generator generator, Location displayLocation) {
+    public ProgressDisplayCompletionEvent(Generator generator, Location displayLocation, FactoryPlayer factoryPlayer) {
+        super(factoryPlayer);
         this.generator = generator;
         this.displayLocation = displayLocation;
-    }
-
-    public static HandlerList getHandlerList() {
-        return HANDLERS;
-    }
-
-    @Override
-    public HandlerList getHandlers() {
-        return HANDLERS;
     }
 
 }

@@ -1,5 +1,6 @@
 package dev.viaduct.factories.displays;
 
+import dev.viaduct.factories.domain.players.FactoryPlayer;
 import dev.viaduct.factories.events.ProgressDisplayCompletionEvent;
 import dev.viaduct.factories.generators.manual_generators.block_generators.impl.BlockManualGenerator;
 import org.bukkit.Bukkit;
@@ -62,7 +63,7 @@ public class ProgressDisplay {
         });
     }
 
-    public void incrementProgress(Location location) {
+    public void incrementProgress(Location location, FactoryPlayer factoryPlayer) {
         // If the location is not in the map, add it and set the progress
         // Otherwise, increment the progress
         if (!displayProgressMap.containsKey(location)) return;
@@ -70,7 +71,7 @@ public class ProgressDisplay {
         // If the progress is 100%
         if (displayProgressMap.get(location).getProgress() + progressPerSecond >= 1.0f) {
             // Call the event
-            Bukkit.getPluginManager().callEvent(new ProgressDisplayCompletionEvent(generator, location));
+            Bukkit.getPluginManager().callEvent(new ProgressDisplayCompletionEvent(generator, location, factoryPlayer));
 
             // Update the display with the final progress
             updateDisplayWithProgress(displayProgressMap.get(location).getDisplay());

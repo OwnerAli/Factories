@@ -31,7 +31,8 @@ public abstract class ClearDebrisObjective extends Objective {
         currentTaskArea.countBlocksInArea(factoryPlayer.getSettingHolder().getSetting(SettingType.PLAYER_LAND).getLocOfCenterOfIsland(),
                 debrisSet);
 
-        setDescription(List.of("Clear the debris", "from your area!"));
+        setDescription(List.of("Clear " + debrisSet.toString().replace("[", "").replace("]", ""),
+                "from your area!"));
     }
 
     @EventHandler

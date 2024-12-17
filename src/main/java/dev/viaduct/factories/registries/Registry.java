@@ -29,4 +29,13 @@ public class Registry<K, V> {
         return registry.values().stream().toList();
     }
 
+    // Lazy Initialization
+    public static Registry<?, ?> getInstance() {
+        return InstanceHolder.instance;
+    }
+
+    private static final class InstanceHolder {
+        private static final Registry<?, ?> instance = new Registry<>();
+    }
+
 }

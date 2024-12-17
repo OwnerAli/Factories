@@ -1,7 +1,7 @@
 package dev.viaduct.factories.actions;
 
-import dev.viaduct.factories.actions.impl.RewardAction;
 import dev.viaduct.factories.FactoriesPlugin;
+import dev.viaduct.factories.actions.impl.RewardAction;
 import dev.viaduct.factories.domain.players.FactoryPlayer;
 import dev.viaduct.factories.registries.impl.FactoryPlayerRegistry;
 import org.bukkit.entity.Player;

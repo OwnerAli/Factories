@@ -72,7 +72,7 @@ public abstract class BlockManualGenerator extends BlockGenerator {
 
             if (event.getClickedBlock().getType() == generatingMaterial) return;
             event.setCancelled(true);
-            getProgressDisplay().incrementProgress(event.getClickedBlock().getLocation());
+            getProgressDisplay().incrementProgress(event.getClickedBlock().getLocation(), factoryPlayer);
         };
     }
 
