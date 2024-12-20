@@ -87,6 +87,7 @@ public class FactoriesPlugin extends Pladdon {
                 .getRegistry(FactoryPlayerRegistry.class)), this);
         pluginManager.registerEvents(new BlueprintListeners(registryManager
                 .getRegistry(BlueprintRegistry.class), blueprintManager), this);
+        pluginManager.registerEvents(new CustomItemListeners(), this);
     }
 
     private void initRegistries() {
