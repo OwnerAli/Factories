@@ -76,24 +76,20 @@ public class FactoriesPlugin extends Pladdon {
         PluginManager pluginManager = getServer().getPluginManager();
 
         pluginManager.registerEvents(new PlayerJoinListener(), this);
-        pluginManager.registerEvents(new PlayerGetResourceListener(registryManager
-                .getRegistry(FactoryPlayerRegistry.class)), this);
-        pluginManager.registerEvents(new GridLandListeners(registryManager
-                .getRegistry(FactoryPlayerRegistry.class)), this);
-        pluginManager.registerEvents(new GeneratorListener(registryManager
-                .getRegistry(FactoryPlayerRegistry.class), registryManager
+        pluginManager.registerEvents(new PlayerGetResourceListener(FactoryPlayerRegistry.getInstance()), this);
+        pluginManager.registerEvents(new GridLandListeners(FactoryPlayerRegistry.getInstance()), this);
+        pluginManager.registerEvents(new GeneratorListener(FactoryPlayerRegistry.getInstance(), registryManager
                 .getRegistry(GeneratorRegistry.class)), this);
-        pluginManager.registerEvents(new PlayerInteractEntityListener(registryManager
-                .getRegistry(FactoryPlayerRegistry.class)), this);
+        pluginManager.registerEvents(new PlayerInteractEntityListener(FactoryPlayerRegistry.getInstance()), this);
         pluginManager.registerEvents(new BlueprintListeners(registryManager
                 .getRegistry(BlueprintRegistry.class), blueprintManager), this);
         pluginManager.registerEvents(new CustomItemListeners(), this);
+        pluginManager.registerEvents(new SupplyDropListeners(), this);
     }
 
     private void initRegistries() {
         registryManager = new RegistryManager();
 
-        registryManager.registerRegistry(FactoryPlayerRegistry.class, new FactoryPlayerRegistry());
         GeneratorRegistry generatorRegistry = new GeneratorRegistry();
         registryManager.registerRegistry(GeneratorRegistry.class, generatorRegistry);
 

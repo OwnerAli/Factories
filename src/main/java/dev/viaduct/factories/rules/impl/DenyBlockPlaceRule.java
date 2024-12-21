@@ -1,6 +1,5 @@
 package dev.viaduct.factories.rules.impl;
 
-import dev.viaduct.factories.FactoriesPlugin;
 import dev.viaduct.factories.registries.impl.FactoryPlayerRegistry;
 import dev.viaduct.factories.rules.Rule;
 import dev.viaduct.factories.utils.Chat;
@@ -11,8 +10,7 @@ public class DenyBlockPlaceRule implements Rule {
 
     @EventHandler
     public void onBlockPlace(BlockPlaceEvent event) {
-        FactoriesPlugin.getRegistryManager()
-                .getRegistry(FactoryPlayerRegistry.class)
+        FactoryPlayerRegistry.getInstance()
                 .get(event.getPlayer())
                 .ifPresent(factoryPlayer -> {
                     if (ignoreRule(factoryPlayer)) return;

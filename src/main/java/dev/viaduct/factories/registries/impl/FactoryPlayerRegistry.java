@@ -13,4 +13,13 @@ public class FactoryPlayerRegistry extends Registry<UUID, FactoryPlayer> {
         return get(player.getUniqueId());
     }
 
+    // Lazy Initialization
+    public static FactoryPlayerRegistry getInstance() {
+        return FactoryPlayerRegistry.InstanceHolder.instance;
+    }
+
+    private static final class InstanceHolder {
+        private static final FactoryPlayerRegistry instance = new FactoryPlayerRegistry();
+    }
+
 }
