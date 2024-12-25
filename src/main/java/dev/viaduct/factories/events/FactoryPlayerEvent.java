@@ -1,6 +1,5 @@
 package dev.viaduct.factories.events;
 
-import dev.viaduct.factories.FactoriesPlugin;
 import dev.viaduct.factories.domain.players.FactoryPlayer;
 import dev.viaduct.factories.registries.impl.FactoryPlayerRegistry;
 import lombok.Getter;
@@ -18,9 +17,7 @@ public class FactoryPlayerEvent extends CustomEvent {
     }
 
     public FactoryPlayerEvent(Player player) {
-        Optional<FactoryPlayer> factoryPlayerOptional = FactoriesPlugin.getRegistryManager()
-                .getRegistry(FactoryPlayerRegistry.class)
-                .get(player);
+        Optional<FactoryPlayer> factoryPlayerOptional = FactoryPlayerRegistry.getInstance().get(player);
         if (factoryPlayerOptional.isEmpty())
             throw new IllegalArgumentException("FactoryPlayer not found for player " + player.getName());
         this.factoryPlayer = factoryPlayerOptional.get();

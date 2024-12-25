@@ -1,7 +1,6 @@
 package dev.viaduct.factories.blueprints;
 
 import dev.viaduct.factories.blueprints.progress.BlueprintProgress;
-import dev.viaduct.factories.utils.Chat;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,11 +27,7 @@ public class BlueprintManager {
     }
 
     public void removeBlueprintProgress(BlueprintProgress blueprintProgress) {
-        Chat.log("Removed blueprint progress for " + blueprintProgress.getBlueprintId() + " with id " + blueprintProgress.getId());
         this.blueprintsProgressList.remove(blueprintProgress);
-
-        Chat.log("Blueprint progress list size: " + blueprintsProgressList.size());
-        Chat.log("Blueprint progress list: " + blueprintsProgressList);
     }
 
 }

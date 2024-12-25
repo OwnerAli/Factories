@@ -1,6 +1,5 @@
 package dev.viaduct.factories.conditions;
 
-import dev.viaduct.factories.FactoriesPlugin;
 import dev.viaduct.factories.domain.players.FactoryPlayer;
 import dev.viaduct.factories.registries.impl.FactoryPlayerRegistry;
 import org.bukkit.entity.Player;
@@ -27,9 +26,7 @@ public class ConditionHolder {
     }
 
     public boolean allConditionsMet(Player player) {
-        Optional<FactoryPlayer> factoryPlayerOptional = FactoriesPlugin.getRegistryManager()
-                .getRegistry(FactoryPlayerRegistry.class)
-                .get(player);
+        Optional<FactoryPlayer> factoryPlayerOptional = FactoryPlayerRegistry.getInstance().get(player);
 
         return factoryPlayerOptional.filter(factoryPlayer -> conditions.stream()
                 .allMatch(condition -> condition.isMet(factoryPlayer))).isPresent();

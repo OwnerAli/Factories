@@ -1,6 +1,7 @@
 package dev.viaduct.factories.resources;
 
 import dev.viaduct.factories.resources.impl.Stone;
+import dev.viaduct.factories.resources.impl.WarContributionResource;
 import dev.viaduct.factories.resources.impl.Wood;
 import lombok.Getter;
 
@@ -30,6 +31,7 @@ public class ResourceManager {
     public void registerResources() {
         registerResource(new Wood());
         registerResource(new Stone());
+        registerResource(new WarContributionResource());
     }
 
 }

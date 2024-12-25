@@ -16,4 +16,5 @@ public record ResourceCost(String resourceName, double cost) {
         return resourceOptional.map(resource -> Chat.colorizeHex(resource.getFormattedName() + cost))
                 .orElseGet(() -> Chat.colorize("&cUnknown Resource: " + cost));
     }
+
 }

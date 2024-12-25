@@ -5,15 +5,11 @@ import dev.viaduct.factories.domain.players.FactoryPlayer;
 import dev.viaduct.factories.events.SupplyDropClaimEvent;
 import dev.viaduct.factories.registries.impl.FactoryPlayerRegistry;
 import dev.viaduct.factories.registries.impl.SupplyDropRegistry;
-import dev.viaduct.factories.supply_drops.display.DisplayProperties;
+import dev.viaduct.factories.supply_drops.properties.Properties;
 import dev.viaduct.factories.utils.Chat;
 import lombok.Getter;
-import org.bukkit.Bukkit;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.World;
-import org.bukkit.entity.FallingBlock;
-import org.bukkit.entity.Player;
+import org.bukkit.*;
+import org.bukkit.entity.*;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 
@@ -28,22 +24,22 @@ import java.util.function.Consumer;
 public class SupplyDrop {
 
     private final String id;
-    private final DisplayProperties displayProperties;
+    private final Properties properties;
     private final Consumer<PlayerInteractEvent> interactEventConsumer;
     private final ItemStack[] items;
 
     private static final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
 
-    public SupplyDrop(String id, DisplayProperties displayProperties, ItemStack[] items, Consumer<PlayerInteractEvent> interactEventConsumer) {
+    public SupplyDrop(String id, Properties properties, ItemStack[] items, Consumer<PlayerInteractEvent> interactEventConsumer) {
         this.id = id;
-        this.displayProperties = displayProperties;
+        this.properties = properties;
         this.items = items;
         this.interactEventConsumer = interactEventConsumer;
     }
 
-    public SupplyDrop(String id, DisplayProperties displayProperties, ItemStack[] items) {
+    public SupplyDrop(String id, Properties properties, ItemStack[] items) {
         this.id = id;
-        this.displayProperties = displayProperties;
+        this.properties = properties;
         this.items = items;
         this.interactEventConsumer = event -> {
             event.setCancelled(true);
@@ -87,25 +83,42 @@ public class SupplyDrop {
         Location offestLocation = location.clone().add(0, 10, 0);
 
         FallingBlock fallingBlock = world.spawnFallingBlock(offestLocation,
-                displayProperties.fallingBlockMaterial().createBlockData());
+                properties.fallingBlockMaterial().createBlockData());
         fallingBlock.setHurtEntities(false);
 
         shutdownScheduler();
 
         FallingSupplyDrop fallingSupplyDrop = new FallingSupplyDrop(id, fallingBlock);
         SupplyDropRegistry.getInstance().addFallingSupplyDrop(fallingSupplyDrop);
+        fallingSupplyDrop.spawnParticles();
     }
 
     public void landFallenSupplyDrop(Location location, FallingSupplyDrop fallingSupplyDrop) {
-        SupplyDropRegistry.getInstance().addLandedDrop(location, fallingSupplyDrop.getSupplyDropId());
+        SupplyDropRegistry.getInstance().addLandedDrop(location, fallingSupplyDrop.supplyDropId());
+
+        // Delay the landing block placement by 1 tick to wait for the falling block to fully land
         Bukkit.getScheduler().runTaskLater(FactoriesPlugin.getInstance(),
-                () -> location.getBlock().setType(displayProperties.landingBlockMaterial()),
+                () -> {
+                    location.getBlock().setType(properties.landingBlockMaterial());
+                    Location textLocation = location.clone().add(0.5, 1, 0.5);
+
+                    textLocation.getWorld().spawn(textLocation, TextDisplay.class, textDisplay -> {
+                        textDisplay.setBackgroundColor(Color.YELLOW);
+                        textDisplay.setText(Chat.colorize(properties.landingBlockText()));
+                        textDisplay.setBillboard(Display.Billboard.CENTER);
+                    });
+                },
                 1L);
     }
 
     public void clearSupplyDrop(Location location) {
         SupplyDropRegistry.getInstance().removeLandedDrop(location);
         location.getBlock().setType(Material.AIR);
+        Location textLocation = location.clone().add(0, 1, 0);
+        textLocation.getWorld().getNearbyEntities(textLocation, 1, 1, 1)
+                .stream().filter(entity -> entity instanceof TextDisplay)
+                .findAny()
+                .ifPresent(Entity::remove);
     }
 
     public void shutdownScheduler() {

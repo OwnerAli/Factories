@@ -32,7 +32,7 @@ public class SupplyDropRegistry extends Registry<String, SupplyDrop> {
     }
 
     public void addFallingSupplyDrop(FallingSupplyDrop fallingSupplyDrop) {
-        fallingSupplyDrops.put(fallingSupplyDrop.getFallingEntity(), fallingSupplyDrop);
+        fallingSupplyDrops.put(fallingSupplyDrop.fallingEntity(), fallingSupplyDrop);
     }
 
     public void removeFallingSupplyDrop(Entity entity) {

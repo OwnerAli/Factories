@@ -11,6 +11,7 @@ public class CustomItemListeners implements Listener {
     @EventHandler
     public void onInventoryClick(InventoryClickEvent event) {
         if (event.getCurrentItem() == null) return;
+        if (event.getCurrentItem().getItemMeta() == null) return;
         CustomItem.getCustomItem(event.getCurrentItem())
                 .ifPresent(customItem -> customItem.applyMeta(event));
     }
@@ -18,6 +19,7 @@ public class CustomItemListeners implements Listener {
     @EventHandler
     public void onPlayerInteract(PlayerInteractEvent event) {
         if (event.getItem() == null) return;
+        if (event.getItem().getItemMeta() == null) return;
         CustomItem.getCustomItem(event.getItem())
                 .ifPresent(customItem -> customItem.applyMeta(event));
     }

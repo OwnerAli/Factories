@@ -2,8 +2,8 @@ package dev.viaduct.factories.registries.impl;
 
 import dev.viaduct.factories.guis.menus.PlayerMainMenu;
 import dev.viaduct.factories.items.CustomItem;
-import dev.viaduct.factories.items.meta.impl.PlayerInteractMeta;
-import dev.viaduct.factories.items.meta.impl.SlotLockedMeta;
+import dev.viaduct.factories.items.meta.impl.InventoryClickActionableMeta;
+import dev.viaduct.factories.items.meta.impl.PlayerInteractActionableMeta;
 import dev.viaduct.factories.registries.Registry;
 import dev.viaduct.factories.utils.ItemBuilder;
 import org.bukkit.Material;
@@ -18,11 +18,11 @@ public class CustomItemRegistry extends Registry<String, CustomItem> {
     public void initialize(Player player) {
         // Menu Custom Item
         CustomItem menuItem = new CustomItem("menu",
-                new SlotLockedMeta(inventoryClickEvent -> {
+                new InventoryClickActionableMeta(inventoryClickEvent -> {
                     inventoryClickEvent.setCancelled(true);
                     new PlayerMainMenu().showToPlayer((Player) inventoryClickEvent.getWhoClicked());
                 }),
-                new PlayerInteractMeta(playerInteractEvent ->
+                new PlayerInteractActionableMeta(playerInteractEvent ->
                         new PlayerMainMenu().showToPlayer(playerInteractEvent.getPlayer()),
                         Action.RIGHT_CLICK_AIR, Action.RIGHT_CLICK_BLOCK));
 

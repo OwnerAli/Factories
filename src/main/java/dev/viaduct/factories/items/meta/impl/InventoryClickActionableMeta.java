@@ -1,15 +1,16 @@
 package dev.viaduct.factories.items.meta.impl;
 
-import dev.viaduct.factories.items.meta.CustomItemMeta;
+import dev.viaduct.factories.items.meta.ActionableMeta;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.inventory.ItemStack;
 
 import java.util.function.Consumer;
 
-public class SlotLockedMeta implements CustomItemMeta {
+public class InventoryClickActionableMeta implements ActionableMeta {
 
     private final Consumer<InventoryClickEvent> eventConsumer;
 
-    public SlotLockedMeta(Consumer<InventoryClickEvent> eventConsumer) {
+    public InventoryClickActionableMeta(Consumer<InventoryClickEvent> eventConsumer) {
         this.eventConsumer = eventConsumer;
     }
 
@@ -21,4 +22,8 @@ public class SlotLockedMeta implements CustomItemMeta {
         return true;
     }
 
+    @Override
+    public void modifyItem(ItemStack itemStack) {
+
+    }
 }
