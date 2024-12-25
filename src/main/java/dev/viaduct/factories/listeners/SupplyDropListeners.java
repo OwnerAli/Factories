@@ -26,7 +26,7 @@ public class SupplyDropListeners implements Listener {
                     supplyDropRegistry.removeFallingSupplyDrop(event.getEntity());
 
                     // Add to the landed supply drop registry
-                    supplyDropRegistry.get(fallingSupplyDrop.getSupplyDropId())
+                    supplyDropRegistry.get(fallingSupplyDrop.supplyDropId())
                             .ifPresentOrElse(supplyDrop -> supplyDrop.landFallenSupplyDrop(event.getBlock().getLocation(), fallingSupplyDrop),
                                     () -> Chat.log("Failed to add landed drop: Supply drop not found"));
                 });

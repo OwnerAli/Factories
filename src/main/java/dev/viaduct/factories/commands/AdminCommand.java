@@ -20,7 +20,7 @@ public class AdminCommand extends BaseCommand {
 
     @Subcommand("completeObjective")
     public void completeObjective(Player player, int amount) {
-        registryManager.getRegistry(FactoryPlayerRegistry.class)
+        FactoryPlayerRegistry.getInstance()
                 .get(player)
                 .ifPresent(factoryPlayer -> factoryPlayer.getTaskHolder()
                         .completeMultipleObjectivesByOrder(factoryPlayer, amount));

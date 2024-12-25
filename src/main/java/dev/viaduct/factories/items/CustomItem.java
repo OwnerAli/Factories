@@ -1,6 +1,7 @@
 package dev.viaduct.factories.items;
 
 import dev.viaduct.factories.FactoriesPlugin;
+import dev.viaduct.factories.items.meta.ActionableMeta;
 import dev.viaduct.factories.items.meta.CustomItemMeta;
 import dev.viaduct.factories.registries.impl.CustomItemRegistry;
 import lombok.Getter;
@@ -38,9 +39,14 @@ public class CustomItem {
     }
 
     public void applyMeta(Object... context) {
-        for (CustomItemMeta itemMeta : itemMetaSet) {
-            Arrays.stream(context).forEach(itemMeta::apply);
-        }
+        itemMetaSet.stream()
+                .filter(itemMeta -> itemMeta instanceof ActionableMeta)
+                .map(itemMeta -> (ActionableMeta) itemMeta)
+                .forEach(actionableMeta -> Arrays.stream(context).forEach(actionableMeta::apply));
+    }
+
+    public void applyItemModifiers(ItemStack itemStack) {
+        itemMetaSet.forEach(meta -> meta.modifyItem(itemStack));
     }
 
     public Optional<ItemStack> makeCustomItem(ItemStack itemStack) {
@@ -59,6 +65,9 @@ public class CustomItem {
         // Set the item meta back to the item stack
         itemStack.setItemMeta(itemMeta);
 
+        // Apply the item modifiers
+        applyItemModifiers(itemStack);
+
         return Optional.of(itemStack);
     }
 
@@ -75,8 +84,7 @@ public class CustomItem {
         // Get the custom item id from the persistent data container
         String customItemId = persistentDataContainer.get(CUSTOM_ITEM_ID_KEY, PersistentDataType.STRING);
 
-        // Get the custom item from the custom item registry
-
+        // Get the custom item from the custom item registry using key obtained from the persistent data container
         return CustomItemRegistry.getInstance().get(customItemId);
     }
 

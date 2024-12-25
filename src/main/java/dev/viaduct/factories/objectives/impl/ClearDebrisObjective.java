@@ -1,6 +1,5 @@
 package dev.viaduct.factories.objectives.impl;
 
-import dev.viaduct.factories.FactoriesPlugin;
 import dev.viaduct.factories.areas.Area;
 import dev.viaduct.factories.domain.players.FactoryPlayer;
 import dev.viaduct.factories.objectives.Objective;
@@ -40,8 +39,7 @@ public abstract class ClearDebrisObjective extends Objective {
         if (event.isCancelled()) return;
         if (!debrisSet.contains(event.getBlock().getType())) return;
 
-        FactoriesPlugin.getRegistryManager()
-                .getRegistry(FactoryPlayerRegistry.class)
+        FactoryPlayerRegistry.getInstance()
                 .get(event.getPlayer())
                 .ifPresent(this::progressObjective);
     }

@@ -1,16 +1,12 @@
 package dev.viaduct.factories.supply_drops;
 
-import lombok.Getter;
+import dev.viaduct.factories.supply_drops.runnables.ParticleRunnable;
 import org.bukkit.entity.Entity;
 
-@Getter
-public class FallingSupplyDrop {
+public record FallingSupplyDrop(String supplyDropId, Entity fallingEntity) {
 
-    private final String supplyDropId;
-    private final Entity fallingEntity;
-
-    public FallingSupplyDrop(String supplyDropId, Entity fallingEntity) {
-        this.supplyDropId = supplyDropId;
-        this.fallingEntity = fallingEntity;
+    public void spawnParticles() {
+        new ParticleRunnable(this).start();
     }
+
 }

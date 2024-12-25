@@ -1,6 +1,5 @@
 package dev.viaduct.factories.actions;
 
-import dev.viaduct.factories.FactoriesPlugin;
 import dev.viaduct.factories.actions.impl.RewardAction;
 import dev.viaduct.factories.domain.players.FactoryPlayer;
 import dev.viaduct.factories.registries.impl.FactoryPlayerRegistry;
@@ -27,8 +26,7 @@ public class ActionHolder {
     }
 
     public void executeAllActions(Player player) {
-        FactoriesPlugin.getRegistryManager()
-                .getRegistry(FactoryPlayerRegistry.class)
+        FactoryPlayerRegistry.getInstance()
                 .get(player)
                 .ifPresent(factoryPlayer -> actions.forEach(action ->
                         action.execute(factoryPlayer)));

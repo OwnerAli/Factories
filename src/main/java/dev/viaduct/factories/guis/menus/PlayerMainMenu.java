@@ -14,6 +14,17 @@ public class PlayerMainMenu {
         gui.setOnGlobalClick(event -> event.setCancelled(true));
 
         TopAndBottomSixPane topAndBottomSixPane = new TopAndBottomSixPane(Material.YELLOW_STAINED_GLASS_PANE);
+
+        topAndBottomSixPane.addItem(new GuiItem(new ItemBuilder(Material.DIAMOND)
+                .setName("&eMarketplace")
+                .addLoreLines("Sun Industries Marketplace™",
+                        "",
+                        "Contribute to the war effort by", "exporting goods and buying supplies.",
+                        "",
+                        "Click to open marketplace.")
+                .glowing()
+                .build()), 4, 2);
+
         topAndBottomSixPane.addItem(new GuiItem(new ItemBuilder(Material.ARROW)
                 .setName("&eClose")
                 .addLoreLines("&7Close the menu")

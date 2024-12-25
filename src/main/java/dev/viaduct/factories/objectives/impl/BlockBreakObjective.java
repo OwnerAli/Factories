@@ -1,6 +1,5 @@
 package dev.viaduct.factories.objectives.impl;
 
-import dev.viaduct.factories.FactoriesPlugin;
 import dev.viaduct.factories.domain.players.FactoryPlayer;
 import dev.viaduct.factories.objectives.Objective;
 import dev.viaduct.factories.registries.impl.FactoryPlayerRegistry;
@@ -34,8 +33,7 @@ public class BlockBreakObjective extends Objective {
     public void onBlockBreak(BlockBreakEvent event) {
         if (event.getBlock().getType() != blockType) return;
 
-        FactoriesPlugin.getRegistryManager()
-                .getRegistry(FactoryPlayerRegistry.class)
+        FactoryPlayerRegistry.getInstance()
                 .get(event.getPlayer())
                 .ifPresent(this::progressObjective);
     }

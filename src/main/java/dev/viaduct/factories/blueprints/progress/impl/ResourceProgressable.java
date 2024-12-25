@@ -1,6 +1,5 @@
 package dev.viaduct.factories.blueprints.progress.impl;
 
-import dev.viaduct.factories.FactoriesPlugin;
 import dev.viaduct.factories.blueprints.progress.BlueprintProgress;
 import dev.viaduct.factories.blueprints.progress.Progressable;
 import dev.viaduct.factories.domain.players.FactoryPlayer;
@@ -25,9 +24,7 @@ public class ResourceProgressable extends Progressable {
     @Override
     public void progress(InventoryClickEvent event, BlueprintProgress blueprintProgress, Map<Progressable, Integer> progressMap) {
         Player player = (Player) event.getWhoClicked();
-        Optional<FactoryPlayer> factoryPlayerOptional = FactoriesPlugin.getRegistryManager()
-                .getRegistry(FactoryPlayerRegistry.class)
-                .get(player);
+        Optional<FactoryPlayer> factoryPlayerOptional = FactoryPlayerRegistry.getInstance().get(player);
         if (factoryPlayerOptional.isEmpty()) return;
 
         FactoryPlayer factoryPlayer = factoryPlayerOptional.get();

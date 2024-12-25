@@ -13,7 +13,7 @@ public class SupplyDropLootMenu {
     public void showToPlayer(Player player, SupplyDrop supplyDrop) {
         ChestGui gui = new ChestGui(6, "Claiming supply drop: " + supplyDrop.getId());
 
-        TopAndBottomSixPane topAndBottomSixPane = new TopAndBottomSixPane(supplyDrop.getDisplayProperties().landingBlockMaterial());
+        TopAndBottomSixPane topAndBottomSixPane = new TopAndBottomSixPane(supplyDrop.getProperties().landingBlockMaterial());
         PaginatedPane paginatedPane = new PaginatedPane(0, 1, 9, 4);
         paginatedPane.populateWithItemStacks(Arrays.asList(supplyDrop.getItems()));
 
