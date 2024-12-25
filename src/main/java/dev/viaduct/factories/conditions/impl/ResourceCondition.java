@@ -12,15 +12,18 @@ public class ResourceCondition extends AbstractCondition {
     private final Resource resource;
     private final double amount;
 
-    public ResourceCondition(String resourceName, double amount, Action... actions) {
+    public ResourceCondition(String resourceName, double amount, boolean autoRemoveResources, Action... actions) {
         super(actions);
         this.resource = FactoriesPlugin.getInstance()
                 .getResourceManager()
                 .getResource(resourceName)
                 .orElseThrow(() -> new IllegalArgumentException("Resource not found: " + resourceName));
         this.amount = amount;
-        addActions(new RemoveResourceAction(resource.getName(), amount));
+        if (autoRemoveResources) {
+            addActions(new RemoveResourceAction(resource.getName(), amount));
+        }
     }
+
 
     @Override
     public boolean isMet(FactoryPlayer factoryPlayer) {

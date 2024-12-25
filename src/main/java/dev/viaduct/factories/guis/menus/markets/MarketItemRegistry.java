@@ -25,7 +25,7 @@ public class MarketItemRegistry {
         itemRegistry.put("Bundle O' Sticks",
                 new MarketGuiItem(new MarketDisplayItem("Bundle O' Sticks", new ItemStack(Material.STICK, 20),
                         List.of(new GiveItemAction(new ItemStack(Material.STICK, 20))),
-                        new ResourceCondition("wood", 10))));
+                        new ResourceCondition("wood", 10, true))));
     }
 
     public static MarketItemRegistry getInstance() {

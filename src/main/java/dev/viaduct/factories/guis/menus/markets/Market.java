@@ -4,7 +4,7 @@ import com.github.stefvanschie.inventoryframework.gui.GuiItem;
 import com.github.stefvanschie.inventoryframework.gui.type.ChestGui;
 import com.github.stefvanschie.inventoryframework.pane.PaginatedPane;
 import dev.viaduct.factories.domain.players.FactoryPlayer;
-import dev.viaduct.factories.guis.menus.panes.TopAndBottomFivePane;
+import dev.viaduct.factories.guis.menus.panes.TopAndBottomSixPane;
 import dev.viaduct.factories.utils.Chat;
 import org.bukkit.Material;
 import org.bukkit.event.Listener;
@@ -20,15 +20,14 @@ public class Market implements Listener {
     }
 
     public void showToPlayer(FactoryPlayer factoryPlayer) {
-        ChestGui marketGui = new ChestGui(6, Chat.colorize("&b&l-- Sun Industries Market --"));
+        ChestGui marketGui = new ChestGui(6, Chat.colorize("&l-- Sun Industries Market --"));
 
-        //  TODO: Determine the adequate color and structure for the GUI pane.
-        TopAndBottomFivePane topAndBottomFivePane = new TopAndBottomFivePane(Material.RED_STAINED_GLASS_PANE);
+        TopAndBottomSixPane topAndBottomSixPane = new TopAndBottomSixPane(Material.RED_STAINED_GLASS_PANE);
         PaginatedPane paginatedPane = new PaginatedPane(0, 1, 5, 4);
 
         paginatedPane.populateWithGuiItems(getMarketItems());
 
-        marketGui.addPane(topAndBottomFivePane);
+        marketGui.addPane(topAndBottomSixPane);
         marketGui.addPane(paginatedPane);
 
         marketGui.show(factoryPlayer.getPlayer());
@@ -38,4 +37,5 @@ public class Market implements Listener {
     private List<GuiItem> getMarketItems() {
         return marketStockFactory.generateMarketStock();
     }
+
 }

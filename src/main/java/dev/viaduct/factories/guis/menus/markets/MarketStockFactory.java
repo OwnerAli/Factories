@@ -26,7 +26,7 @@ public class MarketStockFactory {
         possibleItems = new ArrayList<>();
         possibleItems.add(new MarketDisplayItem("Bundle O' Sticks", new ItemStack(Material.STICK, 20),
                 List.of(new GiveItemAction(new ItemStack(Material.STICK, 20))),
-                new ResourceCondition("wood", 10)));
+                new ResourceCondition("wood", 10, true)));
     }
 
     public List<GuiItem> generateMarketStock() {
