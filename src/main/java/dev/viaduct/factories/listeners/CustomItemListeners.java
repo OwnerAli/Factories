@@ -2,13 +2,14 @@ package dev.viaduct.factories.listeners;
 
 import dev.viaduct.factories.items.CustomItem;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 
 public class CustomItemListeners implements Listener {
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.LOWEST)
     public void onInventoryClick(InventoryClickEvent event) {
         if (event.getCurrentItem() == null) return;
         if (event.getCurrentItem().getItemMeta() == null) return;

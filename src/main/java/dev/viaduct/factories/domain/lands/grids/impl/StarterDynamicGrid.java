@@ -32,13 +32,25 @@ public class StarterDynamicGrid extends DynamicGrid {
 
         // Add the original positive quadrant
         addGridSquare(new PurchasableSquare(0, -1, squareSize, new ResourceCost("wood", 3))); // NORTH
-        addGridSquare(new PurchasableSquare(1, -1, squareSize, new ResourceCost("wood", 3))); // NORTH EAST
-        addGridSquare(new PurchasableSquare(-1, -1, squareSize, new ResourceCost("wood", 3))); // NORTH WEST
+        addGridSquare(new PurchasableSquare(1, -1, squareSize, new ResourceCost("wood", 50))); // NORTH EAST
+        addGridSquare(new PurchasableSquare(-1, -1, squareSize, new ResourceCost("wood", 50))); // NORTH WEST
         addGridSquare(new PurchasableSquare(1, 0, squareSize, new ResourceCost("wood", 3))); // EAST
         addGridSquare(new PurchasableSquare(0, 1, squareSize, new ResourceCost("wood", 3))); // SOUTH
-        addGridSquare(new PurchasableSquare(1, 1, squareSize, new ResourceCost("wood", 3))); // SOUTH EAST
-        addGridSquare(new PurchasableSquare(-1, 1, squareSize, new ResourceCost("wood", 3))); // SOUTH WEST
+        addGridSquare(new PurchasableSquare(1, 1, squareSize, new ResourceCost("wood", 50))); // SOUTH EAST
+        addGridSquare(new PurchasableSquare(-1, 1, squareSize, new ResourceCost("wood", 50))); // SOUTH WEST
         addGridSquare(new PurchasableSquare(-1, 0, squareSize, new ResourceCost("wood", 3))); // WEST
+
+        // Add one more layer of squares
+        addGridSquare(new PurchasableSquare(0, -2, squareSize, new ResourceCost("wood", 50))); // NORTH
+        addGridSquare(new PurchasableSquare(1, -2, squareSize, new ResourceCost("wood", 50))); // NORTH EAST
+        addGridSquare(new PurchasableSquare(-1, -2, squareSize, new ResourceCost("wood", 50))); // NORTH WEST
+        addGridSquare(new PurchasableSquare(2, -1, squareSize, new ResourceCost("wood", 50))); // NORTH EAST
+        addGridSquare(new PurchasableSquare(-2, -1, squareSize, new ResourceCost("wood", 50))); // NORTH WEST
+        addGridSquare(new PurchasableSquare(2, 0, squareSize, new ResourceCost("wood", 50))); // EAST
+        addGridSquare(new PurchasableSquare(-2, 0, squareSize, new ResourceCost("wood", 50))); // WEST
+        addGridSquare(new PurchasableSquare(0, 2, squareSize, new ResourceCost("wood", 50))); // SOUTH
+        addGridSquare(new PurchasableSquare(1, 2, squareSize, new ResourceCost("wood", 50))); // SOUTH EAST
+        addGridSquare(new PurchasableSquare(-1, 2, squareSize, new ResourceCost("wood", 50))); // SOUTH WEST
     }
 
     // generate grid squares offsetting by the center

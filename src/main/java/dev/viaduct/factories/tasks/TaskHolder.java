@@ -87,10 +87,10 @@ public class TaskHolder {
         }
     }
 
-    public void incrementObjectiveProgress(FactoryPlayer factoryPlayer, Objective objective) {
-        if (task == null) return;
-        if (task.isOrderMatters() && !objective.equals(currentObjective)) return;
-        if (!objectiveProgressMap.containsKey(objective)) return;
+    public boolean incrementObjectiveProgress(FactoryPlayer factoryPlayer, Objective objective) {
+        if (task == null) return false;
+        if (task.isOrderMatters() && !objective.equals(currentObjective)) return false;
+        if (!objectiveProgressMap.containsKey(objective)) return false;
 
         Player player = factoryPlayer.getPlayer();
 
@@ -98,11 +98,12 @@ public class TaskHolder {
             Chat.sendActionbar(player, "&6&lObjective: &e" + objective.getDescription().get(0) +
                     " &f» &e&lCOMPLETE!");
             completeObjective(factoryPlayer, objective);
-            return;
+            return true;
         }
         Chat.sendActionbar(player, "&6&lObjective: &e" + objective.getDescription().get(0) +
                 " &e(" + ((objectiveProgressMap.get(objective) + 1) * 100) / (objective.getAmount(factoryPlayer)) + "%)");
         objectiveProgressMap.put(objective, objectiveProgressMap.get(objective) + 1);
+        return true;
     }
 
     public void addObjective(Objective objective) {

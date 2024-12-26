@@ -24,9 +24,9 @@ public abstract class Objective implements Listener {
         return amount;
     }
 
-    public void progressObjective(FactoryPlayer factoryPlayer) {
+    public boolean progressObjective(FactoryPlayer factoryPlayer) {
         TaskHolder taskHolder = factoryPlayer.getTaskHolder();
-        taskHolder.incrementObjectiveProgress(factoryPlayer, this);
+        return taskHolder.incrementObjectiveProgress(factoryPlayer, this);
     }
 
     public abstract void setupObjectiveForPlayer(FactoryPlayer factoryPlayer);

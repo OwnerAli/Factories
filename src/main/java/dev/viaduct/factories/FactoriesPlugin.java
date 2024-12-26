@@ -10,6 +10,7 @@ import dev.viaduct.factories.listeners.*;
 import dev.viaduct.factories.packets.listeners.ScoreboardPacketListener;
 import dev.viaduct.factories.registries.RegistryManager;
 import dev.viaduct.factories.registries.impl.BlueprintRegistry;
+import dev.viaduct.factories.registries.impl.CategoryRegistry;
 import dev.viaduct.factories.registries.impl.FactoryPlayerRegistry;
 import dev.viaduct.factories.registries.impl.GeneratorRegistry;
 import dev.viaduct.factories.resources.ResourceManager;
@@ -85,15 +86,18 @@ public class FactoriesPlugin extends Pladdon {
                 .getRegistry(BlueprintRegistry.class), blueprintManager), this);
         pluginManager.registerEvents(new CustomItemListeners(), this);
         pluginManager.registerEvents(new SupplyDropListeners(), this);
+        pluginManager.registerEvents(new CraftItemListener(), this);
     }
 
     private void initRegistries() {
         registryManager = new RegistryManager();
 
+        CategoryRegistry.getInstance().initialize();
+
         GeneratorRegistry generatorRegistry = new GeneratorRegistry();
         registryManager.registerRegistry(GeneratorRegistry.class, generatorRegistry);
 
-        BlueprintRegistry blueprintRegistry = new BlueprintRegistry();
+        BlueprintRegistry blueprintRegistry = BlueprintRegistry.getInstance();
         registryManager.registerRegistry(BlueprintRegistry.class, blueprintRegistry);
 
         Bukkit.getScheduler().runTaskLater(this, () -> {

@@ -35,8 +35,9 @@ public class FactoryPlayer {
         this.generatorHolder = new GeneratorHolder();
         this.taskHolder = new TaskHolder();
 
-        bank.addToResource("wood", scoreboard, 5000);
-        bank.addToResource("stone", scoreboard, 5000);
+        bank.addToResource("wood", scoreboard, 0);
+        bank.addToResource("stone", scoreboard, 0);
+        bank.addToResource("WCS", scoreboard, 0);
     }
 
     public void addGenerator(Location location, Generator generator) {

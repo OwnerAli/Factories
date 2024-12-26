@@ -52,12 +52,12 @@ public class BlueprintListeners implements Listener {
                         PersistentDataType.INTEGER);
 
         if (blueprintProgressIndex == null) return;
-
         blueprintManager.getBlueprintProgress(blueprintProgressIndex)
                 .ifPresent(blueprintProgress -> {
-                    if (event.getCursor() == null || event.getCursor().getType()
-                            == Material.AIR &&
-                            !blueprintProgress.passesAllConditions((Player) event.getWhoClicked())) return;
+                    if (event.getCursor() == null && !event.isShiftClick()) return;
+                    if (event.getCursor() != null && event.getCursor().getType() == Material.AIR && !event.isShiftClick())
+                        return;
+                    if (!blueprintProgress.passesAllConditions((Player) event.getWhoClicked())) return;
                     event.setCancelled(true);
                     blueprintProgress.addProgress(event);
                 });

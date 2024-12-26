@@ -10,9 +10,9 @@ import java.util.Optional;
 public class RemoveResourceAction implements Action {
 
     private final String resourceName;
-    private final int amount;
+    private final double amount;
 
-    public RemoveResourceAction(String resourceName, int amount) {
+    public RemoveResourceAction(String resourceName, double amount) {
         this.resourceName = resourceName;
         this.amount = amount;
     }

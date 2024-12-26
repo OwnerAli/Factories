@@ -17,11 +17,11 @@ public class BlueprintRegistry extends Registry<String, Blueprint> {
 
     public void initialize() {
         Blueprint oakWoodGenerator = new Blueprint("oak_wood_generator",
+                "#a8996fOak Wood Generator",
                 List.of(new ItemStack(Material.DIAMOND, 1),
                         new ItemStack(Material.IRON_INGOT, 2)),
                 List.of(),
-                List.of(new ItemStackProgressable(new ItemStack(Material.DIAMOND, 1)),
-                        new ResourceProgressable(3.0, "wood")),
+                List.of(new ResourceProgressable(3.0, "wood")),
                 new GiveItemAction(FactoriesPlugin.getRegistryManager()
                         .getRegistry(GeneratorRegistry.class)
                         .get("oak_wood_generator")
@@ -30,6 +30,7 @@ public class BlueprintRegistry extends Registry<String, Blueprint> {
                 new PlaySoundAction(Sound.ENTITY_PLAYER_LEVELUP),
                 new PlaySoundAction(Sound.ENTITY_FIREWORK_ROCKET_TWINKLE));
         Blueprint stoneGenerator = new Blueprint("stone_generator",
+                "#bfbfbfStone Generator",
                 List.of(new ItemStack(Material.DIAMOND, 1),
                         new ItemStack(Material.IRON_INGOT, 2)),
                 List.of(),
@@ -43,6 +44,7 @@ public class BlueprintRegistry extends Registry<String, Blueprint> {
                 new PlaySoundAction(Sound.ENTITY_PLAYER_LEVELUP),
                 new PlaySoundAction(Sound.ENTITY_FIREWORK_ROCKET_TWINKLE));
         Blueprint energyGenerator = new Blueprint("energy_generator",
+                "#bfbfbfEnergy Generator",
                 List.of(new ItemStack(Material.DIAMOND, 1),
                         new ItemStack(Material.IRON_INGOT, 2)),
                 List.of(),
@@ -61,5 +63,15 @@ public class BlueprintRegistry extends Registry<String, Blueprint> {
         register(stoneGenerator.getId(), stoneGenerator);
         register(energyGenerator.getId(), energyGenerator);
     }
+
+    //#region Lazy Initialization
+    public static BlueprintRegistry getInstance() {
+        return InstanceHolder.instance;
+    }
+
+    private static final class InstanceHolder {
+        private static final BlueprintRegistry instance = new BlueprintRegistry();
+    }
+    //#endregion
 
 }

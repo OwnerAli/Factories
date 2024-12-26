@@ -3,11 +3,15 @@ package dev.viaduct.factories.objectives.impl;
 import dev.viaduct.factories.domain.players.FactoryPlayer;
 import dev.viaduct.factories.objectives.Objective;
 import dev.viaduct.factories.registries.impl.FactoryPlayerRegistry;
+import dev.viaduct.factories.utils.Chat;
 import lombok.Getter;
 import org.bukkit.Material;
+import org.bukkit.Sound;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.block.BlockBreakEvent;
+
+import java.util.Optional;
 
 @Getter
 public class BlockBreakObjective extends Objective {
@@ -33,9 +37,19 @@ public class BlockBreakObjective extends Objective {
     public void onBlockBreak(BlockBreakEvent event) {
         if (event.getBlock().getType() != blockType) return;
 
-        FactoryPlayerRegistry.getInstance()
-                .get(event.getPlayer())
-                .ifPresent(this::progressObjective);
+        Optional<FactoryPlayer> factoryPlayerOptional = FactoryPlayerRegistry.getInstance()
+                .get(event.getPlayer());
+        factoryPlayerOptional.ifPresent(factoryPlayer -> {
+            if (!progressObjective(factoryPlayer)) return;
+            factoryPlayer.getBank()
+                    .getResourceByMaterial(event.getBlock().getType())
+                    .ifPresent(resource -> resource.getMaterialAmountPairsList()
+                            .stream()
+                            .filter(pair -> pair.material().equals(event.getBlock().getType()))
+                            .forEach(pair -> Chat.tell(event.getPlayer(), "&6&lObjective &f» &e+" + pair.amount() + "x " +
+                                    resource.getFormattedName().replace(": ", ""))));
+            factoryPlayer.getPlayer().playSound(factoryPlayer.getPlayer().getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1, 1);
+        });
     }
 
 }
