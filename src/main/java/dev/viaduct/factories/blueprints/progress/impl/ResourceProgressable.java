@@ -43,7 +43,7 @@ public class ResourceProgressable extends Progressable {
 
     @Override
     public List<String> getDescription(double progress) {
-        return List.of(resourceName.toUpperCase() + " &f» " + progress + "/" + getRequiredProgress());
+        return List.of(resourceName.toUpperCase() + " &f» " + progress + "/" + getRequiredProgress() + " &7(shift-click)");
     }
 
 }

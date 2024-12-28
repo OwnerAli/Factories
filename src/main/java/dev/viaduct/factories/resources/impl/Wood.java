@@ -33,4 +33,9 @@ public class Wood extends ContributableResource {
         return Material.OAK_WOOD;
     }
 
+    @Override
+    public String getSection() {
+        return "&f&lResources    ";
+    }
+
 }

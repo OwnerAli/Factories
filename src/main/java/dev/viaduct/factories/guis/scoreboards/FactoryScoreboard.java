@@ -9,16 +9,19 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.scoreboard.*;
 
-import java.util.Set;
+import java.util.Comparator;
+import java.util.List;
 
 public class FactoryScoreboard {
 
+    private final FactoryPlayer factoryPlayer;
     private final Scoreboard scoreboard;
     private final Objective objective;
     private final Bank bank;
     private int lastScore;
 
     public FactoryScoreboard(FactoryPlayer factoryPlayer) {
+        this.factoryPlayer = factoryPlayer;
         this.scoreboard = Bukkit.getScoreboardManager().getNewScoreboard();
 
         this.objective = scoreboard.registerNewObjective("Factories", Criteria.DUMMY, "dummy");
@@ -39,7 +42,10 @@ public class FactoryScoreboard {
         resourceTitle.setScore(14); // index 14
 
         // get all resources
-        Set<Resource> resources = bank.getResourceMap().keySet();
+        List<Resource> resources = bank.getResourceMap().keySet()
+                .stream()
+                .sorted(Comparator.comparingInt(Resource::getPriority))
+                .toList();
 
         int index = 13;
 
@@ -64,12 +70,12 @@ public class FactoryScoreboard {
 
         lastScore--;
 
-        Score resourceTitle = objective.getScore(Chat.colorize(scoreboardListable.getTitle()));
+        Score resourceTitle = objective.getScore(Chat.colorize(scoreboardListable.getSection()));
         resourceTitle.setScore(lastScore); // index 14
 
         lastScore--;
 
-        scoreboardListable.getLines().forEach(line -> {
+        scoreboardListable.getLines(factoryPlayer).forEach(line -> {
             objective.getScore(Chat.colorizeHex(line)).setScore(lastScore);
             lastScore--;
         });
@@ -78,9 +84,9 @@ public class FactoryScoreboard {
     }
 
     public void removeFromScoreboard(ScoreboardListable scoreboardListable) {
-        scoreboard.resetScores(Chat.colorize(scoreboardListable.getTitle()));
+        scoreboard.resetScores(Chat.colorize(scoreboardListable.getSection()));
         scoreboard.resetScores(Chat.colorize("&f               "));
-        scoreboardListable.getLines().forEach(scoreboard::resetScores);
+        scoreboardListable.getLines(factoryPlayer).forEach(scoreboard::resetScores);
     }
 
     public void updateResourceLine(Resource resource) {

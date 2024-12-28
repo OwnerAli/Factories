@@ -62,11 +62,7 @@ public class Blueprint {
                     1, 1);
             player.playSound(player.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP,
                     1, 1);
-            player.sendTitle(Chat.colorize("&b&lBlueprint Started"), Chat.colorize("&7Follow the steps in chat!"), 10, 40, 10);
             Chat.tell(player, "&f&k;; &r&b&lBlueprint Started &f&k;;");
-            Chat.tell(player, "&71. Open your inventory");
-            Chat.tell(player, "&72. Shift-Click the blueprint to deposit resources");
-            Chat.tell(player, "&73. Drag and Drop ingredients onto the blueprint item to add them");
         };
     }
 

@@ -1,5 +1,6 @@
 package dev.viaduct.factories.resources;
 
+import dev.viaduct.factories.scoreboards.ScoreboardListable;
 import lombok.Getter;
 import org.bukkit.Material;
 
@@ -8,7 +9,7 @@ import java.util.Arrays;
 import java.util.List;
 
 @Getter
-public abstract class Resource {
+public abstract class Resource implements ScoreboardListable {
 
     private final String name;
     private final double incrementAmount;

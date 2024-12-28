@@ -62,6 +62,7 @@ public class TaskHolder {
 
             if (task.isOrderMatters()) {
                 currentObjective = objectiveProgressMap.keySet().iterator().next();
+                factoryPlayer.getScoreboard().addToScoreboard(task);
             }
             return;
         }

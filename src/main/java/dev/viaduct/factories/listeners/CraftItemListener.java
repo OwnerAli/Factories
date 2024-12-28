@@ -5,7 +5,6 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.CraftItemEvent;
 
-// TODO: ADD TUTORIAL ON BLUEPRINTS
 public class CraftItemListener implements Listener {
 
     @EventHandler

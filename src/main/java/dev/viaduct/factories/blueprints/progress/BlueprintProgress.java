@@ -24,12 +24,6 @@ public class BlueprintProgress {
     private final String blueprintId;
     private final ProgressableHolder progressableHolder;
 
-    public BlueprintProgress(int id, Blueprint blueprint, Progressable... progressables) {
-        this.id = id;
-        this.blueprintId = blueprint.getId();
-        this.progressableHolder = new ProgressableHolder(this, List.of(progressables));
-    }
-
     public BlueprintProgress(int id, Blueprint blueprint, List<Progressable> progressableList) {
         this.id = id;
         this.blueprintId = blueprint.getId();
@@ -76,7 +70,7 @@ public class BlueprintProgress {
                                 .forEach(line -> itemBuilder.addLoreLine(" &7 • " + line));
                     }
 
-                    itemBuilder.addLoreLines(" ", "&f&lRequirements ");
+                    itemBuilder.addLoreLines(" ", "&f&lTo Do ");
                     progressableHolder.getDescription().forEach(itemBuilder::addLoreLine);
                 });
 

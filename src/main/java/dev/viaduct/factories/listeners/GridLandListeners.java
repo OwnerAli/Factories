@@ -4,6 +4,7 @@ import dev.viaduct.factories.domain.lands.Land;
 import dev.viaduct.factories.registries.impl.FactoryPlayerRegistry;
 import dev.viaduct.factories.settings.SettingType;
 import dev.viaduct.factories.utils.Chat;
+import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -22,6 +23,7 @@ public class GridLandListeners implements Listener {
 
     @EventHandler(priority = EventPriority.LOWEST)
     public void onBlockPlace(BlockPlaceEvent event) {
+        if (event.getPlayer().getGameMode() == GameMode.CREATIVE) return;
         if (!(event.getBlock().getWorld().getName().equals("factories_world"))) return;
         factoryPlayerRegistry.get(event.getPlayer().getUniqueId()).ifPresent(factoryPlayer -> {
             Land playerLand = factoryPlayer.getSettingHolder().getSetting(SettingType.PLAYER_LAND);
@@ -35,6 +37,7 @@ public class GridLandListeners implements Listener {
 
     @EventHandler
     public void onBlockBreak(BlockBreakEvent event) {
+        if (event.getPlayer().getGameMode() == GameMode.CREATIVE) return;
         if (!(event.getBlock().getWorld().getName().equals("factories_world"))) return;
         factoryPlayerRegistry.get(event.getPlayer().getUniqueId()).ifPresent(factoryPlayer -> {
             event.setDropItems(false);
@@ -49,6 +52,7 @@ public class GridLandListeners implements Listener {
 
     @EventHandler
     public void onPlayerMove(PlayerMoveEvent event) {
+        if (event.getPlayer().getGameMode() == GameMode.CREATIVE) return;
         if (event.getTo() == null) return;
         if (event.getTo().getWorld() == null) return;
         if (!(event.getTo().getWorld().getName().equals("factories_world"))) return;

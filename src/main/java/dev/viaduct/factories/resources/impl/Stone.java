@@ -32,4 +32,14 @@ public class Stone extends ContributableResource {
         return Material.STONE;
     }
 
+    @Override
+    public String getSection() {
+        return "&f&lResources    ";
+    }
+
+    @Override
+    public int getPriority() {
+        return 1;
+    }
+
 }
