@@ -3,15 +3,17 @@ package dev.viaduct.factories.markets;
 import com.github.stefvanschie.inventoryframework.gui.GuiItem;
 import com.github.stefvanschie.inventoryframework.gui.type.ChestGui;
 import com.github.stefvanschie.inventoryframework.pane.PaginatedPane;
+import com.github.stefvanschie.inventoryframework.pane.Pane;
+import com.github.stefvanschie.inventoryframework.pane.PatternPane;
+import com.github.stefvanschie.inventoryframework.pane.util.Pattern;
 import dev.viaduct.factories.contributions.Contributable;
 import dev.viaduct.factories.domain.banks.Bank;
 import dev.viaduct.factories.domain.players.FactoryPlayer;
 import dev.viaduct.factories.guis.categories.Category;
 import dev.viaduct.factories.guis.menus.PlayerMainMenu;
 import dev.viaduct.factories.guis.menus.display_items.CategoryDisplayItem;
+import dev.viaduct.factories.guis.menus.gui_items.BackGuiItem;
 import dev.viaduct.factories.guis.menus.gui_items.ContributableGuiItem;
-import dev.viaduct.factories.guis.menus.panes.OutlineSixRowPane;
-import dev.viaduct.factories.guis.menus.panes.TopAndBottomSixPane;
 import dev.viaduct.factories.registries.impl.CategoryRegistry;
 import dev.viaduct.factories.utils.Chat;
 import dev.viaduct.factories.utils.ItemBuilder;
@@ -35,59 +37,76 @@ public class Market implements Listener {
         ChestGui marketGui = new ChestGui(6, Chat.colorize("   - Sun Industries Market -"));
         marketGui.setOnTopClick(event -> event.setCancelled(true));
 
-        TopAndBottomSixPane topAndBottomSixPane = new TopAndBottomSixPane(Material.GREEN_STAINED_GLASS_PANE);
-        topAndBottomSixPane.addItem(new GuiItem(new ItemBuilder(Material.BEACON)
-                .setName("&2&lContribute")
-                .addLoreLines("Contribute to the war effort", "to increase WCS (War Contribution Score).", " ",
-                        "&7Increase your WCS to unlock", "&7to show us your dedication.", "",
-                        "Earning higher WCS will", "unlock new items in the market!")
+        Pattern pattern = new Pattern(
+                "131111111",
+                "100000001",
+                "100000001",
+                "100000001",
+                "100000001",
+                "111121111"
+        );
+        PatternPane patternPane = new PatternPane(0, 0, 9, 6, Pane.Priority.LOWEST, pattern);
+        patternPane.bindItem('1', new GuiItem(new ItemBuilder(Material.GRAY_STAINED_GLASS_PANE).build()));
+        patternPane.bindItem('2', new BackGuiItem("&eBack", "&7Back to the main menu",
+                click -> new PlayerMainMenu().showToPlayer(factoryPlayer)));
+        patternPane.bindItem('3', (new GuiItem(new ItemBuilder(Material.BEACON)
+                .setName("&2War Contribution Score &f(WCS)")
+                .addLoreLines("Higher WCS unlocks new market items!",
+                        "",
+                        "Click to open contribution menu.")
                 .glowing()
-                .build()), 0, 0);
-        topAndBottomSixPane.addItem(new GuiItem(new ItemBuilder(Material.ARROW)
-                .setName("&eBack")
-                .addLoreLines("&7Back to the main menu")
-                .build(), event -> new PlayerMainMenu().showToPlayer(factoryPlayer)), 4, 5);
+                .build(), click -> showToPlayer(factoryPlayer))));
 
-        PaginatedPane paginatedPane = new PaginatedPane(0, 1, 5, 4);
+        PaginatedPane contributablePane = new PaginatedPane(2, 2, 5, 2);
 
         List<GuiItem> contributableItems = new ArrayList<>();
         getContributableResources(factoryPlayer)
                 .forEach((contributable, amount) -> contributableItems.add(new ContributableGuiItem(factoryPlayer, contributable, amount, this)));
 
         if (contributableItems.isEmpty()) {
-            paginatedPane.populateWithGuiItems(List.of(new GuiItem(new ItemBuilder(Material.BARRIER)
+            contributablePane.populateWithGuiItems(List.of(new GuiItem(new ItemBuilder(Material.BARRIER)
                     .setName("&cNo resources to contribute")
                     .addLoreLines("&7Gain resources by mining and", "&7contribute them here.")
                     .build())));
         } else {
-            paginatedPane.populateWithGuiItems(contributableItems);
+            contributablePane.populateWithGuiItems(contributableItems);
         }
 
-        PaginatedPane categoryPane = new PaginatedPane(1, 0, 6, 1);
+        PaginatedPane categoryPane = new PaginatedPane(3, 0, 5, 1);
         List<GuiItem> categoryItems = new ArrayList<>();
         CategoryRegistry.getInstance().getAllValues()
                 .forEach(category -> categoryItems.add(new CategoryDisplayItem(category, false, factoryPlayer, this)));
         categoryPane.populateWithGuiItems(categoryItems);
 
-        marketGui.addPane(topAndBottomSixPane);
+        marketGui.addPane(patternPane);
         marketGui.addPane(categoryPane);
-        marketGui.addPane(paginatedPane);
+        marketGui.addPane(contributablePane);
         marketGui.show(factoryPlayer.getPlayer());
     }
 
     public void showToPlayer(FactoryPlayer factoryPlayer, Category filterCategory) {
-        ChestGui chestGui = new ChestGui(6, Chat.colorize("&8Quests"));
+        ChestGui chestGui = new ChestGui(6, Chat.colorize("   - Sun Industries Market -"));
         chestGui.setOnTopClick(event -> event.setCancelled(true));
 
-        OutlineSixRowPane outlineSixRowPane = new OutlineSixRowPane(Material.GRAY_STAINED_GLASS_PANE, "Clear filter",
-                click -> showToPlayer(factoryPlayer));
-        outlineSixRowPane.addItem(new GuiItem(new ItemBuilder(Material.BEACON)
+        Pattern pattern = new Pattern(
+                "131111111",
+                "100000001",
+                "100000001",
+                "100000001",
+                "100000001",
+                "111121111"
+        );
+        PatternPane patternPane = new PatternPane(0, 0, 9, 6, Pane.Priority.LOWEST, pattern);
+        patternPane.bindItem('1', new GuiItem(new ItemBuilder(Material.GRAY_STAINED_GLASS_PANE).build()));
+        patternPane.bindItem('2', new BackGuiItem("&eClear Filter", "&7Click to clear", click -> showToPlayer(factoryPlayer)));
+        patternPane.bindItem('3', (new GuiItem(new ItemBuilder(Material.BEACON)
                 .setName("&2&lContribute")
                 .addLoreLines("Contribute to the war effort", "to increase WCS (War Contribution Score).", " ",
                         "Earning higher WCS will", "unlock new items in the market!")
-                .build(), click -> showToPlayer(factoryPlayer)), 0, 0);
-        PaginatedPane categoryPane = new PaginatedPane(1, 0, 7, 1);
-        PaginatedPane questsPane = new PaginatedPane(0, 1, 9, 5);
+                .build(), click -> showToPlayer(factoryPlayer))));
+
+        PaginatedPane categoryPane = new PaginatedPane(3, 0, 5, 1);
+        PaginatedPane itemListPane = new PaginatedPane(1, 1, 8, 4);
 
         CategoryRegistry categoryRegistry = CategoryRegistry.getInstance();
 
@@ -107,21 +126,11 @@ public class Market implements Listener {
                 .stream()
                 .filter(displayItem -> displayItem.inCategory(filterCategory))
                 .forEach(displayItem -> marketDisplayItems.add(displayItem.asGuiItem()));
-        questsPane.populateWithGuiItems(marketDisplayItems);
+        itemListPane.populateWithGuiItems(marketDisplayItems);
 
-//        PagingButtons categoryPagingButtons = new PagingButtons(Slot.fromIndex(0), 9, categoryPane);
-//        categoryPagingButtons.setForwardButton(new GuiItem(new ItemBuilder(Material.ARROW).setName("&fNext").build()));
-//        categoryPagingButtons.setBackwardButton(new GuiItem(new ItemBuilder(Material.ARROW).setName("&fPrevious").build()));
-//
-//        PagingButtons questsPagingButtons = new PagingButtons(Slot.fromIndex(45), 9, questsPane);
-//        questsPagingButtons.setForwardButton(new GuiItem(new ItemBuilder(Material.ARROW).setName("&fNext").build()));
-//        questsPagingButtons.setBackwardButton(new GuiItem(new ItemBuilder(Material.ARROW).setName("&fPrevious").build()));
-
-        chestGui.addPane(outlineSixRowPane);
+        chestGui.addPane(patternPane);
         chestGui.addPane(categoryPane);
-        chestGui.addPane(questsPane);
-//        chestGui.addPane(categoryPagingButtons);
-//        chestGui.addPane(questsPagingButtons);
+        chestGui.addPane(itemListPane);
         chestGui.show(factoryPlayer.getPlayer());
     }
 

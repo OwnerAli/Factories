@@ -26,7 +26,7 @@ public class AddResourceAction implements Action {
         resourceOptional.ifPresent(resource -> {
             factoryPlayer.getBank()
                     .addToResource(resource, factoryPlayer.getScoreboard(), amount);
-            Chat.log("Sun Industries has added " + amount + " " + resource.getName() + " to your account.");
+            Chat.tell(factoryPlayer.getPlayer(), "Sun Industries has added " + amount + " " + resource.getName() + " to your account.");
         });
     }
 

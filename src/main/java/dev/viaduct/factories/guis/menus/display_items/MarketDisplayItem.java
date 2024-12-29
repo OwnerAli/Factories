@@ -10,9 +10,11 @@ import dev.viaduct.factories.guis.categories.Category;
 import dev.viaduct.factories.guis.menus.gui_items.MarketGuiItem;
 import dev.viaduct.factories.utils.ItemBuilder;
 import lombok.Getter;
+import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.List;
+import java.util.function.Consumer;
 
 @Getter
 public class MarketDisplayItem extends ItemBuilder implements Categorizable {
@@ -36,8 +38,25 @@ public class MarketDisplayItem extends ItemBuilder implements Categorizable {
                 .forEach(message -> addLoreLine("&7 • " + message));
     }
 
+    public MarketDisplayItem(String name, ItemStack itemToSell, List<Action> actions, AbstractCondition... conditions) {
+        super(itemToSell);
+        this.name = name;
+        this.itemToSell = itemToSell;
+        this.category = Category.defaultCategory();
+        this.conditionHolder = new ConditionHolder(conditions);
+        this.actionHolder = new ActionHolder(actions);
+
+        addLoreLines(" ", "&f&lCOST");
+        conditionHolder.getConditionStrings()
+                .forEach(message -> addLoreLine("&7 • " + message));
+    }
+
     public GuiItem asGuiItem() {
         return new MarketGuiItem(this);
+    }
+
+    public GuiItem asGuiItem(Consumer<InventoryClickEvent> clickAction) {
+        return new MarketGuiItem(this, clickAction);
     }
 
     @Override

@@ -34,8 +34,8 @@ public class BlueprintRegistry extends Registry<String, Blueprint> {
                 List.of(new ItemStack(Material.DIAMOND, 1),
                         new ItemStack(Material.IRON_INGOT, 2)),
                 List.of(),
-                List.of(new ItemStackProgressable(new ItemStack(Material.DIAMOND, 1)),
-                        new ResourceProgressable(20.0, "stone")),
+                List.of(new ResourceProgressable(50.0, "wood"),
+                        new ResourceProgressable(10.0, "stone")),
                 new GiveItemAction(FactoriesPlugin.getRegistryManager()
                         .getRegistry(GeneratorRegistry.class)
                         .get("stone_generator")

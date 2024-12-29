@@ -15,4 +15,11 @@ public class BackGuiItem extends GuiItem {
                 .build(), action);
     }
 
+    public BackGuiItem(String buttonText, String description, Consumer<InventoryClickEvent> action) {
+        super(new ItemBuilder(Material.ARROW)
+                .setName("&e" + buttonText)
+                .addLoreLines(description)
+                .build(), action);
+    }
+
 }

@@ -30,12 +30,29 @@ public class FactoryScoreboard {
 
         this.bank = factoryPlayer.getBank();
 
-        addScoreboardLine();
+        test();
         factoryPlayer.getPlayer().setScoreboard(scoreboard);
     }
 
+    public void test() {
+        int score = 20;
+
+        objective.getScore("               ").setScore(score--);
+
+        objective.getScore(Chat.colorize("&f&lYou")).setScore(score--);
+        createUpdatingLine(Chat.colorize("  &f• WCS: "), bank.getResourceAmt("WCS"), "wcs", score--);
+
+        objective.getScore("                  ").setScore(score--);
+
+        objective.getScore(Chat.colorize("&f&lResources      ")).setScore(score--);
+        createUpdatingLine("  &f• Wood: ", bank.getResourceAmt("wood"), "wood", score--);
+        createUpdatingLine("  &f• Stone: ", bank.getResourceAmt("stone"), "stone", score--);
+
+        lastScore = score;
+    }
+
     public void addScoreboardLine() {
-        Score divider = objective.getScore("               ");
+        Score divider = objective.getScore("                ");
         divider.setScore(15); // index 15
 
         Score resourceTitle = objective.getScore(Chat.colorizeHex("&f&lResources    "));
@@ -90,12 +107,26 @@ public class FactoryScoreboard {
     }
 
     public void updateResourceLine(Resource resource) {
-        scoreboard.getTeam(resource.getName())
+        scoreboard.getTeam(resource.getName().toLowerCase())
                 .setPrefix(Chat.colorize("  &f• ") + resource.getFormattedName() + bank.getResourceAmt(resource));
     }
 
     public void removeLine(String line) {
         scoreboard.resetScores(line);
+    }
+
+    private void createUpdatingLine(String line, Object value, int score) {
+        Team team = scoreboard.registerNewTeam("line-" + score);
+        team.addEntry(ChatColor.values()[score] + "");
+        team.setPrefix(Chat.colorize("  &f• ") + line + value);
+        objective.getScore(ChatColor.values()[score] + "").setScore(score);
+    }
+
+    private void createUpdatingLine(String line, Object value, String id, int score) {
+        Team team = scoreboard.registerNewTeam(id);
+        team.addEntry(ChatColor.values()[score] + "");
+        team.setPrefix(Chat.colorize("  &f• ") + line + value);
+        objective.getScore(ChatColor.values()[score] + "").setScore(score);
     }
 
 }

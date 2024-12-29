@@ -5,18 +5,20 @@ import dev.viaduct.factories.contributions.Contributable;
 import dev.viaduct.factories.domain.players.FactoryPlayer;
 import dev.viaduct.factories.markets.Market;
 import dev.viaduct.factories.utils.ItemBuilder;
+import org.bukkit.Sound;
 
 public class ContributableGuiItem extends GuiItem {
 
     public ContributableGuiItem(FactoryPlayer factoryPlayer, Contributable contributable, double amountOfResource, Market market) {
         super(new ItemBuilder(contributable.getDisplayMaterial())
-                        .setName("Contribute " + contributable.getDisplayName())
+                        .setName(contributable.getDisplayName().replace(": ", " ") + " &7(%.1fx WCS/Resource)".formatted(contributable.getContribution()))
                         .addLoreLines("",
-                                "&fClick → Contributes 1 &7(%.1f WCS)".formatted(contributable.getContribution()),
-                                "&fShift-Click → Contributes All &7(%.1f WCS)".formatted(contributable.getContribution() * amountOfResource))
+                                "&e&nCLICK &f→ Contribute &e1 &7(%.1fx WCS)".formatted(contributable.getContribution()),
+                                "&e&nSHIFT-CLICK &f→ Contribute &e%s &7(%.1fx WCS)".formatted(amountOfResource, contributable.getContribution() * amountOfResource))
                         .build(),
                 click -> {
                     click.setCancelled(true);
+                    factoryPlayer.getPlayer().playSound(factoryPlayer.getPlayer(), Sound.BLOCK_NOTE_BLOCK_BELL, 1, 10);
                     if (click.isShiftClick()) {
                         contributable.contribute(factoryPlayer, amountOfResource);
                     } else {

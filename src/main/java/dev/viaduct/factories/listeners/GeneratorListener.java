@@ -3,6 +3,7 @@ package dev.viaduct.factories.listeners;
 import dev.viaduct.factories.events.GeneratorPlaceEvent;
 import dev.viaduct.factories.events.ProgressDisplayCompletionEvent;
 import dev.viaduct.factories.generators.manual_generators.block_generators.impl.BlockManualGenerator;
+import dev.viaduct.factories.generators.manual_generators.block_generators.impl.EnergyGenerator;
 import dev.viaduct.factories.registries.impl.FactoryPlayerRegistry;
 import dev.viaduct.factories.registries.impl.GeneratorRegistry;
 import org.bukkit.event.EventHandler;
@@ -50,6 +51,9 @@ public class GeneratorListener implements Listener {
 
     @EventHandler
     public void onDisplayComplete(ProgressDisplayCompletionEvent event) {
+        if (event.getGenerator() instanceof EnergyGenerator energyGenerator) {
+            energyGenerator.generate();
+        }
         if (!(event.getGenerator() instanceof BlockManualGenerator blockManualGenerator)) return;
         blockManualGenerator.getDisplayCompletionConsumer().accept(event);
     }

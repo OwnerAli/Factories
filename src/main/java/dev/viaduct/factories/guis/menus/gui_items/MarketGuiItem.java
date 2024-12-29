@@ -6,8 +6,10 @@ import dev.viaduct.factories.domain.players.FactoryPlayer;
 import dev.viaduct.factories.guis.menus.display_items.MarketDisplayItem;
 import dev.viaduct.factories.registries.impl.FactoryPlayerRegistry;
 import org.bukkit.entity.Player;
+import org.bukkit.event.inventory.InventoryClickEvent;
 
 import java.util.Optional;
+import java.util.function.Consumer;
 
 public class MarketGuiItem extends GuiItem {
 
@@ -27,6 +29,10 @@ public class MarketGuiItem extends GuiItem {
                         displayItem.getActionHolder().executeAllActions(factoryPlayer);
                     });
                 });
+    }
+
+    public MarketGuiItem(MarketDisplayItem displayItem, Consumer<InventoryClickEvent> clickAction) {
+        super(displayItem.build(), clickAction);
     }
 
 }

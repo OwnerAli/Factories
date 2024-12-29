@@ -19,15 +19,16 @@ public class CustomItemRegistry extends Registry<String, CustomItem> {
 
     public void initialize(Player player) {
         // Menu Custom Item
-        Optional<FactoryPlayer> factoryPlayerOptional = FactoryPlayerRegistry.getInstance()
-                .get(player);
-
         CustomItem menuItem = new CustomItem("menu",
                 new InventoryClickActionableMeta(inventoryClickEvent -> {
                     inventoryClickEvent.setCancelled(true);
-                    player.updateInventory();
+
+                    Player clickPlayer = (Player) inventoryClickEvent.getWhoClicked();
+                    Optional<FactoryPlayer> factoryPlayerOptional = FactoryPlayerRegistry.getInstance()
+                            .get(clickPlayer);
 
                     if (factoryPlayerOptional.isEmpty()) return;
+                    clickPlayer.updateInventory();
 
                     if (inventoryClickEvent.getClick().isShiftClick()) {
                         new Market().showToPlayer(factoryPlayerOptional.get());
@@ -36,6 +37,9 @@ public class CustomItemRegistry extends Registry<String, CustomItem> {
                     }
                 }),
                 new PlayerInteractActionableMeta(playerInteractEvent -> {
+                    Optional<FactoryPlayer> factoryPlayerOptional = FactoryPlayerRegistry.getInstance()
+                            .get(playerInteractEvent.getPlayer());
+
                     if (factoryPlayerOptional.isEmpty()) return;
 
                     if (player.isSneaking()) {
