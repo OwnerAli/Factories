@@ -49,6 +49,20 @@ public class CustomItemRegistry extends Registry<String, CustomItem> {
                     }
                 }, Action.RIGHT_CLICK_AIR, Action.RIGHT_CLICK_BLOCK));
 
+        new CustomItem("crank_axe", new PlayerInteractActionableMeta(playerInteractEvent -> {
+            Optional<FactoryPlayer> factoryPlayerOptional = FactoryPlayerRegistry.getInstance()
+                    .get(playerInteractEvent.getPlayer());
+
+            if (factoryPlayerOptional.isEmpty()) return;
+            if (playerInteractEvent.getClickedBlock() == null) return;
+
+            factoryPlayerOptional.get().getGeneratorHolder()
+                    .getGenerator(playerInteractEvent.getClickedBlock().getLocation())
+                    .ifPresent(generator -> {
+
+                    });
+        }, Action.RIGHT_CLICK_BLOCK));
+
         // Add the custom item to the registry
         register(menuItem.getId(), menuItem);
 

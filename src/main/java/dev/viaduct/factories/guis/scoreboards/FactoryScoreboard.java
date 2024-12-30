@@ -5,6 +5,7 @@ import dev.viaduct.factories.domain.players.FactoryPlayer;
 import dev.viaduct.factories.resources.Resource;
 import dev.viaduct.factories.scoreboards.ScoreboardListable;
 import dev.viaduct.factories.utils.Chat;
+import dev.viaduct.factories.utils.NumberUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.scoreboard.*;
@@ -47,6 +48,8 @@ public class FactoryScoreboard {
         objective.getScore(Chat.colorize("&f&lResources      ")).setScore(score--);
         createUpdatingLine("  &f• Wood: ", bank.getResourceAmt("wood"), "wood", score--);
         createUpdatingLine("  &f• Stone: ", bank.getResourceAmt("stone"), "stone", score--);
+
+        objective.getScore("                    ").setScore(score--);
 
         lastScore = score;
     }
@@ -107,8 +110,9 @@ public class FactoryScoreboard {
     }
 
     public void updateResourceLine(Resource resource) {
+        double resourceAmt = bank.getResourceAmt(resource);
         scoreboard.getTeam(resource.getName().toLowerCase())
-                .setPrefix(Chat.colorize("  &f• ") + resource.getFormattedName() + bank.getResourceAmt(resource));
+                .setPrefix(Chat.colorize("  &f• ") + resource.getFormattedName() + NumberUtils.formatNumber(resourceAmt));
     }
 
     public void removeLine(String line) {

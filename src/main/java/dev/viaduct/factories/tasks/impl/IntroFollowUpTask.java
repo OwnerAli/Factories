@@ -20,7 +20,7 @@ public class IntroFollowUpTask extends Task {
                 List.of(new PlaySoundAction(Sound.UI_TOAST_CHALLENGE_COMPLETE)),
                 new GeneratorPlaceObjective(1, "oak_wood_generator"),
                 new CrankGeneratorTask(1, "Hold right click on the", "generator that you placed."),
-                new BlockBreakObjective(Material.OAK_WOOD, 1, "Mine the block that you generated."));
+                new BlockBreakObjective(Material.OAK_WOOD, 1, "Mine the block that", "you generated to earn", "4 wood resources."));
 //                new BlueprintRevealObjective(1, "Reveal your first blueprint."),
 //                new BlueprintCompleteObjective(1, "Complete your first blueprint.",
 //                        "&7Hover over blueprint", "&7in your inventory", "&7for more info."),

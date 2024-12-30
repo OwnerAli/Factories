@@ -4,6 +4,8 @@ import dev.viaduct.factories.displays.ProgressDisplay;
 import dev.viaduct.factories.domain.players.FactoryPlayer;
 import dev.viaduct.factories.generators.items.GeneratorPlaceItem;
 import dev.viaduct.factories.generators.manual_generators.block_generators.BlockGenerator;
+import dev.viaduct.factories.items.CustomItem;
+import dev.viaduct.factories.registries.impl.CustomItemRegistry;
 import dev.viaduct.factories.utils.MaterialUtils;
 import org.bukkit.Color;
 import org.bukkit.Location;
@@ -13,6 +15,7 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 
+import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
 
@@ -44,9 +47,10 @@ public abstract class BlockManualGenerator extends BlockGenerator {
             // Checks if the block is strippable and the item in the player's hand is an axe
             boolean isStrippable = MaterialUtils.isStrippable(event.getClickedBlock().getType());
 
-            if (event.getItem() != null &&
+            ItemStack heldItem = event.getItem();
+            if (heldItem != null &&
                     event.getAction() == Action.RIGHT_CLICK_BLOCK &&
-                    event.getItem().getType().name().contains("_AXE") &&
+                    heldItem.getType().name().contains("_AXE") &&
                     isStrippable) {
                 event.setCancelled(true);
                 return;
@@ -54,7 +58,7 @@ public abstract class BlockManualGenerator extends BlockGenerator {
 
             if (event.getAction() == Action.LEFT_CLICK_BLOCK &&
                     event.getPlayer().isSneaking() &&
-                    event.getItem() == null &&
+                    heldItem == null &&
                     event.getClickedBlock().getType() != generatingMaterial) {
                 event.setCancelled(true);
                 Block clickedBlock = event.getClickedBlock();

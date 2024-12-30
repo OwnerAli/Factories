@@ -4,6 +4,7 @@ import dev.viaduct.factories.FactoriesPlugin;
 import dev.viaduct.factories.generators.Generator;
 import dev.viaduct.factories.generators.manual_generators.block_generators.impl.EnergyGenerator;
 import dev.viaduct.factories.generators.manual_generators.block_generators.impl.OakWoodGenerator;
+import dev.viaduct.factories.generators.manual_generators.block_generators.impl.OakWoodGeneratorT2;
 import dev.viaduct.factories.generators.manual_generators.block_generators.impl.StoneGenerator;
 import dev.viaduct.factories.registries.Registry;
 import org.bukkit.NamespacedKey;
@@ -18,10 +19,12 @@ public class GeneratorRegistry extends Registry<String, Generator> {
 
     public void initialize() {
         OakWoodGenerator oakWoodGenerator = new OakWoodGenerator("oak_wood_generator");
+        OakWoodGeneratorT2 oakWoodGeneratorT2 = new OakWoodGeneratorT2("oak_wood_generator_t2");
         StoneGenerator stoneGenerator = new StoneGenerator("stone_generator");
         EnergyGenerator energyGenerator = new EnergyGenerator("energy_generator");
 
         register(oakWoodGenerator.getId(), oakWoodGenerator);
+        register(oakWoodGeneratorT2.getId(), oakWoodGeneratorT2);
         register(stoneGenerator.getId(), stoneGenerator);
         register(energyGenerator.getId(), energyGenerator);
     }
@@ -32,5 +35,15 @@ public class GeneratorRegistry extends Registry<String, Generator> {
         return get(itemStack.getItemMeta().getPersistentDataContainer().get(GENERATOR_ID_KEY,
                 PersistentDataType.STRING));
     }
+
+    //#region Lazy Initialization
+    public static GeneratorRegistry getInstance() {
+        return GeneratorRegistry.InstanceHolder.instance;
+    }
+
+    private static final class InstanceHolder {
+        private static final GeneratorRegistry instance = new GeneratorRegistry();
+    }
+    //#endregion
 
 }

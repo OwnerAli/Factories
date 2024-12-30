@@ -32,6 +32,16 @@ public class MarketStockFactory {
                 new ResourceCondition("wood", 10, true),
                 new ResourceCondition("WCS", 3, false)));
 
+        possibleItems.add(new MarketDisplayItem("oak_wood_t2_blueprint", BlueprintRegistry.getInstance()
+                .get("oak_wood_generator_t2")
+                .get().getRevealItem(),
+                CategoryRegistry.getInstance().get("blueprints").orElseThrow(),
+                List.of(new GiveItemAction(BlueprintRegistry.getInstance()
+                        .get("oak_wood_generator_t2")
+                        .get().getRevealItem())),
+                new ResourceCondition("wood", 20, true),
+                new ResourceCondition("WCS", 50, false)));
+
         possibleItems.add(new MarketDisplayItem("stone_blueprint", BlueprintRegistry.getInstance()
                 .get("stone_generator")
                 .get().getRevealItem(),

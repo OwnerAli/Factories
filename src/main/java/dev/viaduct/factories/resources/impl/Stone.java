@@ -19,7 +19,7 @@ public class Stone extends ContributableResource {
 
     @Override
     public double getContribution() {
-        return 3;
+        return 0.3;
     }
 
     @Override
