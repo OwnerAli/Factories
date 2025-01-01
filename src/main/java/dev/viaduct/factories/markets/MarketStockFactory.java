@@ -5,6 +5,7 @@ import dev.viaduct.factories.actions.impl.GiveItemAction;
 import dev.viaduct.factories.conditions.impl.ResourceCondition;
 import dev.viaduct.factories.guis.menus.display_items.MarketDisplayItem;
 import dev.viaduct.factories.guis.menus.gui_items.MarketGuiItem;
+import dev.viaduct.factories.guis.rows.Row;
 import dev.viaduct.factories.registries.impl.BlueprintRegistry;
 import dev.viaduct.factories.registries.impl.CategoryRegistry;
 import dev.viaduct.factories.utils.ItemBuilder;
@@ -26,6 +27,7 @@ public class MarketStockFactory {
                 .get("oak_wood_generator")
                 .get().getRevealItem(),
                 CategoryRegistry.getInstance().get("blueprints").orElseThrow(),
+                Row.FIRST,
                 List.of(new GiveItemAction(BlueprintRegistry.getInstance()
                         .get("oak_wood_generator")
                         .get().getRevealItem())),
@@ -36,6 +38,7 @@ public class MarketStockFactory {
                 .get("oak_wood_generator_t2")
                 .get().getRevealItem(),
                 CategoryRegistry.getInstance().get("blueprints").orElseThrow(),
+                        Row.FIRST,
                 List.of(new GiveItemAction(BlueprintRegistry.getInstance()
                         .get("oak_wood_generator_t2")
                         .get().getRevealItem())),
@@ -46,6 +49,7 @@ public class MarketStockFactory {
                 .get("stone_generator")
                 .get().getRevealItem(),
                 CategoryRegistry.getInstance().get("blueprints").orElseThrow(),
+                Row.SECOND,
                 List.of(new GiveItemAction(BlueprintRegistry.getInstance()
                         .get("stone_generator")
                         .get().getRevealItem())),
