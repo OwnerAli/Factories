@@ -3,9 +3,11 @@ package dev.viaduct.factories;
 import co.aikar.commands.PaperCommandManager;
 import com.github.retrooper.packetevents.PacketEvents;
 import com.github.retrooper.packetevents.event.PacketListenerPriority;
+import dev.viaduct.factories.blueprints.Blueprint;
 import dev.viaduct.factories.blueprints.BlueprintManager;
 import dev.viaduct.factories.commands.AdminCommand;
 import dev.viaduct.factories.domain.lands.LandManager;
+import dev.viaduct.factories.generators.Generator;
 import dev.viaduct.factories.listeners.*;
 import dev.viaduct.factories.packets.listeners.ScoreboardPacketListener;
 import dev.viaduct.factories.registries.RegistryManager;
@@ -22,6 +24,8 @@ import org.bukkit.plugin.PluginManager;
 import world.bentobox.bentobox.api.addons.Addon;
 import world.bentobox.bentobox.api.addons.GameModeAddon;
 import world.bentobox.bentobox.api.addons.Pladdon;
+
+import java.util.List;
 
 @Getter
 public class FactoriesPlugin extends Pladdon {
@@ -59,7 +63,7 @@ public class FactoriesPlugin extends Pladdon {
         instance = this;
         initRegistries();
         registerListeners();
-        registerCommands();
+        Bukkit.getScheduler().runTaskLater(this, this::registerCommands, 40L);
 
         PacketEvents.getAPI().getEventManager().registerListener(new ScoreboardPacketListener(),
                 PacketListenerPriority.LOW);
@@ -119,7 +123,26 @@ public class FactoriesPlugin extends Pladdon {
 
     private void registerCommands() {
         PaperCommandManager paperCommandManager = new PaperCommandManager(this);
-        paperCommandManager.registerCommand(new AdminCommand(registryManager));
+        paperCommandManager.registerCommand(new AdminCommand());
+
+        List<String> generatorIds = registryManager.getRegistry(GeneratorRegistry.class)
+                .getAllValues()
+                .stream()
+                .map(Generator::getId)
+                .toList();
+        paperCommandManager.getCommandCompletions().registerAsyncCompletion("generatorIds", c -> generatorIds);
+
+        List<String> blueprintIds = BlueprintRegistry.getInstance().getAllValues()
+                .stream()
+                .map(Blueprint::getId)
+                .toList();
+        paperCommandManager.getCommandCompletions().registerAsyncCompletion("blueprintIds", c -> blueprintIds);
+
+        List<String> resourceIds = resourceManager.getResourceSet()
+                .stream()
+                .map(resource -> resource.getName().toLowerCase())
+                .toList();
+        paperCommandManager.getCommandCompletions().registerAsyncCompletion("resourceIds", c -> resourceIds);
     }
 
 }

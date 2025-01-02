@@ -1,10 +1,8 @@
 package dev.viaduct.factories.markets;
 
-import com.github.stefvanschie.inventoryframework.gui.GuiItem;
 import dev.viaduct.factories.actions.impl.GiveItemAction;
 import dev.viaduct.factories.conditions.impl.ResourceCondition;
 import dev.viaduct.factories.guis.menus.display_items.MarketDisplayItem;
-import dev.viaduct.factories.guis.menus.gui_items.MarketGuiItem;
 import dev.viaduct.factories.guis.rows.Row;
 import dev.viaduct.factories.registries.impl.BlueprintRegistry;
 import dev.viaduct.factories.registries.impl.CategoryRegistry;
@@ -23,39 +21,63 @@ public class MarketStockFactory {
     private MarketStockFactory() {
         //  stock list of potential items.
         possibleItems = new ArrayList<>();
-        possibleItems.add(new MarketDisplayItem("oak_wood_blueprint", BlueprintRegistry.getInstance()
-                .get("oak_wood_generator")
-                .get().getRevealItem(),
+        possibleItems.add(new MarketDisplayItem("wood_gen_t1_bp", BlueprintRegistry.getInstance()
+                .get("wood_generator_t1")
+                .orElseThrow()
+                .getRevealItem(),
                 CategoryRegistry.getInstance().get("blueprints").orElseThrow(),
                 Row.FIRST,
                 List.of(new GiveItemAction(BlueprintRegistry.getInstance()
-                        .get("oak_wood_generator")
-                        .get().getRevealItem())),
+                        .get("wood_generator_t1")
+                        .orElseThrow()
+                        .getRevealItem())),
                 new ResourceCondition("wood", 10, true),
                 new ResourceCondition("WCS", 3, false)));
 
-        possibleItems.add(new MarketDisplayItem("oak_wood_t2_blueprint", BlueprintRegistry.getInstance()
-                .get("oak_wood_generator_t2")
-                .get().getRevealItem(),
+        possibleItems.add(new MarketDisplayItem("wood_gen_t2_bp", BlueprintRegistry.getInstance()
+                .get("wood_generator_t2")
+                .orElseThrow()
+                .getRevealItem(),
                 CategoryRegistry.getInstance().get("blueprints").orElseThrow(),
-                        Row.FIRST,
+                Row.FIRST,
                 List.of(new GiveItemAction(BlueprintRegistry.getInstance()
-                        .get("oak_wood_generator_t2")
-                        .get().getRevealItem())),
+                        .get("wood_generator_t2")
+                        .orElseThrow()
+                        .getRevealItem())),
                 new ResourceCondition("wood", 20, true),
-                new ResourceCondition("WCS", 50, false)));
+                new ResourceCondition("WCS", 15, false)));
 
-        possibleItems.add(new MarketDisplayItem("stone_blueprint", BlueprintRegistry.getInstance()
-                .get("stone_generator")
-                .get().getRevealItem(),
-                CategoryRegistry.getInstance().get("blueprints").orElseThrow(),
+        possibleItems.add(new MarketDisplayItem("stone_gen_t1_bp", BlueprintRegistry.getInstance()
+                .get("stone_generator_t1")
+                .orElseThrow()
+                .getRevealItem(),
+                CategoryRegistry.getInstance()
+                        .get("blueprints")
+                        .orElseThrow(),
                 Row.SECOND,
                 List.of(new GiveItemAction(BlueprintRegistry.getInstance()
-                        .get("stone_generator")
-                        .get().getRevealItem())),
-                new ResourceCondition("wood", 20, true),
+                        .get("stone_generator_t1")
+                        .orElseThrow()
+                        .getRevealItem())),
+                new ResourceCondition("wood", 45, true),
                 new ResourceCondition("stone", 50, true),
-                new ResourceCondition("WCS", 50, false)));
+                new ResourceCondition("WCS", 25, false)));
+
+        possibleItems.add(new MarketDisplayItem("stone_gen_t2_bp", BlueprintRegistry.getInstance()
+                .get("stone_generator_t2")
+                .orElseThrow()
+                .getRevealItem(),
+                CategoryRegistry.getInstance()
+                        .get("blueprints")
+                        .orElseThrow(),
+                Row.SECOND,
+                List.of(new GiveItemAction(BlueprintRegistry.getInstance()
+                        .get("stone_generator_t2")
+                        .orElseThrow()
+                        .getRevealItem())),
+                new ResourceCondition("wood", 100, true),
+                new ResourceCondition("stone", 100, true),
+                new ResourceCondition("WCS", 70, false)));
 
         // Basic Axe
         MarketDisplayItem basicAxe = new MarketDisplayItem("basic_axe", new ItemBuilder(Material.WOODEN_AXE)
@@ -65,7 +87,7 @@ public class MarketStockFactory {
                         .setName("#70543EPioneer Axe")
                         .build())),
                 new ResourceCondition("wood", 10, true),
-                new ResourceCondition("WCS", 50, false));
+                new ResourceCondition("WCS", 10, false));
 
         // Basic Pickaxe
         MarketDisplayItem basicPickaxe = new MarketDisplayItem("basic_pickaxe", new ItemBuilder(Material.WOODEN_PICKAXE)
@@ -75,7 +97,7 @@ public class MarketStockFactory {
                         .setName("#70543EPioneer Pickaxe")
                         .build())),
                 new ResourceCondition("wood", 10, true),
-                new ResourceCondition("WCS", 50, false));
+                new ResourceCondition("WCS", 35, false));
 
         // Industrial Axe
         MarketDisplayItem industrialAxe = new MarketDisplayItem("industrial_axe", new ItemBuilder(Material.STONE_AXE)
@@ -86,7 +108,7 @@ public class MarketStockFactory {
                         .build())),
                 new ResourceCondition("wood", 100, true),
                 new ResourceCondition("stone", 50, true),
-                new ResourceCondition("WCS", 500, false));
+                new ResourceCondition("WCS", 50, false));
 
         // Industrial Pickaxe
         MarketDisplayItem industrialPickaxe = new MarketDisplayItem("industrial_pickaxe", new ItemBuilder(Material.STONE_PICKAXE)
@@ -97,7 +119,7 @@ public class MarketStockFactory {
                         .build())),
                 new ResourceCondition("wood", 100, true),
                 new ResourceCondition("stone", 50, true),
-                new ResourceCondition("WCS", 500, false));
+                new ResourceCondition("WCS", 65, false));
 
         // Orbital Axe
         MarketDisplayItem orbitalAxe = new MarketDisplayItem("orbital_axe", new ItemBuilder(Material.IRON_AXE)
@@ -108,7 +130,7 @@ public class MarketStockFactory {
                         .build())),
                 new ResourceCondition("wood", 1000, true),
                 new ResourceCondition("stone", 500, true),
-                new ResourceCondition("WCS", 5000, false));
+                new ResourceCondition("WCS", 120, false));
 
         // Orbital Pickaxe
         MarketDisplayItem orbitalPickaxe = new MarketDisplayItem("orbital_pickaxe", new ItemBuilder(Material.IRON_PICKAXE)
@@ -119,7 +141,7 @@ public class MarketStockFactory {
                         .build())),
                 new ResourceCondition("wood", 1000, true),
                 new ResourceCondition("stone", 500, true),
-                new ResourceCondition("WCS", 5000, false));
+                new ResourceCondition("WCS", 200, false));
 
         possibleItems.add(basicAxe);
         possibleItems.add(basicPickaxe);
@@ -127,15 +149,6 @@ public class MarketStockFactory {
         possibleItems.add(industrialPickaxe);
         possibleItems.add(orbitalAxe);
         possibleItems.add(orbitalPickaxe);
-    }
-
-    public List<GuiItem> generateMarketStock() {
-        List<GuiItem> marketStock = new ArrayList<>();
-        for (MarketDisplayItem possibleItem : possibleItems) {
-            MarketGuiItem item = new MarketGuiItem(possibleItem);
-            marketStock.add(item);
-        }
-        return marketStock;
     }
 
     //#region Lazy Initialization

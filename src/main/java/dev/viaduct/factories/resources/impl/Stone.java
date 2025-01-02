@@ -9,7 +9,8 @@ public class Stone extends ContributableResource {
 
     public Stone() {
         super("Stone", 1.0,
-                new MaterialAmountPair(Material.STONE, 4));
+                new MaterialAmountPair(Material.STONE, 4),
+                new MaterialAmountPair(Material.MOSSY_COBBLESTONE, 2));
     }
 
     @Override

@@ -1,13 +1,14 @@
-package dev.viaduct.factories.generators.manual_generators.block_generators.impl;
+package dev.viaduct.factories.generators.manual_generators.block_generators.impl.wood;
 
+import dev.viaduct.factories.generators.manual_generators.block_generators.impl.BlockManualGenerator;
 import org.bukkit.Color;
 import org.bukkit.Material;
 
 import java.util.concurrent.TimeUnit;
 
-public class OakWoodGeneratorT2 extends BlockManualGenerator {
+public class WoodGeneratorT2 extends BlockManualGenerator {
 
-    public OakWoodGeneratorT2(String id) {
+    public WoodGeneratorT2(String id) {
         super(id, Material.DARK_OAK_WOOD, 5, TimeUnit.SECONDS,
                 true, true, Color.RED);
     }

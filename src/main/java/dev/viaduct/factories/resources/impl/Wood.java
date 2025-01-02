@@ -11,7 +11,7 @@ public class Wood extends ContributableResource {
         super("Wood", 1.0,
                 new MaterialAmountPair(Material.OAK_WOOD, 4),
                 new MaterialAmountPair(Material.OAK_FENCE, 0.5),
-                new MaterialAmountPair(Material.DARK_OAK_WOOD, 6));
+                new MaterialAmountPair(Material.DARK_OAK_WOOD, 2));
     }
 
     @Override

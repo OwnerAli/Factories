@@ -20,19 +20,13 @@ public class IntroFollowUpTask extends Task {
                 Set.of(), List.of(),
                 List.of(new PlaySoundAction(Sound.UI_TOAST_CHALLENGE_COMPLETE),
                         new AddResourceAction("stone", 10)),
-                new GeneratorPlaceObjective(1, "oak_wood_generator"),
+                new GeneratorPlaceObjective(1, "wood_generator_t1"),
                 new CrankGeneratorTask(1, "Hold right click on the", "generator that you placed."),
-                new BlockBreakObjective(Material.OAK_WOOD, 1, "Mine the block that", "you generated to earn", "4 wood resources."));
-//                new BlueprintRevealObjective(1, "Reveal your first blueprint."),
-//                new BlueprintCompleteObjective(1, "Complete your first blueprint.",
-//                        "&7Hover over blueprint", "&7in your inventory", "&7for more info."),
-//                new GeneratorPlaceObjective(1, "oak_wood_generator"),
-//                new CrankGeneratorTask(1, "Hold right click on", "the generator", "that you placed."),
-//                new BlockBreakObjective(Material.OAK_WOOD, 1, "Mine the block you", "generated to earn", "4 wood resources."));
+                new BlockBreakObjective(Material.OAK_WOOD, 1, "Mine the block that", "you generated to earn",
+                        "&e&n4 wood resources."));
     }
 
     @Override
-    public void end(FactoryPlayer factoryPlayer) {
-    }
+    public void end(FactoryPlayer factoryPlayer) {}
 
 }

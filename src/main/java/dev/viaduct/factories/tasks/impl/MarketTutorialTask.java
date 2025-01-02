@@ -18,6 +18,7 @@ public class MarketTutorialTask extends Task {
                 List.of(),
                 new InteractObjective(1, null, Material.NETHER_STAR,
                         "Navigate to the market using", "&ethe nether star in your inventory."),
+
                 new UnlockLandObjective(1, "Expand your factory!",
                         "&7Walk up to a plot of", "&7land and right-click."));
     }

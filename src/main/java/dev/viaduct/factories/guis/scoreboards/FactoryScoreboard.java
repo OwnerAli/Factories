@@ -85,11 +85,6 @@ public class FactoryScoreboard {
     public void addToScoreboard(ScoreboardListable scoreboardListable) {
         int originalLastScore = lastScore;
 
-        Score divider = objective.getScore(Chat.colorize("&f               "));
-        divider.setScore(lastScore);
-
-        lastScore--;
-
         Score resourceTitle = objective.getScore(Chat.colorize(scoreboardListable.getSection()));
         resourceTitle.setScore(lastScore); // index 14
 
