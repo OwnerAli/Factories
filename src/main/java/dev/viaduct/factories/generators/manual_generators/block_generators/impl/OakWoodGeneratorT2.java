@@ -8,7 +8,7 @@ import java.util.concurrent.TimeUnit;
 public class OakWoodGeneratorT2 extends BlockManualGenerator {
 
     public OakWoodGeneratorT2(String id) {
-        super(id, Material.DARK_OAK_WOOD, 6, TimeUnit.SECONDS,
+        super(id, Material.DARK_OAK_WOOD, 5, TimeUnit.SECONDS,
                 true, true, Color.RED);
     }
 

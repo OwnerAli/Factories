@@ -64,6 +64,7 @@ public class BlueprintProgress {
                 .getRegistry(BlueprintRegistry.class)
                 .get(blueprintId)
                 .ifPresent(bp -> {
+                    itemBuilder.setName("&f* " + blueprintId.toUpperCase() + " Blueprint &f*");
                     if (!bp.getCompletionConditions().isEmpty()) {
                         itemBuilder.addLoreLines(" ", "&f&lConditions ");
                         bp.getCompletionConditions().getConditionStrings()

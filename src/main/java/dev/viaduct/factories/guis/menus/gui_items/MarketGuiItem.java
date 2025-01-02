@@ -5,6 +5,7 @@ import dev.viaduct.factories.conditions.ConditionHolder;
 import dev.viaduct.factories.domain.players.FactoryPlayer;
 import dev.viaduct.factories.guis.menus.display_items.MarketDisplayItem;
 import dev.viaduct.factories.registries.impl.FactoryPlayerRegistry;
+import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 
@@ -27,6 +28,7 @@ public class MarketGuiItem extends GuiItem {
                         if (!conditionHolder.allConditionsMet(factoryPlayer)) return;
                         conditionHolder.executeActions(factoryPlayer);
                         displayItem.getActionHolder().executeAllActions(factoryPlayer);
+                        player.playSound(factoryPlayer.getPlayer(), Sound.BLOCK_NOTE_BLOCK_BELL, 1, 1);
                     });
                 });
     }

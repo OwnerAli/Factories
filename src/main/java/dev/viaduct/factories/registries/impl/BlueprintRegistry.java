@@ -6,7 +6,6 @@ import dev.viaduct.factories.actions.impl.PlaySoundAction;
 import dev.viaduct.factories.blueprints.Blueprint;
 import dev.viaduct.factories.blueprints.progress.impl.ItemStackProgressable;
 import dev.viaduct.factories.blueprints.progress.impl.ResourceProgressable;
-import dev.viaduct.factories.generators.Generator;
 import dev.viaduct.factories.registries.Registry;
 import org.bukkit.Material;
 import org.bukkit.Sound;
@@ -38,7 +37,7 @@ public class BlueprintRegistry extends Registry<String, Blueprint> {
                 .getGeneratorPlaceItem();
 
         Blueprint oakWoodT2 = new Blueprint("oak_wood_generator_t2",
-                "#a8996fOak Wood Generator &lT2",
+                "#a8996fOak Wood Generator &lT2&r",
                 List.of(new ItemStack(Material.DIAMOND, 1),
                         new ItemStack(Material.IRON_INGOT, 2)),
                 List.of(),
