@@ -3,6 +3,7 @@ package dev.viaduct.factories.guis.menus.gui_items;
 import com.github.stefvanschie.inventoryframework.gui.GuiItem;
 import dev.viaduct.factories.contributions.Contributable;
 import dev.viaduct.factories.domain.players.FactoryPlayer;
+import dev.viaduct.factories.events.WCSContributionEvent;
 import dev.viaduct.factories.markets.Market;
 import dev.viaduct.factories.utils.ItemBuilder;
 import org.bukkit.Sound;
@@ -21,8 +22,10 @@ public class ContributableGuiItem extends GuiItem {
                     factoryPlayer.getPlayer().playSound(factoryPlayer.getPlayer(), Sound.BLOCK_NOTE_BLOCK_BELL, 1, 10);
                     if (click.isShiftClick()) {
                         contributable.contribute(factoryPlayer, amountOfResource);
+                        new WCSContributionEvent(factoryPlayer, amountOfResource).call();
                     } else {
                         contributable.contribute(factoryPlayer, 1);
+                        new WCSContributionEvent(factoryPlayer, 1).call();
                     }
                     market.showToPlayer(factoryPlayer);
                 });

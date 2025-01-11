@@ -6,11 +6,13 @@ import dev.viaduct.factories.settings.SettingType;
 import dev.viaduct.factories.utils.Chat;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 
 public class GridLandListeners implements Listener {
@@ -71,6 +73,23 @@ public class GridLandListeners implements Listener {
 
             playerLand.spawnPurchaseSquareText(event.getPlayer().getEyeLocation().clone());
         });
+    }
+
+    @EventHandler
+    public void onDamage(EntityDamageEvent event) {
+        if (!EntityDamageEvent.DamageCause.VOID.equals(event.getCause())) return;
+        if (!event.getEntity().getWorld().getName().equalsIgnoreCase("factories_world")) return;
+        if (!(event.getEntity() instanceof Player player)) return;
+        FactoryPlayerRegistry.getInstance()
+                .get(player)
+                .ifPresent(factoryPlayer -> {
+                    Land playerLand = factoryPlayer.getSettingHolder().getSetting(SettingType.PLAYER_LAND);
+                    event.setCancelled(true);
+
+                    // Reset player velocity to prevent fall damage
+                    player.setFallDistance(0);
+                    player.teleport(playerLand.getLocOfCenterOfIsland().clone().add(0, 2, 0));
+                });
     }
 
 }

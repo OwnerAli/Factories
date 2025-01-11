@@ -1,11 +1,13 @@
 package dev.viaduct.factories.guis.scoreboards;
 
+import dev.viaduct.factories.contributions.ContributionLeaderboard;
 import dev.viaduct.factories.domain.banks.Bank;
 import dev.viaduct.factories.domain.players.FactoryPlayer;
 import dev.viaduct.factories.resources.Resource;
 import dev.viaduct.factories.scoreboards.ScoreboardListable;
 import dev.viaduct.factories.utils.Chat;
 import dev.viaduct.factories.utils.NumberUtils;
+import dev.viaduct.factories.utils.RankingUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.scoreboard.*;
@@ -31,17 +33,23 @@ public class FactoryScoreboard {
 
         this.bank = factoryPlayer.getBank();
 
-        test();
+        setupInitialScoreboard();
         factoryPlayer.getPlayer().setScoreboard(scoreboard);
     }
 
-    public void test() {
+    public void setupInitialScoreboard() {
         int score = 20;
 
         objective.getScore("               ").setScore(score--);
 
         objective.getScore(Chat.colorize("&f&lYou")).setScore(score--);
         createUpdatingLine(Chat.colorize("  &f• WCS: "), bank.getResourceAmt("WCS"), "wcs", score--);
+
+        int playerContributionRanking = ContributionLeaderboard.getInstance()
+                .getRanking(factoryPlayer);
+
+        createUpdatingLine(Chat.colorize("&eRanking: "), playerContributionRanking == -1 ? "N/A" :
+                RankingUtil.getRanking(playerContributionRanking), "ranking", score--);
 
         objective.getScore("                  ").setScore(score--);
 
@@ -108,6 +116,11 @@ public class FactoryScoreboard {
         double resourceAmt = bank.getResourceAmt(resource);
         scoreboard.getTeam(resource.getName().toLowerCase())
                 .setPrefix(Chat.colorize("  &f• ") + resource.getFormattedName() + NumberUtils.formatNumber(resourceAmt));
+    }
+
+    public void updateRanking(Object value) {
+        scoreboard.getTeam("ranking")
+                .setPrefix(Chat.colorize("  &f• &eRanking: ") + value);
     }
 
     public void removeLine(String line) {

@@ -91,6 +91,7 @@ public class FactoriesPlugin extends Pladdon {
         pluginManager.registerEvents(new CustomItemListeners(), this);
         pluginManager.registerEvents(new SupplyDropListeners(), this);
         pluginManager.registerEvents(new CraftItemListener(), this);
+        pluginManager.registerEvents(new ContributionListener(), this);
     }
 
     private void initRegistries() {
