@@ -5,6 +5,7 @@ import dev.viaduct.factories.domain.banks.Bank;
 import dev.viaduct.factories.generators.Generator;
 import dev.viaduct.factories.generators.GeneratorHolder;
 import dev.viaduct.factories.guis.scoreboards.FactoryScoreboard;
+import dev.viaduct.factories.registries.impl.CustomItemRegistry;
 import dev.viaduct.factories.registries.impl.FactoryPlayerRegistry;
 import dev.viaduct.factories.settings.SettingHolder;
 import dev.viaduct.factories.tasks.TaskHolder;
@@ -14,6 +15,8 @@ import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
+import world.bentobox.bentobox.BentoBox;
+import world.bentobox.bentobox.api.user.User;
 
 @Getter
 public class FactoryPlayer {
@@ -35,8 +38,9 @@ public class FactoryPlayer {
         this.generatorHolder = new GeneratorHolder();
         this.taskHolder = new TaskHolder();
 
-        bank.addToResource("wood", scoreboard, 5000);
-        bank.addToResource("stone", scoreboard, 5000);
+        bank.addToResource("wood", scoreboard, 0);
+        bank.addToResource("stone", scoreboard, 0);
+        bank.addToResource("WCS", scoreboard, 0);
     }
 
     public void addGenerator(Location location, Generator generator) {
@@ -45,10 +49,25 @@ public class FactoryPlayer {
 
     public void register() {
         FactoryPlayerRegistry.getInstance().register(player.getUniqueId(), this);
-        levelledUpgradeHolder.initializeDefaultUpgrades();
-        settingHolder.initializeDefaultPlayerSettings(this);
 
-        Bukkit.getScheduler().runTaskLater(FactoriesPlugin.getInstance(), () -> taskHolder.setup(new IntroTask(), this), 60L);
+        BentoBox bentoBox = BentoBox.getInstance();
+        User user = User.getInstance(player);
+        boolean hasIsland = bentoBox.getIslandsManager()
+                .hasIsland(Bukkit.getWorld("factories_world"), user);
+        
+        if (hasIsland) {
+            setupLand();
+        }
+
+        levelledUpgradeHolder.initializeDefaultUpgrades();
+        CustomItemRegistry.getInstance().initialize(player);
+
+        Bukkit.getScheduler().runTaskLaterAsynchronously(FactoriesPlugin.getInstance(), () -> taskHolder.setup(new IntroTask(), this), 60L);
+    }
+
+    public void setupLand() {
+        Bukkit.getScheduler().runTaskAsynchronously(FactoriesPlugin.getInstance(),
+                () -> settingHolder.initializeDefaultPlayerSettings(this));
     }
 
 }

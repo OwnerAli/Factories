@@ -24,12 +24,6 @@ public class BlueprintProgress {
     private final String blueprintId;
     private final ProgressableHolder progressableHolder;
 
-    public BlueprintProgress(int id, Blueprint blueprint, Progressable... progressables) {
-        this.id = id;
-        this.blueprintId = blueprint.getId();
-        this.progressableHolder = new ProgressableHolder(this, List.of(progressables));
-    }
-
     public BlueprintProgress(int id, Blueprint blueprint, List<Progressable> progressableList) {
         this.id = id;
         this.blueprintId = blueprint.getId();
@@ -60,7 +54,6 @@ public class BlueprintProgress {
 
     public ItemStack getProgressItem(World world) {
         ItemBuilder itemBuilder = new ItemBuilder(Material.FILLED_MAP)
-                .setName("&f* &b&l" + blueprintId.toUpperCase() + " Blueprint &f*")
                 .addLoreLines("&e&oSun Industries Blueprints™", "&7Unlock the future with advanced",
                         "designs that enable your", "factories!")
                 .setMapImage(world, "/images/Blueprint.png")
@@ -70,13 +63,14 @@ public class BlueprintProgress {
                 .getRegistry(BlueprintRegistry.class)
                 .get(blueprintId)
                 .ifPresent(bp -> {
+                    itemBuilder.setName("&f* " + bp.getDisplayName() + " Blueprint &f*");
                     if (!bp.getCompletionConditions().isEmpty()) {
                         itemBuilder.addLoreLines(" ", "&f&lConditions ");
                         bp.getCompletionConditions().getConditionStrings()
                                 .forEach(line -> itemBuilder.addLoreLine(" &7 • " + line));
                     }
 
-                    itemBuilder.addLoreLines(" ", "&f&lRequirements ");
+                    itemBuilder.addLoreLines(" ", "&f&lTo Do ");
                     progressableHolder.getDescription().forEach(itemBuilder::addLoreLine);
                 });
 

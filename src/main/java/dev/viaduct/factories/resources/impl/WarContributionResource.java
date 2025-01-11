@@ -14,4 +14,14 @@ public class WarContributionResource extends Resource {
         return Chat.colorizeHex("#4CAF50") + getName() + ": ";
     }
 
+    @Override
+    public String getSection() {
+        return "&f&lContributions    ";
+    }
+
+    @Override
+    public int getPriority() {
+        return 3;
+    }
+
 }

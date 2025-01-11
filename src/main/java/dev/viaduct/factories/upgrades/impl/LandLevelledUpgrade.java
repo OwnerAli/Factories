@@ -1,7 +1,6 @@
 package dev.viaduct.factories.upgrades.impl;
 
 import dev.viaduct.factories.actions.impl.LandUpgradeAction;
-import dev.viaduct.factories.actions.impl.RemoveResourceAction;
 import dev.viaduct.factories.conditions.ConditionHolder;
 import dev.viaduct.factories.conditions.impl.ResourceCondition;
 import dev.viaduct.factories.domain.players.FactoryPlayer;
@@ -23,24 +22,19 @@ public class LandLevelledUpgrade extends LevelledUpgrade<Integer> {
                 // Level 1
                 1, new LevelData<>(
                         14, true, true,
-                        new ResourceCondition("wood", 100,
-                                new RemoveResourceAction("wood", 100),
+                        new ResourceCondition("wood", 100, true,
                                 new LandUpgradeAction(1))),
                 // Level 2
                 2, new LevelData<>(
                         18, true, true,
-                        new ResourceCondition("wood", 200, // requires 200 wood
-                                new RemoveResourceAction("wood", 200)), // remove 200 wood
-                        new ResourceCondition("stone", 100, // requires 100 stone
-                                new RemoveResourceAction("stone", 100), // remove 100 stone
+                        new ResourceCondition("wood", 200, true),
+                        new ResourceCondition("stone", 100, true,
                                 new LandUpgradeAction(2))),
                 //  Level 3
                 3, new LevelData<>(
                         22, true, true,
-                        new ResourceCondition("wood", 400,  // requires 400 wood
-                                new RemoveResourceAction("wood", 200)), // remove 400 wood
-                        new ResourceCondition("stone", 200, // requires 200 stone
-                                new RemoveResourceAction("stone", 100), // remove 200 stone
+                        new ResourceCondition("wood", 400, true), // remove 400 wood
+                        new ResourceCondition("stone", 200, true,
                                 new LandUpgradeAction(3))))));
 
     }

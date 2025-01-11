@@ -2,14 +2,15 @@ package dev.viaduct.factories.guis.menus;
 
 import com.github.stefvanschie.inventoryframework.gui.GuiItem;
 import com.github.stefvanschie.inventoryframework.gui.type.ChestGui;
+import dev.viaduct.factories.domain.players.FactoryPlayer;
 import dev.viaduct.factories.guis.menus.panes.TopAndBottomSixPane;
+import dev.viaduct.factories.markets.Market;
 import dev.viaduct.factories.utils.ItemBuilder;
 import org.bukkit.Material;
-import org.bukkit.entity.Player;
 
 public class PlayerMainMenu {
 
-    public void showToPlayer(Player player) {
+    public void showToPlayer(FactoryPlayer factoryPlayer) {
         ChestGui gui = new ChestGui(6, "Main Menu");
         gui.setOnGlobalClick(event -> event.setCancelled(true));
 
@@ -23,15 +24,16 @@ public class PlayerMainMenu {
                         "",
                         "Click to open marketplace.")
                 .glowing()
-                .build()), 4, 2);
+                .build(),
+                click -> new Market().showToPlayer(factoryPlayer)), 4, 2);
 
         topAndBottomSixPane.addItem(new GuiItem(new ItemBuilder(Material.ARROW)
                 .setName("&eClose")
                 .addLoreLines("&7Close the menu")
-                .build(), event -> player.closeInventory()), 4, 5);
+                .build(), event -> factoryPlayer.getPlayer().closeInventory()), 4, 5);
 
         gui.addPane(topAndBottomSixPane);
-        gui.show(player);
+        gui.show(factoryPlayer.getPlayer());
     }
 
 }

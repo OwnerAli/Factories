@@ -10,7 +10,7 @@ public class GeneratorPlaceObjective extends Objective {
     private final String generatorId;
 
     public GeneratorPlaceObjective(int amount, String generatorId) {
-        super(amount, "Place down " + generatorId.replace("_", " ") + ".");
+        super(amount, "Place down the ", generatorId.replace("_", " ") + ".");
         this.generatorId = generatorId;
     }
 

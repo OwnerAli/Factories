@@ -30,7 +30,7 @@ public class Settings implements WorldSettings {
     @ConfigComment("Island Command. What command users will run to access their island.")
     @ConfigComment("To define alias, just separate commands with white space.")
     @ConfigEntry(path = "factories.command.island", since = "1.3.0")
-    private String playerCommandAliases = "plot p fac f";
+    private String playerCommandAliases = "asteroid a ast";
 
     @ConfigComment("The island admin command.")
     @ConfigComment("To define alias, just separate commands with white space.")
@@ -41,7 +41,7 @@ public class Settings implements WorldSettings {
     @ConfigComment("Sub-command of main player command that will be run on first player command call.")
     @ConfigComment("By default it is sub-command 'create'.")
     @ConfigEntry(path = "factories.command.new-player-action", since = "1.13.1")
-    private String defaultNewPlayerAction = "create";
+    private String defaultNewPlayerAction = "find";
 
     @ConfigComment("The default action for player command.")
     @ConfigComment("Sub-command of main player command that will be run on each player command call.")
@@ -376,7 +376,7 @@ public class Settings implements WorldSettings {
     @ConfigComment("    the potential issues, especially if you expect a lot of players to connect to your server")
     @ConfigComment("    in a limited period of time.")
     @ConfigEntry(path = "island.create-island-on-first-login.enable", since = "1.9.0")
-    private boolean createIslandOnFirstLoginEnabled;
+    private boolean createIslandOnFirstLoginEnabled = true;
 
     @ConfigComment("Time in seconds after the player logged in, before his island gets created.")
     @ConfigComment("If set to 0 or less, the island will be created directly upon the player's login.")

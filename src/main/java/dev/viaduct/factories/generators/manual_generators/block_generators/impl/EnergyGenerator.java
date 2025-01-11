@@ -17,4 +17,8 @@ public class EnergyGenerator extends BlockManualGenerator {
         return "#9966ccEnergy Generator";
     }
 
+    public void generate() {
+        // Do logic to generate nearby generators automatically
+    }
+
 }

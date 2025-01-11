@@ -86,17 +86,18 @@ public abstract class Task implements ScoreboardListable {
     }
 
     @Override
-    public String getTitle() {
+    public String getSection() {
         return "&6&lTasks";
     }
 
     @Override
-    public List<String> getLines() {
+    public List<String> getLines(FactoryPlayer factoryPlayer) {
         List<String> lines = new ArrayList<>();
 
         for (Objective objective : getObjectivesList()) {
 
             for (int i = 0; i < objective.getDescription().size(); i++) {
+                if (orderMatters && objective != factoryPlayer.getTaskHolder().getCurrentObjective()) break;
                 if (i == 0) {
                     lines.add(Chat.colorize("&f • " + objective.getDescription().get(i)));
                     continue;

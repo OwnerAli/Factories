@@ -5,6 +5,7 @@ import dev.viaduct.factories.registries.impl.FactoryPlayerRegistry;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 
@@ -16,8 +17,9 @@ public class PlayerGetResourceListener implements Listener {
         this.factoryPlayerRegistry = factoryPlayerRegistry;
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.HIGHEST)
     public void onResourceBreak(BlockBreakEvent event) {
+        if (event.isCancelled()) return;
         Block brokenBlock = event.getBlock();
         //  Get the material from broken block.
         Material material = brokenBlock.getType();

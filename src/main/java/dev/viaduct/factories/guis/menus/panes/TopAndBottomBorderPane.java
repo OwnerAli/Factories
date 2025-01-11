@@ -8,7 +8,7 @@ import org.bukkit.Material;
 public abstract class TopAndBottomBorderPane extends StaticPane {
 
     public TopAndBottomBorderPane(int height, Material borderColor) {
-        super(0, 0, 9, height);
+        super(0, 0, 9, height, Priority.LOWEST);
 
         for (int i = 0; i < 9; i++) {
             if (height == 5) {

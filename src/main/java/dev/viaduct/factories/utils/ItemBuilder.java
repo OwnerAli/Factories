@@ -66,7 +66,7 @@ public class ItemBuilder {
     public ItemBuilder addLoreLines(String... lines) {
         Arrays.stream(lines).forEach(line -> {
             line = "&7" + line;
-            lore.add(Chat.colorize(line));
+            lore.add(Chat.colorizeHex(line));
         });
         return this;
     }
@@ -129,6 +129,13 @@ public class ItemBuilder {
     }
 
     public ItemBuilder glowing() {
+        meta.addEnchant(Enchantment.DURABILITY, 1, true);
+        meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+        return this;
+    }
+
+    public ItemBuilder setGlowing(boolean glowing) {
+        if (!glowing) return this;
         meta.addEnchant(Enchantment.DURABILITY, 1, true);
         meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
         return this;
