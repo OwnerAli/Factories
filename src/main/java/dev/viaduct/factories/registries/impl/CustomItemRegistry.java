@@ -4,6 +4,11 @@ import dev.viaduct.factories.FactoriesPlugin;
 import dev.viaduct.factories.domain.players.FactoryPlayer;
 import dev.viaduct.factories.guis.menus.PlayerMainMenu;
 import dev.viaduct.factories.items.CustomItem;
+import dev.viaduct.factories.items.beam_items.beam_item_mods.impl.MaterialModifierItem;
+import dev.viaduct.factories.items.beam_items.beam_item_mods.impl.SpeedModifierItem;
+import dev.viaduct.factories.items.beam_items.impl.DragonEggBeamTool;
+import dev.viaduct.factories.items.beam_items.impl.GlassBeamTool;
+import dev.viaduct.factories.items.beam_items.impl.SnifferEggBeamTool;
 import dev.viaduct.factories.items.meta.impl.InventoryClickActionableMeta;
 import dev.viaduct.factories.items.meta.impl.PlayerInteractActionableMeta;
 import dev.viaduct.factories.markets.Market;
@@ -24,6 +29,7 @@ import org.bukkit.util.Vector;
 
 import java.util.Optional;
 
+@SuppressWarnings("UnstableApiUsage")
 public class CustomItemRegistry extends Registry<String, CustomItem> {
 
     public void initialize(Player joined) {
@@ -131,12 +137,13 @@ public class CustomItemRegistry extends Registry<String, CustomItem> {
                                         Math.floor(checkLoc.getZ())
                                 );
 
+                                Block block = blockLoc.getBlock();
+
                                 FactoryPlayerRegistry.getInstance()
                                         .get(player)
-                                        .ifPresent(factoryPlayer -> factoryPlayer.getGeneratorHolder().getGenerator(blockLoc)
+                                        .ifPresentOrElse(factoryPlayer -> factoryPlayer.getGeneratorHolder().getGenerator(blockLoc)
                                                 .ifPresent(generator -> {
                                                     blockDisplay.remove();
-                                                    Block block = blockLoc.getBlock();
 
                                                     if (block.getType().isAir()) return;
                                                     if (!block.getType().isSolid()) return;
@@ -145,16 +152,31 @@ public class CustomItemRegistry extends Registry<String, CustomItem> {
                                                         return;
                                                     }
                                                     generator.getBreakConsumer().accept(new BlockBreakEvent(block, player));
-                                                }));
+                                                }), () -> {
+                                            if (block.getType().isAir()) return;
+                                            if (!block.getType().isSolid()) return;
+                                            blockDisplay.remove();
+                                        });
                             }
                         }
 
                     }.runTaskTimer(FactoriesPlugin.getInstance(), 1L, 1L);
                 }, Action.RIGHT_CLICK_AIR, Action.RIGHT_CLICK_BLOCK));
 
+        DragonEggBeamTool dragonEggBeamTool = new DragonEggBeamTool();
+        SnifferEggBeamTool snifferEggBeamTool = new SnifferEggBeamTool();
+        GlassBeamTool glassBeamTool = new GlassBeamTool();
+        SpeedModifierItem speedModifierItem = new SpeedModifierItem("speed-modifier-20", 50);
+        MaterialModifierItem materialModifierItem = new MaterialModifierItem("material-modifier-turtle_egg", Material.TURTLE_EGG);
+
         // Add the custom item to the registry
         register(menuItem.getId(), menuItem);
         register(basicLaserTool.getId(), basicLaserTool);
+        register(dragonEggBeamTool.getId(), dragonEggBeamTool);
+        register(snifferEggBeamTool.getId(), snifferEggBeamTool);
+        register(glassBeamTool.getId(), glassBeamTool);
+        register(speedModifierItem.getId(), speedModifierItem);
+        register(materialModifierItem.getId(), materialModifierItem);
 
         Optional<ItemStack> itemStack = menuItem.makeCustomItem(new ItemBuilder(Material.NETHER_STAR)
                 .setName("&eMain Menu")
@@ -169,13 +191,57 @@ public class CustomItemRegistry extends Registry<String, CustomItem> {
                         "&fRight-Click → To mine a block in front of you.")
                 .build());
 
+        Optional<ItemStack> dragonEggBeamToolOpt = dragonEggBeamTool.makeCustomItem(new ItemBuilder(Material.NETHERITE_HOE)
+                .glowing()
+                .setName("&8Dragon Egg Beam Tool")
+                .addLoreLines("",
+                        "&fRight-Click → To mine a block in front of you.")
+                .build());
+
+        Optional<ItemStack> snifferEggBeamToolOpt = snifferEggBeamTool.makeCustomItem(new ItemBuilder(Material.BLAZE_ROD)
+                .glowing()
+                .setName("&eSniffer Egg Beam Tool")
+                .addLoreLines("",
+                        "&fRight-Click → To mine a block in front of you.")
+                .build());
+
+        Optional<ItemStack> glassBeamToolOpt = glassBeamTool.makeCustomItem(new ItemBuilder(Material.END_ROD)
+                .setName("&eGlass Beam Tool")
+                .addLoreLines("",
+                        "&fRight-Click → To mine a block in front of you.")
+                .build());
+
+        Optional<ItemStack> speedModOpt = speedModifierItem.makeCustomItem(new ItemBuilder(Material.SUGAR)
+                .setName("&eSpeed Modifier")
+                .addLoreLines("",
+                        "&fDrag and Drop onto BeamItem →",
+                        "&fIncrease beam speed by 20%.")
+                .build());
+
+        Optional<ItemStack> materialModOpt = materialModifierItem.makeCustomItem(new ItemBuilder(Material.TURTLE_EGG)
+                .setName("&eMaterial Modifier")
+                .addLoreLines("",
+                        "&fDrag and Drop onto BeamItem →",
+                        "&fChange the material of the beam.")
+                .build());
+
         if (itemStack.isEmpty()) return;
         if (laserToolItem.isEmpty()) return;
+        if (dragonEggBeamToolOpt.isEmpty()) return;
+        if (snifferEggBeamToolOpt.isEmpty()) return;
+        if (glassBeamToolOpt.isEmpty()) return;
+        if (speedModOpt.isEmpty()) return;
+        if (materialModOpt.isEmpty()) return;
 
         PlayerInventory playerInv = joined.getInventory();
 
         playerInv.setItem(8, itemStack.get());
         playerInv.setItem(0, laserToolItem.get());
+        playerInv.setItem(1, dragonEggBeamToolOpt.get());
+        playerInv.setItem(2, snifferEggBeamToolOpt.get());
+        playerInv.setItem(3, glassBeamToolOpt.get());
+        playerInv.setItem(4, speedModOpt.get());
+        playerInv.setItem(5, materialModOpt.get());
     }
 
     //#region Lazy Initialization
